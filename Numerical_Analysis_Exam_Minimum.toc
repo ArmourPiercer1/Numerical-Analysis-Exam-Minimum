@@ -45,138 +45,146 @@
 \contentsline {paragraph}{列表法求Hermite插值多项式}{19}{section*.32}%
 \contentsline {subsubsection}{Lagrange插值和Hermite插值的收敛分析}{19}{section*.33}%
 \contentsline {paragraph}{插值余项}{19}{section*.34}%
+\contentsline {paragraph}{收敛性}{19}{section*.35}%
 \contentsline {subsection}{\numberline {2.2.2}分段插值}{19}{subsection.2.2.2}%
-\contentsline {subsubsection}{分段线性插值}{19}{section*.35}%
-\contentsline {subsubsection}{分段三次 Hermite 插值}{19}{section*.36}%
-\contentsline {subsection}{\numberline {2.2.3}Fourier 插值}{19}{subsection.2.2.3}%
-\contentsline {subsubsection}{三角多项式插值}{19}{section*.37}%
-\contentsline {subsubsection}{离散 Fourier 变换关联}{19}{section*.38}%
-\contentsline {chapter}{\numberline {3}函数逼近}{21}{chapter.3}%
-\contentsline {section}{\numberline {3.1}通用理论}{21}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}问题模型}{21}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}逼近准则}{21}{subsection.3.1.2}%
-\contentsline {subsubsection}{最小二乘准则（L₂范数）}{21}{section*.39}%
-\contentsline {subsubsection}{一致逼近准则（L∞范数）}{21}{section*.40}%
-\contentsline {subsection}{\numberline {3.1.3}核心定理}{21}{subsection.3.1.3}%
-\contentsline {section}{\numberline {3.2}具体逼近方法}{21}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}最优平方逼近}{21}{subsection.3.2.1}%
-\contentsline {subsubsection}{线性最小二乘}{21}{section*.41}%
-\contentsline {subsubsection}{加权平方逼近}{21}{section*.42}%
-\contentsline {subsubsection}{正交多项式逼近}{21}{section*.43}%
-\contentsline {subsection}{\numberline {3.2.2}最优一致逼近}{21}{subsection.3.2.2}%
-\contentsline {chapter}{\numberline {4}数值微积分}{23}{chapter.4}%
-\contentsline {section}{\numberline {4.1}数值积分}{23}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}通用理论}{23}{subsection.4.1.1}%
-\contentsline {subsubsection}{积分问题模型}{23}{section*.44}%
-\contentsline {subsubsection}{求积公式核心}{23}{section*.45}%
-\contentsline {subsubsection}{代数精度}{23}{section*.46}%
-\contentsline {subsubsection}{稳定性}{23}{section*.47}%
-\contentsline {subsection}{\numberline {4.1.2}具体求积方法}{23}{subsection.4.1.2}%
-\contentsline {subsubsection}{Newton-Cotes 公式}{23}{section*.48}%
-\contentsline {paragraph}{梯形公式}{23}{section*.49}%
-\contentsline {paragraph}{Simpson 公式}{23}{section*.50}%
-\contentsline {paragraph}{3/8 - 规则}{23}{section*.51}%
-\contentsline {subsubsection}{复合求积方法}{23}{section*.52}%
-\contentsline {paragraph}{复合梯形公式}{23}{section*.53}%
-\contentsline {paragraph}{复合 Simpson 公式}{23}{section*.54}%
-\contentsline {subsubsection}{加速方法}{23}{section*.55}%
-\contentsline {paragraph}{Romberg 方法}{23}{section*.56}%
-\contentsline {subsubsection}{Gauss 型求积}{24}{section*.57}%
-\contentsline {paragraph}{Gauss 点与权系数}{24}{section*.58}%
-\contentsline {paragraph}{Gauss-Legendre 求积}{24}{section*.59}%
-\contentsline {paragraph}{Gauss-Chebyshev 求积}{24}{section*.60}%
-\contentsline {subsubsection}{特殊积分处理}{24}{section*.61}%
-\contentsline {paragraph}{奇异积分}{24}{section*.62}%
-\contentsline {paragraph}{振荡积分}{24}{section*.63}%
-\contentsline {subsubsection}{高维积分}{24}{section*.64}%
-\contentsline {paragraph}{蒙特卡洛方法}{24}{section*.65}%
-\contentsline {section}{\numberline {4.2}数值微分}{24}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}基础方法}{24}{subsection.4.2.1}%
-\contentsline {subsubsection}{向前差商}{24}{section*.66}%
-\contentsline {subsubsection}{向后差商}{24}{section*.67}%
-\contentsline {subsubsection}{中心差商}{24}{section*.68}%
-\contentsline {subsection}{\numberline {4.2.2}高精度方法}{24}{subsection.4.2.2}%
-\contentsline {subsubsection}{插值型数值微分}{24}{section*.69}%
-\contentsline {subsubsection}{Richardson 外推加速}{24}{section*.70}%
-\contentsline {chapter}{\numberline {5}非线性方程求根}{25}{chapter.5}%
-\contentsline {section}{\numberline {5.1}通用理论}{25}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}问题模型}{25}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}迭代法基础}{25}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}收敛性分析}{25}{subsection.5.1.3}%
-\contentsline {subsubsection}{收敛阶定义}{25}{section*.71}%
-\contentsline {subsubsection}{整体收敛性（压缩映像原理）}{25}{section*.72}%
-\contentsline {subsubsection}{局部收敛性判定}{25}{section*.73}%
-\contentsline {subsection}{\numberline {5.1.4}收敛效率}{25}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}具体方法}{25}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}单步法}{25}{subsection.5.2.1}%
-\contentsline {subsubsection}{牛顿法}{25}{section*.74}%
-\contentsline {paragraph}{迭代公式}{25}{section*.75}%
-\contentsline {paragraph}{收敛性分析}{25}{section*.76}%
-\contentsline {paragraph}{重根处理}{25}{section*.77}%
-\contentsline {subsubsection}{不动点迭代}{26}{section*.78}%
-\contentsline {subsection}{\numberline {5.2.2}多步法}{26}{subsection.5.2.2}%
-\contentsline {subsubsection}{割线法}{26}{section*.79}%
-\contentsline {subsection}{\numberline {5.2.3}其他方法}{26}{subsection.5.2.3}%
-\contentsline {subsubsection}{Steffensen 方法}{26}{section*.80}%
-\contentsline {subsubsection}{Broyden 秩 1 方法}{26}{section*.81}%
-\contentsline {chapter}{\numberline {6}常微分方程初值问题数值解法}{27}{chapter.6}%
-\contentsline {section}{\numberline {6.1}通用理论}{27}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}问题模型}{27}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}数值解法核心}{27}{subsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.1.3}基本概念}{27}{subsection.6.1.3}%
-\contentsline {subsubsection}{局部截断误差与整体截断误差}{27}{section*.82}%
-\contentsline {subsubsection}{收敛性与收敛阶}{27}{section*.83}%
-\contentsline {subsubsection}{稳定性与相容性}{27}{section*.84}%
-\contentsline {subsection}{\numberline {6.1.4}收敛性与稳定性判定}{27}{subsection.6.1.4}%
-\contentsline {section}{\numberline {6.2}具体方法}{27}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}单步法}{27}{subsection.6.2.1}%
-\contentsline {subsubsection}{Euler 方法}{27}{section*.85}%
-\contentsline {paragraph}{向前欧拉}{27}{section*.86}%
-\contentsline {paragraph}{向后欧拉}{27}{section*.87}%
-\contentsline {subsubsection}{改进欧拉方法}{27}{section*.88}%
-\contentsline {subsubsection}{龙格 - 库塔（RK）方法}{27}{section*.89}%
-\contentsline {paragraph}{2 阶 RK 方法}{27}{section*.90}%
-\contentsline {paragraph}{4 阶 RK 方法}{28}{section*.91}%
-\contentsline {subsection}{\numberline {6.2.2}多步法}{28}{subsection.6.2.2}%
-\contentsline {subsubsection}{Adams 方法}{28}{section*.92}%
-\contentsline {paragraph}{显式 Adams 公式}{28}{section*.93}%
-\contentsline {paragraph}{隐式 Adams 公式}{28}{section*.94}%
-\contentsline {subsubsection}{Nyström 方法}{28}{section*.95}%
-\contentsline {subsubsection}{Milne-Simpson 方法}{28}{section*.96}%
-\contentsline {chapter}{\numberline {7}线性代数方程组数值解法}{29}{chapter.7}%
-\contentsline {section}{\numberline {7.1}直接解法}{29}{section.7.1}%
-\contentsline {subsection}{\numberline {7.1.1}通用理论}{29}{subsection.7.1.1}%
-\contentsline {subsubsection}{问题模型}{29}{section*.97}%
-\contentsline {subsubsection}{残差与误差分析}{29}{section*.98}%
-\contentsline {subsubsection}{数值稳定性与条件数}{29}{section*.99}%
-\contentsline {subsection}{\numberline {7.1.2}具体方法}{29}{subsection.7.1.2}%
-\contentsline {subsubsection}{Gauss 消元法}{29}{section*.100}%
-\contentsline {paragraph}{基本步骤}{29}{section*.101}%
-\contentsline {paragraph}{主元素选取}{29}{section*.102}%
-\contentsline {subsubsection}{LU 分解}{29}{section*.103}%
-\contentsline {subsubsection}{特殊方程组解法}{29}{section*.104}%
-\contentsline {paragraph}{Thomas 算法（三对角方程组）}{29}{section*.105}%
-\contentsline {paragraph}{Toeplitz 矩阵快速解法}{29}{section*.106}%
-\contentsline {section}{\numberline {7.2}定常线性迭代解法}{30}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}通用理论}{30}{subsection.7.2.1}%
-\contentsline {subsubsection}{迭代格式构造}{30}{section*.107}%
-\contentsline {subsubsection}{收敛性判定}{30}{section*.108}%
-\contentsline {subsubsection}{收敛速度}{30}{section*.109}%
-\contentsline {subsection}{\numberline {7.2.2}具体迭代法}{30}{subsection.7.2.2}%
-\contentsline {subsubsection}{Jacobi 迭代}{30}{section*.110}%
-\contentsline {subsubsection}{Gauss-Seidel 迭代}{30}{section*.111}%
-\contentsline {subsubsection}{SOR 迭代}{30}{section*.112}%
-\contentsline {paragraph}{松弛因子选取}{30}{section*.113}%
-\contentsline {paragraph}{最优松弛因子}{30}{section*.114}%
-\contentsline {section}{\numberline {7.3}非线性迭代解法（基于变分原理）}{30}{section.7.3}%
-\contentsline {subsection}{\numberline {7.3.1}通用理论}{30}{subsection.7.3.1}%
-\contentsline {subsubsection}{Ritz 变分原理}{30}{section*.115}%
-\contentsline {subsubsection}{迭代核心思想}{30}{section*.116}%
-\contentsline {subsection}{\numberline {7.3.2}具体方法}{30}{subsection.7.3.2}%
-\contentsline {subsubsection}{最速下降法}{30}{section*.117}%
-\contentsline {subsubsection}{共轭梯度法（CG）}{30}{section*.118}%
-\contentsline {paragraph}{迭代公式}{30}{section*.119}%
-\contentsline {paragraph}{收敛性分析}{30}{section*.120}%
-\contentsline {subsubsection}{预条件技术}{30}{section*.121}%
-\contentsline {paragraph}{预条件矩阵选取}{30}{section*.122}%
-\contentsline {paragraph}{预条件 CG 迭代格式}{30}{section*.123}%
+\contentsline {subsubsection}{分段线性插值}{19}{section*.36}%
+\contentsline {paragraph}{分片线性插值的插值基函数}{20}{section*.37}%
+\contentsline {paragraph}{分片线性插值的收敛性定理}{20}{section*.38}%
+\contentsline {subsubsection}{分段三次 Hermite 插值}{20}{section*.39}%
+\contentsline {paragraph}{插值基函数}{20}{section*.40}%
+\contentsline {paragraph}{三次Hermite插值多项式}{21}{section*.41}%
+\contentsline {paragraph}{收敛性定理}{21}{section*.42}%
+\contentsline {subsection}{\numberline {2.2.3}Fourier 插值}{21}{subsection.2.2.3}%
+\contentsline {subsubsection}{离散傅里叶变换}{21}{section*.43}%
+\contentsline {subsubsection}{三角多项式插值空间}{21}{section*.44}%
+\contentsline {subsubsection}{三角多项式插值与一般多项式插值}{22}{section*.45}%
+\contentsline {subsubsection}{插值定理与三角插值多项式}{22}{section*.46}%
+\contentsline {chapter}{\numberline {3}函数逼近}{23}{chapter.3}%
+\contentsline {section}{\numberline {3.1}通用理论}{23}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}问题模型}{23}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}逼近准则}{23}{subsection.3.1.2}%
+\contentsline {subsubsection}{最小二乘准则（L₂范数）}{23}{section*.47}%
+\contentsline {subsubsection}{一致逼近准则（L∞范数）}{23}{section*.48}%
+\contentsline {subsection}{\numberline {3.1.3}核心定理}{23}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}具体逼近方法}{23}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}最优平方逼近}{23}{subsection.3.2.1}%
+\contentsline {subsubsection}{线性最小二乘}{23}{section*.49}%
+\contentsline {subsubsection}{加权平方逼近}{23}{section*.50}%
+\contentsline {subsubsection}{正交多项式逼近}{23}{section*.51}%
+\contentsline {subsection}{\numberline {3.2.2}最优一致逼近}{23}{subsection.3.2.2}%
+\contentsline {chapter}{\numberline {4}数值微积分}{25}{chapter.4}%
+\contentsline {section}{\numberline {4.1}数值积分}{25}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}通用理论}{25}{subsection.4.1.1}%
+\contentsline {subsubsection}{积分问题模型}{25}{section*.52}%
+\contentsline {subsubsection}{求积公式核心}{25}{section*.53}%
+\contentsline {subsubsection}{代数精度}{25}{section*.54}%
+\contentsline {subsubsection}{稳定性}{25}{section*.55}%
+\contentsline {subsection}{\numberline {4.1.2}具体求积方法}{25}{subsection.4.1.2}%
+\contentsline {subsubsection}{Newton-Cotes 公式}{25}{section*.56}%
+\contentsline {paragraph}{梯形公式}{25}{section*.57}%
+\contentsline {paragraph}{Simpson 公式}{25}{section*.58}%
+\contentsline {paragraph}{3/8 - 规则}{25}{section*.59}%
+\contentsline {subsubsection}{复合求积方法}{25}{section*.60}%
+\contentsline {paragraph}{复合梯形公式}{25}{section*.61}%
+\contentsline {paragraph}{复合 Simpson 公式}{25}{section*.62}%
+\contentsline {subsubsection}{加速方法}{25}{section*.63}%
+\contentsline {paragraph}{Romberg 方法}{25}{section*.64}%
+\contentsline {subsubsection}{Gauss 型求积}{26}{section*.65}%
+\contentsline {paragraph}{Gauss 点与权系数}{26}{section*.66}%
+\contentsline {paragraph}{Gauss-Legendre 求积}{26}{section*.67}%
+\contentsline {paragraph}{Gauss-Chebyshev 求积}{26}{section*.68}%
+\contentsline {subsubsection}{特殊积分处理}{26}{section*.69}%
+\contentsline {paragraph}{奇异积分}{26}{section*.70}%
+\contentsline {paragraph}{振荡积分}{26}{section*.71}%
+\contentsline {subsubsection}{高维积分}{26}{section*.72}%
+\contentsline {paragraph}{蒙特卡洛方法}{26}{section*.73}%
+\contentsline {section}{\numberline {4.2}数值微分}{26}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}基础方法}{26}{subsection.4.2.1}%
+\contentsline {subsubsection}{向前差商}{26}{section*.74}%
+\contentsline {subsubsection}{向后差商}{26}{section*.75}%
+\contentsline {subsubsection}{中心差商}{26}{section*.76}%
+\contentsline {subsection}{\numberline {4.2.2}高精度方法}{26}{subsection.4.2.2}%
+\contentsline {subsubsection}{插值型数值微分}{26}{section*.77}%
+\contentsline {subsubsection}{Richardson 外推加速}{26}{section*.78}%
+\contentsline {chapter}{\numberline {5}非线性方程求根}{27}{chapter.5}%
+\contentsline {section}{\numberline {5.1}通用理论}{27}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}问题模型}{27}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}迭代法基础}{27}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}收敛性分析}{27}{subsection.5.1.3}%
+\contentsline {subsubsection}{收敛阶定义}{27}{section*.79}%
+\contentsline {subsubsection}{整体收敛性（压缩映像原理）}{27}{section*.80}%
+\contentsline {subsubsection}{局部收敛性判定}{27}{section*.81}%
+\contentsline {subsection}{\numberline {5.1.4}收敛效率}{27}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}具体方法}{27}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}单步法}{27}{subsection.5.2.1}%
+\contentsline {subsubsection}{牛顿法}{27}{section*.82}%
+\contentsline {paragraph}{迭代公式}{27}{section*.83}%
+\contentsline {paragraph}{收敛性分析}{27}{section*.84}%
+\contentsline {paragraph}{重根处理}{27}{section*.85}%
+\contentsline {subsubsection}{不动点迭代}{28}{section*.86}%
+\contentsline {subsection}{\numberline {5.2.2}多步法}{28}{subsection.5.2.2}%
+\contentsline {subsubsection}{割线法}{28}{section*.87}%
+\contentsline {subsection}{\numberline {5.2.3}其他方法}{28}{subsection.5.2.3}%
+\contentsline {subsubsection}{Steffensen 方法}{28}{section*.88}%
+\contentsline {subsubsection}{Broyden 秩 1 方法}{28}{section*.89}%
+\contentsline {chapter}{\numberline {6}常微分方程初值问题数值解法}{29}{chapter.6}%
+\contentsline {section}{\numberline {6.1}通用理论}{29}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}问题模型}{29}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}数值解法核心}{29}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}基本概念}{29}{subsection.6.1.3}%
+\contentsline {subsubsection}{局部截断误差与整体截断误差}{29}{section*.90}%
+\contentsline {subsubsection}{收敛性与收敛阶}{29}{section*.91}%
+\contentsline {subsubsection}{稳定性与相容性}{29}{section*.92}%
+\contentsline {subsection}{\numberline {6.1.4}收敛性与稳定性判定}{29}{subsection.6.1.4}%
+\contentsline {section}{\numberline {6.2}具体方法}{29}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}单步法}{29}{subsection.6.2.1}%
+\contentsline {subsubsection}{Euler 方法}{29}{section*.93}%
+\contentsline {paragraph}{向前欧拉}{29}{section*.94}%
+\contentsline {paragraph}{向后欧拉}{29}{section*.95}%
+\contentsline {subsubsection}{改进欧拉方法}{29}{section*.96}%
+\contentsline {subsubsection}{龙格 - 库塔（RK）方法}{29}{section*.97}%
+\contentsline {paragraph}{2 阶 RK 方法}{29}{section*.98}%
+\contentsline {paragraph}{4 阶 RK 方法}{30}{section*.99}%
+\contentsline {subsection}{\numberline {6.2.2}多步法}{30}{subsection.6.2.2}%
+\contentsline {subsubsection}{Adams 方法}{30}{section*.100}%
+\contentsline {paragraph}{显式 Adams 公式}{30}{section*.101}%
+\contentsline {paragraph}{隐式 Adams 公式}{30}{section*.102}%
+\contentsline {subsubsection}{Nyström 方法}{30}{section*.103}%
+\contentsline {subsubsection}{Milne-Simpson 方法}{30}{section*.104}%
+\contentsline {chapter}{\numberline {7}线性代数方程组数值解法}{31}{chapter.7}%
+\contentsline {section}{\numberline {7.1}直接解法}{31}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}通用理论}{31}{subsection.7.1.1}%
+\contentsline {subsubsection}{问题模型}{31}{section*.105}%
+\contentsline {subsubsection}{残差与误差分析}{31}{section*.106}%
+\contentsline {subsubsection}{数值稳定性与条件数}{31}{section*.107}%
+\contentsline {subsection}{\numberline {7.1.2}具体方法}{31}{subsection.7.1.2}%
+\contentsline {subsubsection}{Gauss 消元法}{31}{section*.108}%
+\contentsline {paragraph}{基本步骤}{31}{section*.109}%
+\contentsline {paragraph}{主元素选取}{31}{section*.110}%
+\contentsline {subsubsection}{LU 分解}{31}{section*.111}%
+\contentsline {subsubsection}{特殊方程组解法}{31}{section*.112}%
+\contentsline {paragraph}{Thomas 算法（三对角方程组）}{31}{section*.113}%
+\contentsline {paragraph}{Toeplitz 矩阵快速解法}{31}{section*.114}%
+\contentsline {section}{\numberline {7.2}定常线性迭代解法}{32}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}通用理论}{32}{subsection.7.2.1}%
+\contentsline {subsubsection}{迭代格式构造}{32}{section*.115}%
+\contentsline {subsubsection}{收敛性判定}{32}{section*.116}%
+\contentsline {subsubsection}{收敛速度}{32}{section*.117}%
+\contentsline {subsection}{\numberline {7.2.2}具体迭代法}{32}{subsection.7.2.2}%
+\contentsline {subsubsection}{Jacobi 迭代}{32}{section*.118}%
+\contentsline {subsubsection}{Gauss-Seidel 迭代}{32}{section*.119}%
+\contentsline {subsubsection}{SOR 迭代}{32}{section*.120}%
+\contentsline {paragraph}{松弛因子选取}{32}{section*.121}%
+\contentsline {paragraph}{最优松弛因子}{32}{section*.122}%
+\contentsline {section}{\numberline {7.3}非线性迭代解法（基于变分原理）}{32}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}通用理论}{32}{subsection.7.3.1}%
+\contentsline {subsubsection}{Ritz 变分原理}{32}{section*.123}%
+\contentsline {subsubsection}{迭代核心思想}{32}{section*.124}%
+\contentsline {subsection}{\numberline {7.3.2}具体方法}{32}{subsection.7.3.2}%
+\contentsline {subsubsection}{最速下降法}{32}{section*.125}%
+\contentsline {subsubsection}{共轭梯度法（CG）}{32}{section*.126}%
+\contentsline {paragraph}{迭代公式}{32}{section*.127}%
+\contentsline {paragraph}{收敛性分析}{32}{section*.128}%
+\contentsline {subsubsection}{预条件技术}{32}{section*.129}%
+\contentsline {paragraph}{预条件矩阵选取}{32}{section*.130}%
+\contentsline {paragraph}{预条件 CG 迭代格式}{32}{section*.131}%

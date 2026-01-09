@@ -811,26 +811,206 @@ P(x) &= f[\xi_0] + f[\xi_0,\xi_0](x - \xi_0) + f[\xi_0,\xi_0,\xi_0](x - \xi_0)^2
     R(x) = f(x) - P(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{i=0}^{n} (x - x_i)= \frac{f^{(n+1)}(\xi)}{(n+1)!} \omega_{01...n}(x)
 \end{align}
 
+\paragraph{收敛性}
+收敛性的定义：当给定插值点的最大间距$h\rightarrow 0$时，插值余项$R(x)\rightarrow 0$，则称插值多项式序列在区间$[a,b]$上收敛于函数$f(x)$。
+
+
+\begin{definition}
+    [多项式插值收敛定义]
+    设$f\in C^{\infty}[a,b]$，且存在正常数$M>0$，使得对任意的$n\geq 0$，都有
+    \begin{align}
+        \max_{x\in[a,b]} |f^{(n)}(x)| \leq M
+    \end{align}
+    则对任意在$[a,b]$上的插值节点序列$\{x_i^{(n)}\}_{i=0}^{n}$，对应的插值多项式序列$\{P_n(x)\}$在$[a,b]$上均匀收敛于$f(x)$。
+\end{definition}
+
+
+收敛的充分条件：
+\begin{theorem}
+    记$\delta =|I(x_0,\,x_1,\,x_2, \ldots, x_n)|$, $\tilde{x}$为I的中心。若$f$在$B(\tilde{x},w\delta)$上复解析，则对任意$\bar{x}\in I$，插值法收敛。
+\end{theorem}
 
 \subsection {分段插值}
 \subsubsection {分段线性插值}
+\tofill{分片线性插值问题描述}
+
+\paragraph{分片线性插值的插值基函数}
+\begin{definition}
+    [分片线性插值基函数]
+    设给定插值节点$x_0<x_1<...<x_n$，则定义分片线性插值基函数为
+    \begin{align}
+        l_i(x) = \begin{cases}
+            \frac{x - x_{i-1}}{x_i - x_{i-1}}, & x\in [x_{i-1}, x_i]\\
+            \frac{x_{i+1} - x}{x_{i+1} - x_i}, & x\in [x_i, x_{i+1}]\\
+            0, & \text{otherwise}
+        \end{cases}
+    \end{align}
+    其中，$i=0,1,...,n$，且约定$x_{-1}=x_0$，$x_{n+1}=x_n$。
+\end{definition}
+则线性插值基函数为 
+\begin{align}
+    \phi(x)=\sum_{k=1}^nf_k l_k(x)
+\end{align}
+
+\paragraph{分片线性插值的收敛性定理}
+定义
+\begin{align}
+    h=\max_{1\leq i \leq n}(x_i - x_{i-1})
+\end{align}
+
+\begin{itemize}
+    \item 若$f\in C[a,b]$，则$\lim_{h\rightarrow 0}\|f-\phi\|_\infty\rightarrow 0$
+    \item 若$f\in C^1[a,b]$，则$\|f-\phi\|_\infty \leq \frac{h}{2}\|f'\|_\infty$
+    \item 若$f\in C^2[a,b]$，则$\|f-\phi\|_\infty \leq \frac{h^2}{8}\|f''\|_\infty$
+\end{itemize}
+
 \subsubsection {分段三次 Hermite 插值}
+\tofill[]{分片三次Hermite插值的数学描述}
+
+
+\paragraph{插值基函数}
+分段三次Hermite插值的基函数满足如下条件：
+\begin{align}
+    \alpha_k(x_i)=& \delta_{ik},\quad \alpha_k'(x_i)=0\\
+    \beta_k(x_i)=& 0,\quad \beta_k'(x_i)= \delta_{ik}
+\end{align}
+
+在单元$[x_k, x_{k+1}]$上，三次Hermite插值基函数为
+\begin{align}
+    \alpha_k =& \left(  1+2\frac{x-x_k}{x_{k+1}-x_k}  \right) \left(  \frac{x_{k+1}-x}{x_{k+1}-x_k}  \right)^2\\
+    \beta_k =& (x-x_k) \left(  \frac{x_{k+1}-x}{x_{k+1}-x_k}  \right)^2\\
+    \alpha_{k+1} =& \left(  1+2\frac{x_{k+1}-x}{x_{k+1}-x_k}  \right) \left(  \frac{x-x_k}{x_{k+1}-x_k}  \right)^2\\
+    \beta_{k+1} =& -(x_{k+1} - x) \left(  \frac{x - x_k}{x_{k+1}-x_k}  \right)^2
+\end{align}
+
+\begin{itemize}
+    \item $\alpha_k$满足单位分解性：$\alpha_k+\alpha_{k+1}=1$
+    \item $\alpha_k(x_i)=\delta_{ik}$，$\alpha_k'(x_i)=0$
+    \item $\beta_k(x_i)=0$，$\beta_k'(x_i)=\delta_{ik}$
+\end{itemize}
+
+
+
+\paragraph{三次Hermite插值多项式}
+\begin{align}
+    \phi=\sum_{k=0}^{n} \left[ f_k \alpha_k(x) + f_k' \beta_k(x) \right]
+\end{align}
+
+\paragraph{收敛性定理}
+\begin{definition}
+    [分段三次Hermite插值收敛性定理]
+    设$f\in C^1[a,b]$，则分段三次Hermite插值多项式$\phi$满足
+    \begin{align}
+        \|f - \phi\|_\infty \leq ch\|f'\|_\infty
+    \end{align}
+\end{definition}
+
+若f有更好的光滑性，则：
+\begin{itemize}
+    \item 若$f\in C^2[a,b]$，则$\|f-\phi\|_\infty \leq ch^2\|f''\|_\infty$
+    \item 若$f\in C^3[a,b]$，则$\|f-\phi\|_\infty \leq ch^3\|f'''\|_\infty$
+    \item 若$f\in C^4[a,b]$，则$\|f-\phi\|_\infty \leq \frac{1}{384}h^4\|f^{(4)}\|_\infty$
+\end{itemize}
+
+此外，对于不高于三次的多项式，分段三次Hermite插值是精确的。
+
+
+
 \subsection {Fourier 插值}
-\subsubsection {三角多项式插值}
-\subsubsection {离散 Fourier 变换关联}
+\subsubsection{离散傅里叶变换}
+\tofill[定义]{离散傅里叶变换式、变换式系数表达式}
+
+如果f的光滑性满足$f\in C_{per}^M$，则有
+\begin{align}
+    a_n=O(n^{-M})\\
+    b_n=O(n^{-M})
+\end{align}
+且
+\begin{align}
+    \|f(x)-\left[  \frac{a_0}{2}+\sum_{n=1}^N a_n\cos nx+\sum_{n=1}^N b_n \sin nx \right]\|_\infty = O(N^{-M})
+\end{align}
+
+\subsubsection{三角多项式插值空间}
+三角多项式插值空间为：
+\begin{align}
+    \Phi_{2M+1}:=&\left\{  \frac{A_0}{2} + \sum_{n=1}^M \left( A_n \cos nx + B_n \sin nx \right) \right\}\\
+    \Phi_{2M}:=&\left\{  \frac{A_0}{2} + \sum_{n=1}^{M-1} \left( A_n \cos nx + B_n \sin nx \right) + A_M \cos Mx \right\}
+\end{align}
+
+
+
+\subsubsection {三角多项式插值与一般多项式插值}
+\tofill[问题]{三角多项式插值问题的数学描述}
+
+\tofill[问题]{辅助插值问题：找相多项式}
+
+\tofill[理论]{两个插值问题之间的联系：欧拉公式}
+
+\subsubsection{插值定理与三角插值多项式}
+\begin{theorem}
+    [三角多项式插值定理]
+    设给定插值节点
+    \begin{align}
+        x_k = \frac{2k\pi}{N}, \quad k=0,1,\ldots,N-1
+    \end{align}
+    则对任意插值数据$f_k$，存在唯一的三角多项式
+    \begin{align}
+        P(x) = \frac{A_0}{2} + \sum_{n=1}^{M} \left( A_n \cos nx + B_n \sin nx \right)
+    \end{align}
+    （当N为奇数时，$M=\frac{N-1}{2}$；当N为偶数时，$M=\frac{N}{2}$）满足插值条件
+    \begin{align}
+        P(x_k) = f_k, \quad k=0,1,\ldots,N-1
+    \end{align}
+    同样，存在唯一的相多项式
+    \begin{align}
+        Q(x) = \sum_{n=0}^{N-1} \beta_n e^{inx}
+    \end{align}
+    满足插值条件
+    \begin{align}
+        Q(x_k) = f_k, \quad k=0,1,\ldots,N-1
+    \end{align}
+\end{theorem}
+
+
+\begin{itemize}
+    \item 三角插值多项式：
+    \begin{align}
+        A_j=\frac{2}{N}\sum_{k=0}^{N-1} f_k \cos\left(  \frac{2\pi jk}{N}  \right), \quad j=0,1,\ldots,M\\
+        B_j=\frac{2}{N}\sum_{k=0}^{N-1} f_k \sin\left(  \frac{2\pi jk}{N}  \right), \quad j=1,2,\ldots,M
+    \end{align}
+    \item 相插值多项式：
+    \begin{align}
+        \beta_j=\frac{1}{N}\sum_{k=0}^{N-1} f_k w^{-kj}, \quad j=0,1,\ldots,N-1
+    \end{align}
+    式中，$w=e^{i\frac{2\pi}{N}}$。
+\end{itemize}
+
+
+% \subsubsection {离散 Fourier 变换关联}
+
+
 
 \chapter {函数逼近}
+
 \section {通用理论}
+
 \subsection {问题模型}
+\tofill[函数逼近问题的]{}
+
+
 \subsection {逼近准则}
 \subsubsection {最小二乘准则（L₂范数）}
 \subsubsection {一致逼近准则（L∞范数）}
+
 \subsection {核心定理}
+
 \section {具体逼近方法}
+
 \subsection {最优平方逼近}
 \subsubsection {线性最小二乘}
 \subsubsection {加权平方逼近}
 \subsubsection {正交多项式逼近}
+
 \subsection {最优一致逼近}
 
 

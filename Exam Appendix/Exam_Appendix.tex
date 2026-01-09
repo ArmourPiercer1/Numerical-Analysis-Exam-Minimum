@@ -1,0 +1,155 @@
+\documentclass{book}
+
+% 中文字体支持
+\usepackage{ctex}
+\usepackage{xeCJK}
+
+% 数学公式支持
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm} % 粗体数学符号
+
+% 图表支持
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{float}
+
+% 页面布局
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=3cm}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% 目录和超链接
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=red
+}
+
+% 代码支持
+\usepackage{listings}
+\usepackage{xcolor}
+
+% 表格支持
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+
+% 特殊形状支持
+\usepackage{xcolor}
+
+% % 副标题
+% \usepackage{titling}
+
+% 定理环境
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例题}
+\newtheorem{exercise}[theorem]{练习}
+
+% 待填写内容标记
+\NewDocumentCommand{\tofill}{O{} m}{
+    \textbf{\textit{\textcolor{red}{待填写：\IfValueT{#1}{(#1)}#2}}}
+}
+
+% 页眉页脚设置
+\setlength{\headheight}{14.5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{数值分析课程总结}
+\fancyhead[R]{\today}
+\fancyfoot[C]{\thepage/\pageref{LastPage}}
+
+% 代码样式设置
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    breaklines=true
+}
+
+% 文档信息
+\title{Numerical Analysis \\ Exam Appendix}
+\author{Astral Projection}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{数学基础知识}
+\section{重要补充内容}
+\subsection{矩阵的可分性}
+
+\section{重要证明}
+
+\section{例题与习题}
+
+\chapter{函数插值与重构}
+\section{重要证明}
+
+\subsection{插值多项式的误差函数}
+\begin{theorem}
+    [插值多项式误差公式]
+    设$f\in C^{n+1}[a,b]$，$x_0,x_1,\ldots,x_n$为区间$[a,b]$上的$n+1$个两两不同的节点，则对任意$x\in[a,b]$，存在$\xi\in(a,b)$，使得
+    \begin{align}
+        f(x) - p(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{i=0}^{n} (x - x_i)
+    \end{align}
+    其中$p(x)$为通过节点$(x_i,f(x_i))$的插值多项式。
+\end{theorem}
+
+\subsubsection{证明：}
+
+
+\subsection{分片线性插值和分片三次Hermite插值的收敛性定理}
+命题：
+定义
+\begin{align}
+    h=\max_{1\leq i \leq n}(x_i - x_{i-1})
+\end{align}
+则进行分片线性插值时，
+\begin{itemize}
+    \item 若$f\in C[a,b]$，则$\lim_{h\rightarrow 0}\|f-\phi\|_\infty\rightarrow 0$
+    \item 若$f\in C^1[a,b]$，则$\|f-\phi\|_\infty \leq \frac{h}{2}\|f'\|_\infty$
+    \item 若$f\in C^2[a,b]$，则$\|f-\phi\|_\infty \leq \frac{h^2}{8}\|f''\|_\infty$
+\end{itemize}
+进行分片三次Hermite插值时，
+\begin{itemize}
+    \item 若$f\in C^1[a,b]$，则$\|f-\phi\|_\infty \leq ch\|f'\|_\infty$
+    \item 若$f\in C^2[a,b]$，则$\|f-\phi\|_\infty \leq ch^2\|f''\|_\infty$
+    \item 若$f\in C^3[a,b]$，则$\|f-\phi\|_\infty \leq ch^3\|f'''\|_\infty$
+    \item 若$f\in C^4[a,b]$，则$\|f-\phi\|_\infty \leq \frac{1}{384}h^4\|f^{(4)}\|_\infty$
+\end{itemize}
+
+\subsubsection{证明：}
+Note：分片线性插值只要做泰勒展开即可；
+分片三次Hermite插值在4阶光滑性时可以通过余项公式给出，低于4阶光滑性需要用到Peano核定理。
+
+
+
+\subsection{三角插值多项式形式、相多项式形式}
+
+\subsection{三角插值的误差分析}
+
+
+
+
+
+
+\end{document}
