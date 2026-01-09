@@ -301,9 +301,25 @@ $C[a,b]$上三个范数的性质：
     \end{align}
 \end{itemize}
 
+常用的权函数有：
+\begin{align}
+    \rho(x) = 1, & \quad [a,b] = [-1,1]\\
+    \rho(x)=\frac{1}{1-x^2}, & \quad [a,b] = [-1,1]\\
+\end{align}
+
 
 \subsubsection {正交性与 Schmidt 正交化}
+\tofill[定义]{正交性}
 
+\tofill[方法]{用Grammer矩阵判断内积空间中向量组的线性无关性}
+
+\tofill[方法]{Schmidt 正交化过程：从一个线性无关向量组构造一个正交向量组：让每个向量减去与已有空间垂直的分量}
+
+用Schmidt正交化过程得到的正交向量组具有以下性质：
+\begin{align}
+    \Phi_{k-1} \subset \Phi_k\\
+    y_k \perp \Phi_{k-1}
+\end{align}
 
 \subsubsection {由内积诱导的范数}
 \begin{definition}[诱导范数]
@@ -327,14 +343,240 @@ $C[a,b]$上三个范数的性质：
 \end{itemize}
 
 
-\subsection {特殊多项式}
-\subsubsection {Legendre 多项式}
+\subsection {正交多项式}
+\begin{definition}
+[正交多项式]
+    设$\{\phi_n(x)\}$是定义在区间$[a,b]$上的一组多项式，且每个多项式的次数为$n$，如果对任意$m \neq n$，都有
+    \begin{align}
+        \int_a^b \rho(x) \phi_m(x) \phi_n(x) \, dx = 0
+    \end{align}
+    则称$\{\phi_n(x)\}$为区间$[a,b]$上关于权函数$\rho(x)$的正交多项式。
+\end{definition}
+
+正交多项式的性质：
+\begin{itemize}%[]
+    \item $\deg \phi_i=i$
+    \item $(\phi_i,\,\phi_j)=0,\quad \forall i\neq j$
+    \item $\phi_n$为实系数多项式
+    \item $\phi_n$在开区间$(a,b)$内恰有n个实单根
+\end{itemize}
+
+\tofill[证明]{$\phi_n$在开区间$(a,b)$内恰有n个实单根的证明。证法：分别证明实根、单根、全在$(a,b)$内。3个命题均可用反证法。}
+
+
+\subsubsection {$\rho=1$：Legendre 多项式}
+产生方法：
+\begin{itemize}
+    \item 权函数$\rho(x)=1$
+    \item 区间$[-1,1]$
+\end{itemize}
+
+表达式：
+\begin{align}
+    P_n(x)=\frac{1}{2^nn!}\frac{\mathrm{d}^n}{\mathrm{d}x^n}[(x^2-1)^n]
+\end{align}
+
+性质：
+\begin{itemize}
+    \item 首项系数：
+    \begin{align}
+        k_n=\frac{(2n)!}{2^n(n!)^2}
+    \end{align}
+    \item 正交归一化：
+    \begin{align}
+        \int_{-1}^{1} P_n(x)P_m(x) \, dx = \frac{2}{2n+1} \delta_{mn}
+    \end{align}
+    \item 三项递推关系：
+    \begin{align}
+        (n+1)P_{n+1}(x)=(2n+1)xP_n(x)-nP_{n-1}(x)
+    \end{align}
+    \item 奇偶性：
+    \begin{align}
+        P_n(-x)=(-1)^n P_n(x)
+    \end{align}
+    \item 导数关系：
+    \begin{align}
+        \frac{\mathrm{d}}{\mathrm{d}x} P_n(x) = \frac{n}{x^2-1} [xP_n(x) - P_{n-1}(x)]
+    \end{align}
+    \item 前五项：
+    \begin{align}
+        &P_0(x)=1\\
+        &P_1(x)=x\\
+        &P_2(x)=\frac{1}{2}(3x^2-1)\\
+        &P_3(x)=\frac{1}{2}(5x^3-3x)\\
+        &P_4(x)=\frac{1}{8}(35x^4-30x^2+3)
+    \end{align}
+\end{itemize}
+
+
+
 \subsubsection {Chebyshev 多项式}
+产生方法：
+\begin{itemize}
+    \item 权函数$\rho(x)=\frac{1}{\sqrt{1-x^2}}$
+    \item 区间$[-1,1]$
+\end{itemize}
+
+表达式：
+\begin{align}
+    T_n(x)=\cos(n \arccos x)
+\end{align}
+
+性质：
+\begin{itemize}
+    \item 首项系数：$2^{n-1}$
+    \item 正交归一化：
+    \begin{align}
+        \int_{-1}^{1} \frac{T_n(x)T_m(x)}{\sqrt{1-x^2}} \, dx = \begin{cases}
+            \pi, & n=m=0\\
+            \frac{\pi}{2}, & n=m\neq 0\\
+            0, & n\neq m
+        \end{cases}
+    \end{align}
+    \item 三项递推关系：
+    \begin{align}
+        T_{n+1}=2xT_n-T_{n-1}
+    \end{align}
+    \item 奇偶性：
+    \begin{align}
+        T_n(-x)=(-1)^n T_n(x)
+    \end{align}
+    \item 前五项：
+    \begin{align}
+        &T_0(x)=1\\
+        &T_1(x)=x\\
+        &T_2(x)=2x^2-1\\
+        &T_3(x)=4x^3-3x\\
+        &T_4(x)=8x^4-8x^2+1
+    \end{align}
+    \item 零点：
+    \begin{align}
+        x_k=\cos\left(\frac{2k-1}{2n}\pi\right),\quad k=1,2,\ldots,n
+    \end{align}
+    \item 极值点：
+    \begin{align}
+        x_k=\cos\left(\frac{k\pi}{n}\right),\quad k=0,1,\ldots,n
+    \end{align}
+    \item 简单表达式：当$|x|\geq 1$时，
+    \begin{align}
+        T_n(x)=\frac{1}{2}\left[ \left( x + \sqrt{x^2-1} \right)^n + \left( x - \sqrt{x^2-1} \right)^n \right]
+    \end{align}
+\end{itemize}
+
+
+
 
 \subsection {矩阵空间}
+\tofill[性质]{矩阵空间的基本性质：线性空间、乘法运算、代数性质}
+
+
 \subsubsection {矩阵范数}
-\subsubsection {谱半径与范数关系}
+\begin{definition}[矩阵范数]
+    矩阵空间$\mathbb{C}^{n\times n}$上的范数$\|\cdot\|$称为矩阵范数，如果对任意的$A,B \in \mathbb{C}^{n\times n}$和$a \in \mathbb{C}$，满足以下性质：
+    \begin{enumerate}
+        \item 非负性与分离性：$\|A\| \geq 0$，且当且仅当$A=0$时，$\|A\|=0$
+        \item 齐次性：$\|aA\| = |a| \|A\|$
+        \item 三角不等式：$\|A+B\| \leq \|A\| + \|B\|$
+        \item 次乘性：$\|AB\| \leq \|A\| \cdot \|B\|$
+    \end{enumerate}
+\end{definition}
+
+Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与矩阵乘法相容。
+
+\begin{definition}[矩阵范数与向量范数的相容性]
+    设$\|\cdot\|_v$是向量空间$\mathbb{C}^n$上的一个范数，$\|\cdot\|_m$是矩阵空间$\mathbb{C}^{n\times n}$上的一个范数，如果对任意的$A \in \mathbb{C}^{n\times n}$和$x \in \mathbb{C}^n$，都有
+    \begin{align}
+        \|Ax\|_v \leq \|A\|_m \cdot \|x\|_v
+    \end{align}
+    则称矩阵范数$\|\cdot\|_m$与向量范数$\|\cdot\|_v$是相容的。
+\end{definition}
+
+矩阵范数的两种常见构造方法：
+\begin{itemize}
+    \item 直接构造：Frobenius范数
+    \begin{align}
+        \|A\|_F=\left( \sum_{i=1}^{n} \sum_{j=1}^{n} |a_{ij}|^2 \right)^{\frac{1}{2}}
+    \end{align}
+    Frobenius范数的性质：
+    \begin{itemize}
+        \item Frobenius范数与向量2-范数相容
+        \item $\|I\|_F=\sqrt{n}$
+    \end{itemize}
+    \item 向量范数诱导：算子范数
+    \begin{definition}
+    [算子范数]
+        设$\|\cdot\|_v$是向量空间$\mathbb{C}^n$上的一个范数，则可以定义矩阵空间$\mathbb{C}^{n\times n}$上的算子范数$\|\cdot\|_m$如下：
+        \begin{align}
+            \|A\|_m = \max_{x \neq 0} \frac{\|Ax\|_v}{\|x\|_v} = \max_{\|x\|_v=1} \|Ax\|_v
+        \end{align}
+        则称该范数为由向量范数$\|\cdot\|_v$诱导的算子范数。
+    \end{definition}
+\end{itemize}
+
+常用的几个算子范数：
+\begin{itemize}
+    \item 无穷范数：行和最大值
+    \begin{align}
+        \|A\|_{\infty} = \max_{1 \leq i \leq n} \sum_{j=1}^{n} |a_{ij}|
+    \end{align}
+    \item 1-范数：列和最大值
+    \begin{align}
+        \|A\|_{1} = \max_{1 \leq j \leq n} \sum_{i=1}^{n} |a_{ij}|
+    \end{align}
+    \item 2-范数（谱范数）：$A$的最大奇异值，即$A^HA$的最大特征值的平方根
+    \begin{align}
+        \|A\|_{2} = \sqrt{\lambda_{\max}(A^HA)}
+    \end{align}
+\end{itemize}
+
+
+\subsubsection {谱半径}
+\begin{definition}[谱半径]
+    谱半径定义为矩阵所有特征值模的最大值，即
+    \begin{align}
+        \rho(A) = \max_{1 \leq i \leq n} |\lambda_i|
+    \end{align}
+\end{definition}
+
+谱半径和矩阵范数的关系：
+\begin{itemize}
+    \item 矩阵范数下界：
+    \begin{theorem}
+        对任意$A\in\mathbb{C}^{n\times n}$，有
+        \begin{align}
+            \rho(A) \leq \|A\|
+        \end{align}
+    \end{theorem}
+    \item 无穷接近范数的存在性：
+    \begin{theorem}
+        对任意$A\in\mathbb{C}^{n\times n}$，存在一个矩阵范数$\|\cdot\|$，使得
+        \begin{align}
+            \rho(A) \leq \|A\| \leq \rho(A) + \varepsilon
+        \end{align}
+        其中，$\varepsilon$为任意给定的正常数。
+    \end{theorem}
+\end{itemize}
+
+
 \subsubsection {可逆矩阵相关定理}
+\begin{theorem}[扰动引理I]
+    给定$B\in\mathbb{C}^{n\times n}$。设$\|B\|<1$，则$I+B$可逆，且
+    \begin{align}
+        \|(I+B)^{-1}\| \leq \frac{1}{1-\|B\|}
+    \end{align}
+\end{theorem}
+
+\begin{theorem}
+    [扰动引理II]
+    设$A,\,C\in\mathbb{C}^{n\times n}$，且$A$可逆。若 
+    \begin{align}
+        \|C-A\| < \frac{1}{\|A^{-1}\|}
+    \end{align}
+    则$C$也可逆，且
+    \begin{align}
+        \|C^{-1}\| \leq \frac{\|A^{-1}\|}{1 - \|A^{-1}\| \cdot \|C-A\|}
+    \end{align}
+\end{theorem}
 
 
 
