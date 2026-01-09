@@ -579,6 +579,106 @@ Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与�
 \end{theorem}
 
 
+\chapter {函数逼近}
+\section {通用理论}
+\subsection {问题模型}
+\subsection {逼近准则}
+\subsubsection {最小二乘准则（L₂范数）}
+\subsubsection {一致逼近准则（L∞范数）}
+\subsection {核心定理}
+\section {具体逼近方法}
+\subsection {最优平方逼近}
+\subsubsection {线性最小二乘}
+\subsubsection {加权平方逼近}
+\subsubsection {正交多项式逼近}
+\subsection {最优一致逼近}
+
+
+\chapter {函数插值与重构}
+\section {通用理论}
+\subsection {问题模型}
+\subsection {插值空间}
+\subsection {误差分析与收敛性}
+\section {具体插值方法}
+\subsection {一维多项式插值}
+\subsubsection {Lagrange 插值}
+\paragraph {基函数构造}
+\paragraph {插值公式}
+\paragraph {余项}
+\subsubsection {Newton 插值}
+\paragraph {差商定义}
+\paragraph {插值公式}
+\subsubsection {Hermite 插值}
+\subsection {分段插值}
+\subsubsection {分段线性插值}
+\subsubsection {分段三次 Hermite 插值}
+\subsection {Fourier 插值}
+\subsubsection {三角多项式插值}
+\subsubsection {离散 Fourier 变换关联}
+
+
+
+\chapter {数值微积分}
+\section {数值积分}
+\subsection {通用理论}
+\subsubsection {积分问题模型}
+\subsubsection {求积公式核心}
+\subsubsection {代数精度}
+\subsubsection {稳定性}
+\subsection {具体求积方法}
+\subsubsection {Newton-Cotes 公式}
+\paragraph {梯形公式}
+\paragraph {Simpson 公式}
+\paragraph {3/8 - 规则}
+\subsubsection {复合求积方法}
+\paragraph {复合梯形公式}
+\paragraph {复合 Simpson 公式}
+\subsubsection {加速方法}
+\paragraph {Romberg 方法}
+\subsubsection {Gauss 型求积}
+\paragraph {Gauss 点与权系数}
+\paragraph {Gauss-Legendre 求积}
+\paragraph {Gauss-Chebyshev 求积}
+\subsubsection {特殊积分处理}
+\paragraph {奇异积分}
+\paragraph {振荡积分}
+\subsubsection {高维积分}
+\paragraph {蒙特卡洛方法}
+\section {数值微分}
+\subsection {基础方法}
+\subsubsection {向前差商}
+\subsubsection {向后差商}
+\subsubsection {中心差商}
+\subsection {高精度方法}
+\subsubsection {插值型数值微分}
+\subsubsection {Richardson 外推加速}
+
+
+\chapter {非线性方程求根}
+
+
+\section {通用理论}
+\subsection {问题模型}
+\subsection {迭代法基础}
+\subsection {收敛性分析}
+\subsubsection {收敛阶定义}
+\subsubsection {整体收敛性（压缩映像原理）}
+\subsubsection {局部收敛性判定}
+\subsection {收敛效率}
+\section {具体方法}
+\subsection {单步法}
+\subsubsection {牛顿法}
+\paragraph {迭代公式}
+\paragraph {收敛性分析}
+\paragraph {重根处理}
+\subsubsection {不动点迭代}
+\subsection {多步法}
+\subsubsection {割线法}
+\subsection {其他方法}
+\subsubsection {Steffensen 方法}
+\subsubsection {Broyden 秩 1 方法}
+
+
 
 
 \chapter {常微分方程初值问题数值解法}
@@ -615,97 +715,7 @@ Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与�
 
 
 
-\chapter {非线性方程求根}
 
-
-\section {通用理论}
-\subsection {问题模型}
-\subsection {迭代法基础}
-\subsection {收敛性分析}
-\subsubsection {收敛阶定义}
-\subsubsection {整体收敛性（压缩映像原理）}
-\subsubsection {局部收敛性判定}
-\subsection {收敛效率}
-\section {具体方法}
-\subsection {单步法}
-\subsubsection {牛顿法}
-\paragraph {迭代公式}
-\paragraph {收敛性分析}
-\paragraph {重根处理}
-\subsubsection {不动点迭代}
-\subsection {多步法}
-\subsubsection {割线法}
-\subsection {其他方法}
-\subsubsection {Steffensen 方法}
-\subsubsection {Broyden 秩 1 方法}
-\chapter {函数逼近}
-\section {通用理论}
-\subsection {问题模型}
-\subsection {逼近准则}
-\subsubsection {最小二乘准则（L₂范数）}
-\subsubsection {一致逼近准则（L∞范数）}
-\subsection {核心定理}
-\section {具体逼近方法}
-\subsection {最优平方逼近}
-\subsubsection {线性最小二乘}
-\subsubsection {加权平方逼近}
-\subsubsection {正交多项式逼近}
-\subsection {最优一致逼近}
-\chapter {函数插值与重构}
-\section {通用理论}
-\subsection {问题模型}
-\subsection {插值空间}
-\subsection {误差分析与收敛性}
-\section {具体插值方法}
-\subsection {一维多项式插值}
-\subsubsection {Lagrange 插值}
-\paragraph {基函数构造}
-\paragraph {插值公式}
-\paragraph {余项}
-\subsubsection {Newton 插值}
-\paragraph {差商定义}
-\paragraph {插值公式}
-\subsubsection {Hermite 插值}
-\subsection {分段插值}
-\subsubsection {分段线性插值}
-\subsubsection {分段三次 Hermite 插值}
-\subsection {Fourier 插值}
-\subsubsection {三角多项式插值}
-\subsubsection {离散 Fourier 变换关联}
-\chapter {数值微积分}
-\section {数值积分}
-\subsection {通用理论}
-\subsubsection {积分问题模型}
-\subsubsection {求积公式核心}
-\subsubsection {代数精度}
-\subsubsection {稳定性}
-\subsection {具体求积方法}
-\subsubsection {Newton-Cotes 公式}
-\paragraph {梯形公式}
-\paragraph {Simpson 公式}
-\paragraph {3/8 - 规则}
-\subsubsection {复合求积方法}
-\paragraph {复合梯形公式}
-\paragraph {复合 Simpson 公式}
-\subsubsection {加速方法}
-\paragraph {Romberg 方法}
-\subsubsection {Gauss 型求积}
-\paragraph {Gauss 点与权系数}
-\paragraph {Gauss-Legendre 求积}
-\paragraph {Gauss-Chebyshev 求积}
-\subsubsection {特殊积分处理}
-\paragraph {奇异积分}
-\paragraph {振荡积分}
-\subsubsection {高维积分}
-\paragraph {蒙特卡洛方法}
-\section {数值微分}
-\subsection {基础方法}
-\subsubsection {向前差商}
-\subsubsection {向后差商}
-\subsubsection {中心差商}
-\subsection {高精度方法}
-\subsubsection {插值型数值微分}
-\subsubsection {Richardson 外推加速}
 \chapter {线性代数方程组数值解法}
 \section {直接解法}
 \subsection {通用理论}
