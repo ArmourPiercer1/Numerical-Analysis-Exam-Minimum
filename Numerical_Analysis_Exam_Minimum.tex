@@ -41,6 +41,9 @@
 \usepackage{multirow}
 \usepackage{array}
 
+% 特殊形状支持
+\usepackage{xcolor}
+
 % % 副标题
 % \usepackage{titling}
 
@@ -579,23 +582,236 @@ Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与�
 \end{theorem}
 
 
+\begin{theorem}
+    [扰动定理II]
+    设$A,\,\delta A \in\mathbb{C}^{n\times n}$，且$A$可逆。若$\|A^{-1}\delta A\| < 1$，则$A + \delta A$也可逆，且
+    \begin{align}
+        \|(A + \delta A)^{-1}\| \leq \frac{\|A^{-1}\|}{1 - \|A^{-1}\| \cdot \|\delta A\|}
+    \end{align}
+\end{theorem}
 
 
 \chapter {函数插值与重构}
 \section {通用理论}
 \subsection {问题模型}
+\tofill[数学描述]{采样泛函视角下的插值问题数学描述}
 \subsection {插值空间}
+常用的插值空间：多项式函数空间、样条函数空间、三角多项式函数空间
 \subsection {误差分析与收敛性}
+
 \section {具体插值方法}
 \subsection {一维多项式插值}
+问题：给定插值数据（采样数据）$(x_\alpha, f_\alpha)$，$\alpha\in I$，确定多项式$P(x)\in P_n$，
+$n=|I|-1$，满足插值条件
+\begin{align}
+    x_\alpha(P)=P(x_\alpha)=f_\alpha, \quad \alpha\in I
+\end{align}
+
+\begin{theorem}
+    [多项式插值基本定理]
+
+    给定$n+1$个插值条件
+    \begin{align}
+        (x_\alpha,\,f_\alpha),\quad \alpha\in I, \quad x_\alpha\neq x_\beta \text{ for }\alpha\neq\beta
+    \end{align}
+    则存在唯一的插值多项式$P\in P_n$满足插值条件。
+\end{theorem}
+
+Note：若$x_\alpha$取之于复平面，上述定理依然成立；且上述定理与采样节点的排序无关。 
+
 \subsubsection {Lagrange 插值}
 \paragraph {基函数构造}
+\begin{definition}
+    [Lagrange插值基函数]
+    定义
+    \begin{align}
+        L_\alpha(x)=L_{\alpha;I}(x)=\prod_{\substack{\beta\in I\\ \beta\neq \alpha}} \frac{x - x_\beta}{x_\alpha - x_\beta}, \quad \alpha\in I
+    \end{align}
+    称为插值基函数。
+\end{definition}
+
+若给定3个插值条件$(x_0,f_0)$，$(x_1,f_1)$，$(x_2,f_2)$，则对应的插值基函数为
+\begin{align}
+    L_0(x) &= \frac{(x - x_1)(x - x_2)}{(x_0 - x_1)(x_0 - x_2)}\\
+    L_1(x) &= \frac{(x - x_0)(x - x_2)}{(x_1 - x_0)(x_1 - x_2)}\\
+    L_2(x) &= \frac{(x - x_0)(x - x_1)}{(x_2 - x_0)(x_2 - x_1)}
+\end{align}
+
+插值基函数天然满足性质：
+\begin{align}
+    x_\beta(L_\alpha)=L_\alpha(x_\beta)=\delta_{\alpha\beta}
+\end{align}
+
 \paragraph {插值公式}
+在计算出插值基函数的基础上，插值多项式可写为：
+\begin{align}
+    P(x)=\sum_{\alpha\in I} f_\alpha L_\alpha(x)
+\end{align}
+
 \paragraph {余项}
-\subsubsection {Newton 插值}
-\paragraph {差商定义}
+
+
+
+
+
+\paragraph {均差定义}
+\begin{definition}
+    [均差的递推公式]
+    设$f(x)$在区间$[a,b]$上有定义，且给定插值节点$x_0,x_1,\ldots,x_n$，则定义如下均差：
+    \begin{align}
+        f[x_i] &= f(x_i)\\
+        f[x_i,x_{i+1},\ldots,x_{i+k}] &= \frac{f[x_{i+1},\ldots,x_{i+k}] - f[x_i,\ldots,x_{i+k-1}]}{x_{i+k} - x_i}
+    \end{align}
+    其中，$i=0,1,\ldots,n-k$，$k=1,2,\ldots,n$。
+\end{definition}
+
+均差的性质：
+\begin{itemize}
+    \item $f_{i_0i_1...i_k}$与节点$x_{i_0},x_{i_1},\ldots,x_{i_k}$的顺序无关
+    \item 设f是N次多项式，若$k>N$，则对任意节点$x_{i_0},x_{i_1},\ldots,x_{i_k}$，都有
+    \begin{align}
+        f_{i_0i_1\ldots i_k} = 0
+    \end{align}
+\end{itemize}
+
+
 \paragraph {插值公式}
+\begin{align}
+    P_{i_0i_1...i_k}(x) &= f_{i_0} + f_{i_0i_1}(x - x_{i_0}) + f_{i_0i_1i_2}(x - x_{i_0})(x - x_{i_1}) + \ldots \nonumber\\
+    &+ f_{i_0i_1\ldots i_k}(x - x_{i_0})(x - x_{i_1})\cdots(x - x_{i_{k-1}})
+\end{align}
+
+
+
+
+
+
+\paragraph{Newton插值多项式的列表计算}
+
+以给定4个节点时$x_0,\,x_1,\,x_2,\,x_3$的插值问题为例。可以按照如下表格从左向右逐列填写计算均差：
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|cccc|}
+\hline
+$x_i$ & 0阶均差 & 1阶均差 & 2阶均差 & 3阶均差 \\
+\hline
+$x_0$ & \fcolorbox{red}{white}{$f(x_0)$} & & & \\
+& & \fcolorbox{red}{white}{$f[x_0,x_1]=\dfrac{f(x_1)-f(x_0)}{x_1 - x_0}$} & & \\
+$x_1$ & $f(x_1)$ & & \fcolorbox{red}{white}{$f[x_0,x_1,x_2]=\dfrac{f[x_1,x_2]-f[x_0,x_1]}{x_2 - x_0}$} & \\
+& & $f[x_1,x_2]=\dfrac{f(x_2)-f(x_1)}{x_2 - x_1}$ & & \fcolorbox{red}{white}{$f[x_0,x_1,x_2,x_3]=...$} \\
+$x_2$ & $f(x_2)$ & & $f[x_1,x_2,x_3]=\dfrac{f[x_2,x_3]-f[x_1,x_2]}{x_3 - x_1}$ & \\
+& & $f[x_2,x_3]=\dfrac{f(x_3)-f(x_2)}{x_3 - x_2}$ & & \\
+$x_3$ & $f(x_3)$ & & & \\
+\hline
+\end{tabular}
+\end{center}
+之后用插值表最上方一行的均差值逐个组装Newton插值多项式。
+
+
 \subsubsection {Hermite 插值}
+\paragraph{Hermite插值问题}
+给定$\xi_i$, $f_i^{(k)}$, $i=0,1,...,m$,  $k=0,1,...,n_i-1$, 其中$\xi_i$两两不同，且 
+\begin{align}
+    \xi_0<\xi_1<...<\xi_m 
+\end{align}
+希望确定一个次数为n的多项式函数
+\begin{align}
+    P_n(x),\quad n=\sum_{i=0}^{m} n_i - 1
+\end{align}
+满足插值条件
+\begin{align}
+    P^{(k)}(\xi_i)=f_i^{(k)}, \quad i=0,1,...,m \quad k=0,1,...,n_i-1
+\end{align}
+
+
+\paragraph{拓展均差}
+\begin{definition}
+    [拓展均差]
+    设$f\in C^n(I(x_0,\,x_1,\,...,\,x_n))$，定义
+    \begin{align*}
+        f[x_0,\,x_1,\,x_n]=\int_0^{t_0} \mathrm{d}t_1 &\int_0^{t_1}\mathrm{d}t_2 \cdots \int_0^{t_{n-1}} \mathrm{d}t_n \\\\
+        &f^{(n)}(t_n[x_n-x_{n-1}]+t_{n-1}[x_{n-1}-x_{n-2}]+...+t_1[x_1-x_0]+t_0x_0)
+    \end{align*}
+    式中，$n\geq 1$且$t_0=1$。
+\end{definition}
+Note: 这一积分实际上表示了一个单位标准n-维标准型上的积分，或者说积分区域始终是一个插值节点构造的凸组合。
+这隐含了一个要求是$1=t_0\geq t_1 \geq t_2 \geq ... \geq t_n \geq 0$。
+
+拓展均差的性质：
+\begin{itemize}
+    \item 若$x_i$两两不一，则拓展均差等价于普通均差
+    \begin{align}
+        f[x_0,\,x_1,\,x_n]=f_{x_0,x_1,...,x_n}
+    \end{align}
+    且具有相同的递推关系：
+    \begin{align}
+        f[x_0,\,x_1,\,...,\,x_n]=\frac{f[x_0,\,x_1,\,...,\,x_{n-2},\,x_n]-f[x_0,\,x_1,\,...,\,x_{n-1}]}{x_n - x_0}
+    \end{align}
+    \item 极限性质：若$f$足够光滑，则
+    \begin{align}
+        \lim_{\epsilon_i\rightarrow 0}f[x_0+\epsilon_0,\,x_1+\epsilon_1,\,...,\,x_n+\epsilon_n]=f[x_0,\,x_1,\,...,\,x_n]
+    \end{align}
+    \item 导数与重节点：可从极限性质导出
+    \begin{align}
+        \frac{\mathrm{d}}{\mathrm{d}x}f[x_0,x_1,...,x_n,x]=f[x_0,x_1,...,x_n,x,x]
+    \end{align}
+    \item 介值定理：若$f\in C^n[a,b]$，$x_0,\,x_1,\,...,\,x_n\in [a,b]$，则存在$\xi\in I(x_0,\,x_1,\,...,\,x_n)$，使得
+    \begin{align}
+        f[x_0,\,x_1,\,...,\,x_n]=\frac{f^{(n)}(\xi)}{n!}
+    \end{align}
+    特别地，
+    \begin{align}
+         f[\underbrace{x, x, \dots, x}_{n+1\text{个}}]=\frac{f^{(n)}(x)}{n!}
+    \end{align}
+\end{itemize}
+
+\paragraph{Hermite插值多项式}
+Hermite插值多项式可表示为
+\begin{align}
+    P(x)=f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,x_1,...,x_n](x-x_0)(x-x_1)...(x-x_{n-1})
+\end{align}
+其中，$x_0,\,...,\,x_n$为下面序列的任意置换：
+\begin{align}
+    \underbrace{\xi_0,\,\xi_0,\,...,\,\xi_0}_{n_0\text{个}},\,\underbrace{\xi_1,\,\xi_1,\,...,\,\xi_1}_{n_1\text{个}},\, ...,\,\underbrace{\xi_m,\,\xi_m,\,...,\,\xi_m}_{n_m\text{个}}
+\end{align}
+
+\paragraph{列表法求Hermite插值多项式}
+假设给定2个节点$\xi_0,\,\xi_1$，对应的插值条件分别为$f_0,\,f_0',\,f_0''$，$f_1$，则可按下表计算均差：
+
+
+Hermite 插值均差表（节点序列：$\xi_0, \xi_0, \xi_0, \xi_1$）：
+\[
+\begin{array}{c|c|c|c|c}
+\text{节点} & \text{0 阶均差} & \text{1 阶均差} & \text{2 阶均差} & \text{3 阶均差} \\
+\hline
+\xi_0 & f[\xi_0] = f_0 & & & \\
+\xi_0 & f[\xi_0] = f_0 & f[\xi_0,\xi_0] = f_0' & & \\
+\xi_0 & f[\xi_0] = f_0 & f[\xi_0,\xi_0] = f_0' & f[\xi_0,\xi_0,\xi_0] = \dfrac{f_0''}{2} & \\
+\xi_1 & f[\xi_1] = f_1 & f[\xi_0,\xi_1] = \dfrac{f_1 - f_0}{\xi_1 - \xi_0} & 
+f[\xi_0,\xi_0,\xi_1] = \dfrac{f[\xi_0,\xi_1] - f[\xi_0,\xi_0]}{\xi_1 - \xi_0} &
+f[\xi_0,\xi_0,\xi_0,\xi_1] = \dfrac{f[\xi_0,\xi_0,\xi_1] - f[\xi_0,\xi_0,\xi_0]}{\xi_1 - \xi_0}
+\end{array}
+\]
+
+对应的插值多项式为：
+\[
+\begin{aligned}
+P(x) &= f[\xi_0] + f[\xi_0,\xi_0](x - \xi_0) + f[\xi_0,\xi_0,\xi_0](x - \xi_0)^2 + f[\xi_0,\xi_0,\xi_0,\xi_1](x - \xi_0)^3 \\
+&= f_0 + f_0'(x - \xi_0) + \frac{f_0''}{2}(x - \xi_0)^2 \\
+&\quad + \frac{2(f_1 - f_0 - f_0'(\xi_1 - \xi_0)) - f_0''(\xi_1 - \xi_0)^2}{2(\xi_1 - \xi_0)^3}(x - \xi_0)^3
+\end{aligned} 
+\]
+
+
+\subsubsection{Lagrange插值和Hermite插值的收敛分析}
+\paragraph{插值余项}
+若f在区间$[a,b]$上具有$n+1$阶连续导数，则对任意$x\in[a,b]$，存在$\xi\in I(x, x_0, x_1, \ldots, x_n)$，使得
+\begin{align}
+    R(x) = f(x) - P(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{i=0}^{n} (x - x_i)= \frac{f^{(n+1)}(\xi)}{(n+1)!} \omega_{01...n}(x)
+\end{align}
+
+
 \subsection {分段插值}
 \subsubsection {分段线性插值}
 \subsubsection {分段三次 Hermite 插值}
