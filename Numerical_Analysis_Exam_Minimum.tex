@@ -1,0 +1,511 @@
+\documentclass{book}
+
+% 中文字体支持
+\usepackage{ctex}
+\usepackage{xeCJK}
+
+% 数学公式支持
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm} % 粗体数学符号
+
+% 图表支持
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{float}
+
+% 页面布局
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=3cm}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% 目录和超链接
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=red
+}
+
+% 代码支持
+\usepackage{listings}
+\usepackage{xcolor}
+
+% 表格支持
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+
+% % 副标题
+% \usepackage{titling}
+
+% 定理环境
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例题}
+\newtheorem{exercise}[theorem]{练习}
+
+% 待填写内容标记
+\NewDocumentCommand{\tofill}{O{} m}{
+    \textbf{\textit{\textcolor{red}{待填写：\IfValueT{#1}{(#1)}#2}}}
+}
+
+% 页眉页脚设置
+\setlength{\headheight}{14.5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{数值分析课程总结}
+\fancyhead[R]{\today}
+\fancyfoot[C]{\thepage/\pageref{LastPage}}
+
+% 代码样式设置
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    breaklines=true
+}
+
+% 文档信息
+\title{Numerical Analysis \\ Exam Minimum}
+\author{Astral Projection}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter {数学基础知识}
+
+\section {核心概念与理论}
+
+\subsection {线性空间}
+\subsubsection {定义与性质}
+
+
+\begin{definition}[线性空间]
+    设S是一个集合，P是一个数域($\mathbb{R}$或$\mathbb{C}$). 定义两种映射关系：
+    \begin{itemize}
+        \item 向量加法：$+: S \times S \to S$
+        \item 数乘：$\cdot : P \times S \to S$
+    \end{itemize}
+    如果对任意的$u,v,w \in S$和$a,b \in P$，满足以下八条公理，则称(S,P)为一个线性空间（向量空间）：
+    \begin{enumerate}
+        \item 加法交换律：$u + v = v + u$
+        \item 加法结合律：$(u + v) + w = u + (v + w)$
+        \item 存在加法单位元：存在零向量$0 \in S$，使得对任意$v \in S$，有$v + 0 = v$
+        \item 存在加法逆元：对任意$v \in S$，存在$-v \in S$，使得$v + (-v) = 0$
+        \item 数乘结合律：$a(bv) = (ab)v$
+        \item 数乘分配律1：$a(u + v) = au + av$
+        \item 数乘分配律2：$(a + b)v = av + bv$
+        \item 数乘单位元：$1v = v$
+        \end{enumerate}
+        则称(S,P)构成一个线性空间。
+\end{definition}
+此外，如果对于给定空间的运算法则和数域是不言自明的，则通常简写为S是一个线性空间。
+如我们说$\mathbb{R}^n$是一个线性空间，通常指$(\mathbb{R}^n,\mathbb{R})$是一个线性空间或$(\mathbb{R}^n,\mathbb{C})$是一个线性空间，具体取决于数域的选择。
+
+\subsubsection {线性无关与相关}
+\tofill[定义]{线性无关与线性相关}
+
+\subsubsection {基、框架与维数}
+
+\tofill[定义]{基、框架与维数}
+
+性质：
+\begin{itemize}
+    \item 空间的维度是一个内蕴量，与基的选择无关
+    \item 多项式空间$P_N$中，$\{1,x,x^2,\ldots,x^N\}$构成其一组基，维数为$\dim P_N=N+1$
+    \item 连续函数空间$C[a,b]$中，$\forall N$，$\{1,x,x^2,\ldots,x^N\}$是线性无关的，但不能构成其基，因其维数为无穷大
+\end{itemize}
+
+\subsection {度量与赋范空间}
+\subsubsection {距离空间}
+\begin{definition}[距离空间]
+    设M是一个集合，$d: M \times M \to \mathbb{R}$是一个映射，如果对任意的$x,y,z \in M$，满足以下三条公理，则称(M,d)为一个距离空间：
+    \begin{enumerate}
+        \item 非负性与分离性：$d(x,y) \geq 0$，且当且仅当$x=y$时，$d(x,y)=0$
+        \item 对称性：$d(x,y) = d(y,x)$
+        \item 三角不等式：$d(x,z) \leq d(x,y) + d(y,z)$
+    \end{enumerate}
+    则称(M,d)构成一个距离空间。
+\end{definition}
+
+\subsubsection{距离空间的完备性}
+
+\tofill[定义]{完备性}
+
+$\mathbb{R}$是完备的，且任意有限维赋范空间都是完备的。
+
+\paragraph{构造方法：距离空间的完备化}
+设$(M,d)$是一个距离空间，可以按照如下过程构造其完备化空间：
+\begin{enumerate}
+    \item 构造对偶的柯西列空间
+    \begin{align}
+        \tilde{M}={\{(x_n)\,|\,x_n \in M,\quad (x_n) \text{为柯西列}\}}
+    \end{align}
+    \item 在柯西列空间$\tilde{M}$中定义等价关系
+    \begin{align}
+        \tilde{x}\sim\tilde{y}\leftrightarrow \lim_{n\to\infty} d(x_n,y_n)=0
+    \end{align}
+    即这两个柯西列按照角标顺序，交叉放在一起，还是柯西列。
+    \item 构造商空间：
+    \begin{align}
+        \hat{M}=\tilde{M}/\sim=\{ [\tilde{x}] \}
+    \end{align}
+    式中，$[\tilde{x}]$表示柯西列$\tilde{x}$的等价类，即$[\tilde{x}]$是一个集合，
+    集合中的所有元素在等价关系$\sim$下都是等价的。
+    \item 在商空间$\hat{M}$中定义距离
+    \begin{align}
+        \hat{d}([\tilde{x}],[\tilde{y}])=\lim_{n\to\infty} d(x_n,y_n)
+    \end{align}
+    \item 则$(\hat{M},\hat{d})$即为距离空间$(M,d)$的完备化空间。
+\end{enumerate}
+
+嵌入映射：可以在原空间$M$与完备化空间$\hat{M}$之间定义一个单射$i$：
+\begin{align}
+    i: M \to \hat{M},\quad i(x)=[(x,x,x,\ldots)]
+\end{align}
+该映射将原空间中的每个点$x$映射为完备化空间中由常值序列$(x,x,x,\ldots)$所构成的等价类，
+且\textbf{映射前后任意两元素的距离不变}
+
+
+
+
+
+\subsubsection {赋范空间与 Banach 空间}
+\tofill[定义]{赋范空间} 
+
+完备的赋范空间称为Banach空间，或者B空间。
+
+
+\subsubsection {等价范数}
+\begin{definition}[范数的等价性]
+    设$V$是一个线性空间，$\|\cdot\|_1$和$\|\cdot\|_2$是$V$上的两个范数，如果存在正常数$c$和$C$，使得对任意$v \in V$，都有
+    \begin{align}
+        c\|v\|_1 \leq \|v\|_2 \leq C\|v\|_1
+    \end{align}
+    则称这两个范数是等价的。
+
+    若存在正数C，使得对任意$v \in V$，都有
+    \begin{align}
+        \|v\|_2 \leq C\|v\|_1
+    \end{align}
+    则称范数$\|\cdot\|_1$强于$\|\cdot\|_2$。
+\end{definition}
+
+性质：
+\begin{itemize}
+    \item 在有限维线性空间上，任意两个范数都是等价的
+    \item 在无限维线性空间上，范数不一定是等价的
+    \item 若一个点列在较强的范数下是Cauchy列，则在较弱的范数下也是Cauchy列；反之不必然。
+\end{itemize}
+
+\subsubsection{常用的范数}
+\paragraph{$\mathbb{R}^n$上的范数} 记$x=(x_1,x_2,\ldots,x_n)^T \in \mathbb{R}^n$，则常用的范数有：
+\begin{itemize}
+    \item 无穷范数：所有元素的最大值
+    \begin{align}
+        \|x\|_{\infty}=\max_{1 \leq i \leq n} |x_i|
+    \end{align}
+    \item 1-范数：所有元素的绝对值之和
+    \begin{align}
+        \|x\|_{1}=\sum_{i=1}^{n} |x_i|
+    \end{align}
+    \item 2-范数：欧几里得范数，即所有元素的平方和的平方根
+    \begin{align}
+        \|x\|_{2}=\left(\sum_{i=1}^{n} |x_i|^2\right)^{\frac{1}{2}}
+    \end{align}
+\end{itemize}
+
+\paragraph{$C[a,b]$（有界闭区间上连续函数空间）上的范数}
+\begin{itemize}
+    \item 无穷范数：函数在区间上的最大绝对值
+    \begin{align}
+        \|f\|_{\infty}=\max_{a \leq x \leq b} |f(x)|
+    \end{align}
+    \item 1-范数：函数在区间上的绝对值积分
+    \begin{align}
+        \|f\|_{1}=\int_{a}^{b} |f(x)| \, dx
+    \end{align}
+    \item 2-范数：函数在区间上的平方积分的平方根
+    \begin{align}
+        \|f\|_{2}=\left(\int_{a}^{b} |f(x)|^2 \, dx\right)^{\frac{1}{2}}
+    \end{align}
+\end{itemize}
+
+$C[a,b]$上三个范数的性质：
+
+\begin{itemize}
+    \item 任意两个范数不等价
+    \item 无穷范数强于2范数，2范数强于1范数
+    \item 只有无穷范数对应的赋范空间是完备的
+    \item 1-范数对应的完备化空间为$L^1(a,b)$，2-范数对应的完备化空间为$L^2(a,b)$ 
+        \footnote{$L^1(a,b)$为(a,b)上的可积函数空间，$L^2(a,b)$为(a,b)上的平方可积函数空间。}
+\end{itemize}
+
+\subsection {内积空间}
+\subsubsection {内积定义与性质}
+\begin{definition}[内积]
+    设$(S,P)$是一个线性空间，如果对任意的$u,v,w \in S$和$a,b \in P$，存在一个映射$S\times S\rightarrow P$，满足 
+    \begin{enumerate}
+        \item 共轭对称性：$\langle u,v \rangle = \overline{\langle v,u \rangle}$
+        \item 线性性：$\langle au + bv,w \rangle = a\langle u,w \rangle + b\langle v,w \rangle$
+        \item 正定性：$\langle v,v \rangle \geq 0$，且当且仅当$v=0$时，$\langle v,v \rangle = 0$
+    \end{enumerate}
+    则称该映射为内积，$(S,P)$构成一个内积空间。
+\end{definition}
+
+若$\langle x,y \rangle =0$，则称$x$与$y$正交。
+
+几个常用空间上的内积：
+\begin{itemize}
+    \item $\mathbb{R}^n$或$\mathbb{C}^n$上的内积
+    \begin{align}
+        \langle x,y \rangle = \sum_{i=1}^{n} x_i \overline{y_i}
+    \end{align}
+    \item $C[a,b]$（有界闭区间上连续函数空间）上的内积
+    \begin{align}
+        \langle f,g \rangle = \int_{a}^{b} f(x) \overline{g(x)} \, dx
+    \end{align}
+    \item $C[a,b]$上的带权内积：
+    \begin{align}
+        (f,g)=\int_a^b \rho(x) f(x) \overline{g(x)} \, dx
+    \end{align}
+    其中，权函数$\rho(x)$需要满足条件：
+    \begin{itemize}
+        \item $\rho(x)\in C[a,b]$
+        \item $\rho(x)$几乎处处为正
+        \item $\int_a^b \rho(x) \, dx < +\infty$
+        \item $\forall q(x) \in P_n$，$\int_a^b \rho(x) |q(x)|\mathrm{d}x < \infty$
+    \end{itemize}
+    带权内积所研究的空间称为加权内积空间：
+    \begin{align}
+        L^2_{\rho}(a,b) = \{ f(x) \,|\, \int_a^b \rho(x) |f(x)|^2 \, dx < +\infty \}
+    \end{align}
+\end{itemize}
+
+
+\subsubsection {正交性与 Schmidt 正交化}
+
+
+\subsubsection {由内积诱导的范数}
+\begin{definition}[诱导范数]
+    设$(S,P)$是一个内积空间，则可以定义范数$\|\cdot\|$如下：
+    \begin{align}
+        \|v\|=\sqrt{\langle v,v \rangle}
+    \end{align}
+    则称该范数为由内积诱导的范数。
+\end{definition}
+
+\begin{itemize}
+    \item 任何内积均能诱导对应的范数
+    \item 当且仅当范数满足平行四边形法则时
+    \begin{align}
+        \|f+g\|^2 + \|f-g\|^2 = 2\|f\|^2 + 2\|g\|^2
+    \end{align}
+    范数可以诱导内积：
+    \begin{align}
+        (x,y)=\frac{1}{4}(\|x+y\|^2 - \|x-y\|^2 + i\|x+iy\|^2 - i\|x-iy\|^2)
+    \end{align}
+\end{itemize}
+
+
+\subsection {特殊多项式}
+\subsubsection {Legendre 多项式}
+\subsubsection {Chebyshev 多项式}
+
+\subsection {矩阵空间}
+\subsubsection {矩阵范数}
+\subsubsection {谱半径与范数关系}
+\subsubsection {可逆矩阵相关定理}
+
+
+
+
+\chapter {常微分方程初值问题数值解法}
+
+\section {通用理论}
+
+\subsection {问题模型}
+\subsection {数值解法核心}
+\subsection {基本概念}
+\subsubsection {局部截断误差与整体截断误差}
+\subsubsection {收敛性与收敛阶}
+\subsubsection {稳定性与相容性}
+\subsection {收敛性与稳定性判定}
+
+
+\section {具体方法}
+
+\subsection {单步法}
+\subsubsection {Euler 方法}
+\paragraph {向前欧拉}
+\paragraph {向后欧拉}
+\subsubsection {改进欧拉方法}
+\subsubsection {龙格 - 库塔（RK）方法}
+\paragraph {2 阶 RK 方法}
+\paragraph {4 阶 RK 方法}
+
+\subsection {多步法}
+\subsubsection {Adams 方法}
+\paragraph {显式 Adams 公式}
+\paragraph {隐式 Adams 公式}
+\subsubsection {Nyström 方法}
+\subsubsection {Milne-Simpson 方法}
+
+
+
+
+\chapter {非线性方程求根}
+
+
+\section {通用理论}
+\subsection {问题模型}
+\subsection {迭代法基础}
+\subsection {收敛性分析}
+\subsubsection {收敛阶定义}
+\subsubsection {整体收敛性（压缩映像原理）}
+\subsubsection {局部收敛性判定}
+\subsection {收敛效率}
+\section {具体方法}
+\subsection {单步法}
+\subsubsection {牛顿法}
+\paragraph {迭代公式}
+\paragraph {收敛性分析}
+\paragraph {重根处理}
+\subsubsection {不动点迭代}
+\subsection {多步法}
+\subsubsection {割线法}
+\subsection {其他方法}
+\subsubsection {Steffensen 方法}
+\subsubsection {Broyden 秩 1 方法}
+\chapter {函数逼近}
+\section {通用理论}
+\subsection {问题模型}
+\subsection {逼近准则}
+\subsubsection {最小二乘准则（L₂范数）}
+\subsubsection {一致逼近准则（L∞范数）}
+\subsection {核心定理}
+\section {具体逼近方法}
+\subsection {最优平方逼近}
+\subsubsection {线性最小二乘}
+\subsubsection {加权平方逼近}
+\subsubsection {正交多项式逼近}
+\subsection {最优一致逼近}
+\chapter {函数插值与重构}
+\section {通用理论}
+\subsection {问题模型}
+\subsection {插值空间}
+\subsection {误差分析与收敛性}
+\section {具体插值方法}
+\subsection {一维多项式插值}
+\subsubsection {Lagrange 插值}
+\paragraph {基函数构造}
+\paragraph {插值公式}
+\paragraph {余项}
+\subsubsection {Newton 插值}
+\paragraph {差商定义}
+\paragraph {插值公式}
+\subsubsection {Hermite 插值}
+\subsection {分段插值}
+\subsubsection {分段线性插值}
+\subsubsection {分段三次 Hermite 插值}
+\subsection {Fourier 插值}
+\subsubsection {三角多项式插值}
+\subsubsection {离散 Fourier 变换关联}
+\chapter {数值微积分}
+\section {数值积分}
+\subsection {通用理论}
+\subsubsection {积分问题模型}
+\subsubsection {求积公式核心}
+\subsubsection {代数精度}
+\subsubsection {稳定性}
+\subsection {具体求积方法}
+\subsubsection {Newton-Cotes 公式}
+\paragraph {梯形公式}
+\paragraph {Simpson 公式}
+\paragraph {3/8 - 规则}
+\subsubsection {复合求积方法}
+\paragraph {复合梯形公式}
+\paragraph {复合 Simpson 公式}
+\subsubsection {加速方法}
+\paragraph {Romberg 方法}
+\subsubsection {Gauss 型求积}
+\paragraph {Gauss 点与权系数}
+\paragraph {Gauss-Legendre 求积}
+\paragraph {Gauss-Chebyshev 求积}
+\subsubsection {特殊积分处理}
+\paragraph {奇异积分}
+\paragraph {振荡积分}
+\subsubsection {高维积分}
+\paragraph {蒙特卡洛方法}
+\section {数值微分}
+\subsection {基础方法}
+\subsubsection {向前差商}
+\subsubsection {向后差商}
+\subsubsection {中心差商}
+\subsection {高精度方法}
+\subsubsection {插值型数值微分}
+\subsubsection {Richardson 外推加速}
+\chapter {线性代数方程组数值解法}
+\section {直接解法}
+\subsection {通用理论}
+\subsubsection {问题模型}
+\subsubsection {残差与误差分析}
+\subsubsection {数值稳定性与条件数}
+\subsection {具体方法}
+\subsubsection {Gauss 消元法}
+\paragraph {基本步骤}
+\paragraph {主元素选取}
+\subsubsection {LU 分解}
+\subsubsection {特殊方程组解法}
+\paragraph {Thomas 算法（三对角方程组）}
+\paragraph {Toeplitz 矩阵快速解法}
+\section {定常线性迭代解法}
+\subsection {通用理论}
+\subsubsection {迭代格式构造}
+\subsubsection {收敛性判定}
+\subsubsection {收敛速度}
+\subsection {具体迭代法}
+\subsubsection {Jacobi 迭代}
+\subsubsection {Gauss-Seidel 迭代}
+\subsubsection {SOR 迭代}
+\paragraph {松弛因子选取}
+\paragraph {最优松弛因子}
+\section {非线性迭代解法（基于变分原理）}
+\subsection {通用理论}
+\subsubsection {Ritz 变分原理}
+\subsubsection {迭代核心思想}
+\subsection {具体方法}
+\subsubsection {最速下降法}
+\subsubsection {共轭梯度法（CG）}
+\paragraph {迭代公式}
+\paragraph {收敛性分析}
+\subsubsection {预条件技术}
+\paragraph {预条件矩阵选取}
+\paragraph {预条件 CG 迭代格式}
+
+
+
+
+
+
+
+\end{document}
