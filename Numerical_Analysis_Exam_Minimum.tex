@@ -509,6 +509,77 @@ $C[a,b]$上三个范数的性质：
 
 
 
+\subsection{矩阵分析回顾}
+
+\subsubsection{矩阵代数与初等变换 (Elementary Transformations)}
+\textbf{初等矩阵}：由单位矩阵 $I$ 经过\textbf{一次}初等变换得到的矩阵。
+\begin{enumerate}
+    \item \textbf{交换矩阵 (Permutation Matrix)} $P_{ij}$：
+    交换 $I$ 的第 $i$ 行和第 $j$ 行。
+    \begin{itemize}
+        \item \textbf{作用}：左乘交换矩阵的行，右乘交换矩阵的列。
+        \item \textbf{性质}：$P_{ij}^{-1} = P_{ij}^T = P_{ij}$（对称且正交）。
+        \item \textbf{应用}：Gauss 消去法中的选主元 ($PA=LU$)。
+    \end{itemize}
+    
+    \item \textbf{倍乘矩阵 (Scaling Matrix)} $D_i(k)$：
+    将 $I$ 的第 $i$ 行乘以非零常数 $k$。
+    \begin{itemize}
+        \item \textbf{性质}：$D_i(k)$ 是对角阵。$D_i(k)^{-1} = D_i(1/k)$。
+    \end{itemize}
+    
+    \item \textbf{倍加矩阵 (Elimination/Shear Matrix)} $E_{ij}(k)$ ($i \ne j$)：
+    将 $I$ 的第 $j$ 行的 $k$ 倍加到第 $i$ 行。
+    \[
+        E_{ij}(k) = I + k e_i e_j^T
+    \]
+    \begin{itemize}
+        \item \textbf{作用}：左乘 $A$ 将第 $j$ 行的 $k$ 倍加到第 $i$ 行（消元操作）。
+        \item \textbf{性质}：
+        1. 逆矩阵形式简单：$(E_{ij}(k))^{-1} = E_{ij}(-k)$。
+        2. Gauss 消去法中的消元矩阵 $L_k$ 就是一系列倍加矩阵的乘积。
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{矩阵特征值理论}
+\begin{itemize}
+    \item \textbf{特征分解}：$Ax=\lambda x$。
+    \item \textbf{SVD分解}：$A=U\Sigma V^H$。
+    \item \textbf{Schur分解}：$U^H A U = T$。
+\end{itemize}
+
+\subsubsection{特殊矩阵类}
+\begin{itemize}
+    \item \textbf{Hermite 矩阵 (实对称矩阵)}：$A^H = A$。
+        \begin{itemize}
+            \item 特征值全为实数。
+            \item 存在酉矩阵 $U$ 使得 $U^H AU = \Lambda$ (可酉对角化)。
+            \item \textbf{Rayleigh 商}：$\lambda_{\min} \le \frac{x^H Ax}{x^H x} \le \lambda_{\max}$。
+        \end{itemize}
+        
+    \item \textbf{对称正定矩阵 (Symmetric Positive Definite, SPD)}：
+        \begin{definition}[SPD 定义]
+            实对称矩阵 $A$ 称为正定的，如果对任意非零向量 $x \in \mathbb{R}^n, x \ne 0$，都有：
+            \[ x^T A x > 0 \]
+            这定义了一个\textbf{能量范数}（Energy Norm）：$||x||_A = \sqrt{x^T A x}$。
+        \end{definition}
+
+        性质：
+            \begin{enumerate}
+                \item \textbf{特征值}：所有特征值均严格大于 0 ($\lambda_i > 0$)。
+                \item \textbf{行列式}：$\det(A) = \prod \lambda_i > 0$，故 $A$ 必可逆。
+                \item \textbf{主子式}：所有顺序主子式均大于 0（Sylvester 准则）。
+                \item \textbf{对角元}：$a_{ii} > 0$，且 $\max_{i,j} |a_{ij}| = \max_i a_{ii}$（最大元素必在对角线上）。
+                \item \textbf{逆矩阵}：若 $A$ 是 SPD，则 $A^{-1}$ 也是 SPD。
+                \item \textbf{Cholesky 分解}：$A$ 存在唯一的分解 $A=LL^T$，其中 $L$ 为对角元为正的下三角阵。
+            \end{enumerate}
+
+        
+    \item \textbf{酉矩阵 (正交矩阵)}：$U^H U = I$。保持向量 2-范数不变 ($||Ux||_2 = ||x||_2$)。
+\end{itemize}
+
+
+
 
 \subsection {矩阵空间}
 \tofill[性质]{矩阵空间的基本性质：线性空间、乘法运算、代数性质}
@@ -630,6 +701,9 @@ Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与�
         \|(A + \delta A)^{-1}\| \leq \frac{\|A^{-1}\|}{1 - \|A^{-1}\| \cdot \|\delta A\|}
     \end{align}
 \end{theorem}
+
+
+
 
 
 \chapter {函数插值与重构}
