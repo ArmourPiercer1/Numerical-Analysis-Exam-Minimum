@@ -94,10 +94,27 @@
 \newpage
 
 \chapter{数学基础知识}
-\section{重要补充内容}
+
+\section{补充内容}
 \subsection{矩阵的可分性}
 
+
 \section{重要证明}
+
+\subsection{Legender多项式的零平方误差最小性质}
+\begin{theorem}
+    在所有首项为1的n次多项式中，Legendre多项式$\tilde{P}_n(x)$在$[-1,1]$上与零的平方误差最小。
+\end{theorem}
+\subsubsection{证明：}
+提示：考虑$f=\tilde{P}_n+a_{n-1}\tilde{P}_{n-1}+...+a_1\tilde{P}_1+a_0\tilde{P}_0$和误差函数$\|f-0\|^2$
+
+
+\subsection{Chebyshev多项式的零一致误差最小性质}
+\begin{theorem}
+    在所有首项为$2^{n-1}$的n次多项式中，Chebyshev多项式$T_n(x)$在$[-1,1]$上与零的一致误差最小。
+\end{theorem}
+\subsubsection{证明：}
+
 
 \section{例题与习题}
 
@@ -146,6 +163,64 @@ Note：分片线性插值只要做泰勒展开即可；
 \subsection{三角插值多项式形式、相多项式形式}
 
 \subsection{三角插值的误差分析}
+
+
+\section{函数逼近}
+
+\section{补充内容}
+
+\subsection{Schauder基}
+
+
+
+\section{重要证明}
+
+\subsection{最佳平方逼近存在唯一性定理}
+\begin{theorem}
+    设$f\in C[a,b]$，$\Phi$为$C[a,b]$的有限维子空间，则存在唯一的$\phi^*\in \Phi$，使得
+    \begin{align}
+        \|f-\phi^*\| = \min_{\phi\in \Phi} \|f-\phi\|
+    \end{align}
+\end{theorem}
+\subsubsection{证明：}
+
+\subsection{广义傅里叶展开收敛性的证明}
+1、广义傅里叶级数收敛到$(C[a,b],\|\cdot\|_2)$的完备化空间$\bar{(C[a,b],\|\cdot\|_2)}$中的一个元素。
+若$\|\cdot\|_2$为权系数$\rho$的内积诱导范数，则$\bar{(C[a,b],\|\cdot\|_2)}$即为$L^2_\rho(a,b)$。
+
+2、设$f\in C[a,b]$，$\{\phi_m\}_{m=0}^\infty$为$C[a,b]$中的规范正交函数组，则$f$在$\{\phi_m\}$下的广义傅里叶展开
+    \begin{align}
+        f \sim \sum_{m=0}^{\infty} a_m \phi_m(x), \quad a_m = (f,\phi_m)
+    \end{align}
+    在$C[a,b]$中一致收敛于$f$，即
+    \begin{align}
+        \lim_{n\rightarrow \infty} \left\| f - \sum_{m=0}^{n} a_m \phi_m(x) \right\|_\infty = 0
+    \end{align}
+
+    \subsubsection{证明：}
+    提示：1的证明用到$\sum_{i=0}^{\infty} |a_i|^2 < \infty$，2的证明用到Weierstrass逼近定理。
+
+
+
+
+\subsection{最佳一致逼近存在性定理}
+
+\begin{theorem}
+    [最佳一致逼近存在性定理]
+    设$f\in C[a,b]$，则在$n$次多项式空间$P_n$中，存在一个多项式$p_n^*\in P_n$，使得
+    \begin{align}
+        \|f - p_n^*\|_\infty = \min_{p_n\in P_n} \|f - p_n\|_\infty
+    \end{align}
+    即$P_n$中关于$f\in C[a,b]$的最小偏差是可以达到的。
+\end{theorem}
+
+\subsubsection{证明：}
+提示：利用偏差泛函的性质
+
+\section{重要例题与习题}
+\subsubsection{求解最佳平方逼近}
+记$\Phi=\mathrm{span}(1,x^2)$，求$x\in[0,1]$上在$\Phi$中的最佳平方逼近。
+
 
 
 

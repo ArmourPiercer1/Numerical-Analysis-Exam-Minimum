@@ -4,10 +4,41 @@
 \usepackage{ctex}
 \usepackage{xeCJK}
 
+% 标题字号设置（使用 titlesec，依次减小字号）
+\usepackage{titlesec}
+\titleformat{\chapter}{\zihao{-2}\bfseries}{\thechapter}{1em}{}
+\titleformat{\section}{\zihao{3}\bfseries}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\zihao{4}\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\zihao{-4}\bfseries}{\thesubsubsection}{0.6em}{}
+\titleformat{\paragraph}{\zihao{5}\bfseries}{\theparagraph}{0.5em}{}
+% 各级标题编号格式
+% chapter: 一 二 三 ...
+\renewcommand{\thechapter}{\zhnum{chapter}}
+% section: （一）（二）（三）...
+\renewcommand{\thesection}{（\zhnum{section}）}
+% subsection: 1. 2. 3. ...
+\renewcommand{\thesubsection}{\arabic{subsection}.}
+% subsubsection: (1)(2)(3)...
+\renewcommand{\thesubsubsection}{(\arabic{subsubsection})}
+% paragraph: a. b. c. ...
+\renewcommand{\theparagraph}{\alph{paragraph}.}
+% 允许编号到 paragraph 层级
+\setcounter{secnumdepth}{4}
 % 数学公式支持
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 \usepackage{bm} % 粗体数学符号
+
+% 取消所有公式编号：通过修改计数器深度实现
+\usepackage{etoolbox}
+\AtBeginEnvironment{equation}{\nonumber}
+\AtBeginEnvironment{equation*}{\nonumber}
+\AtBeginEnvironment{align}{\nonumber}
+\AtBeginEnvironment{align*}{\nonumber}
+\AtBeginEnvironment{gather}{\nonumber}
+\AtBeginEnvironment{gather*}{\nonumber}
+\AtBeginEnvironment{multline}{\nonumber}
+\AtBeginEnvironment{multline*}{\nonumber}
 
 % 图表支持
 \usepackage{graphicx}
@@ -47,14 +78,14 @@
 % % 副标题
 % \usepackage{titling}
 
-% 定理环境
-\newtheorem{theorem}{定理}[section]
-\newtheorem{lemma}[theorem]{引理}
-\newtheorem{corollary}[theorem]{推论}
-\newtheorem{proposition}[theorem]{命题}
-\newtheorem{definition}[theorem]{定义}
-\newtheorem{example}[theorem]{例题}
-\newtheorem{exercise}[theorem]{练习}
+% 定理环境（取消编号）
+\newtheorem*{theorem}{定理}
+\newtheorem*{lemma}{引理}
+\newtheorem*{corollary}{推论}
+\newtheorem*{proposition}{命题}
+\newtheorem*{definition}{定义}
+\newtheorem*{example}{例题}
+\newtheorem*{exercise}{练习}
 
 % 待填写内容标记
 \NewDocumentCommand{\tofill}{O{} m}{
@@ -409,11 +440,15 @@ $C[a,b]$上三个范数的性质：
         &P_3(x)=\frac{1}{2}(5x^3-3x)\\
         &P_4(x)=\frac{1}{8}(35x^4-30x^2+3)
     \end{align}
+    \item 零平方误差最小：
+    \begin{theorem}
+        在所有首项为1的n次多项式中，Legendre多项式$\tilde{P}_n(x)$在$[-1,1]$上与零的平方误差最小。
+    \end{theorem}
 \end{itemize}
 
 
 
-\subsubsection {Chebyshev 多项式}
+\subsubsection {$\rho(x)=\frac{1}{\sqrt{1-x^2}}$：Chebyshev 多项式}
 产生方法：
 \begin{itemize}
     \item 权函数$\rho(x)=\frac{1}{\sqrt{1-x^2}}$
@@ -592,6 +627,50 @@ Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与�
 
 
 \chapter {函数插值与重构}
+
+\section*{总结：基本方法是利用插值基函数构造插值多项式，从而实现对函数的近似与重构。}
+
+问题1：求解插值函数
+\begin{itemize}
+    \item 整个区间上的连续插值：Lagrange插值、Newton插值、Hermite插值
+    \begin{itemize}
+        \item Lagrange插值基函数：
+        \begin{align}
+            L_\alpha(x)=\prod_{\substack{\beta\in I\\ \beta\neq \alpha}} \frac{x - x_\beta}{x_\alpha - x_\beta}, \quad \alpha\in I
+        \end{align}
+        \item  Newton插值和Hermite插值：构造均差表，列表计算。
+        \begin{itemize}
+            \item 均差递推关系：
+            \begin{align}
+                f[x_i] &= f(x_i)\\
+                f[x_i,x_{i+1},\ldots,x_{i+k}] &= \frac{f[x_{i+1},\ldots,x_{i+k}] - f[x_i,\ldots,x_{i+k-1}]}{x_{i+k} - x_i}
+            \end{align}
+            \item 均差构造插值多项式：各项为$f[x_0,x_1,\ldots, x_k]\cdot (x-x_0)(x-x_1)\ldots(x-x_{k-1})$
+        \end{itemize}
+    \end{itemize}
+    \item 分段插值：分片线性插值、分片三次Hermite插值 
+    \begin{itemize}
+        \item 分片线性插值基函数：
+        \begin{align}
+            L_{\alpha}(x) =& \begin{cases}
+                \frac{x - x_{\alpha-1}}{x_\alpha - x_{\alpha-1}}, & x \in [x_{\alpha-1}, x_\alpha]\\
+                \frac{x_{\alpha+1} - x}{x_{\alpha+1} - x_\alpha}, & x \in [x_\alpha, x_{\alpha+1}]\\
+                0, & \text{else}
+            \end{cases}\\
+            \phi(x)=&\sum_{\alpha=0}^{n} f_\alpha L_\alpha(x)
+        \end{align}
+        \item 分片三次Hermite插值基函数：
+        \begin{align}
+            \alpha_k =& \left(  1+2\frac{x-x_k}{x_{k+1}-x_k}  \right) \left(  \frac{x_{k+1}-x}{x_{k+1}-x_k}  \right)^2\\
+            \beta_k =& (x-x_k) \left(  \frac{x_{k+1}-x}{x_{k+1}-x_k}  \right)^2\\
+            \alpha_{k+1} =& \left(  1+2\frac{x_{k+1}-x}{x_{k+1}-x_k}  \right) \left(  \frac{x-x_k}{x_{k+1}-x_k}  \right)^2\\
+            \beta_{k+1} =& -(x_{k+1} - x) \left(  \frac{x - x_k}{x_{k+1}-x_k}  \right)^2\\
+            \phi(x) =& \sum_{k=0}^{n} \left[ f_k \alpha_k + f_k' \beta_k  \right],\quad x\in[x_k,x_{k+1}]
+        \end{align}
+    \end{itemize}
+\end{itemize}
+
+
 \section {通用理论}
 \subsection {问题模型}
 \tofill[数学描述]{采样泛函视角下的插值问题数学描述}
@@ -992,10 +1071,63 @@ P(x) &= f[\xi_0] + f[\xi_0,\xi_0](x - \xi_0) + f[\xi_0,\xi_0,\xi_0](x - \xi_0)^2
 
 \chapter {函数逼近}
 
+\section*{总结}
+Note：这里为了让总结看起来更顺畅，没有遵循原PPT和书中的符号规范，转而应用了比较统一的符号。这些符号规范仅在总结一部分使用。
+\begin{itemize}
+    \item 最佳平方逼近求解：
+    \begin{itemize}
+        \item 给定一组规范正交函数基时：
+        \begin{itemize}
+            \item 写出规范正交函数基$\{\phi_m\}_{m=0}^n$
+            \item 计算系数$a_m=\dfrac{(f,\phi_m)}{(\phi_m,\phi_m)}$
+            \item 写出逼近多项式$\phi^*=\sum_{m=0}^n a_m \phi_m$
+        \end{itemize}
+        \item 给定一组非规范正交函数基时：
+        \begin{itemize}
+            \item 写出非规范正交函数基$\{\phi_m\}_{m=0}^n$
+            \item 构建法方程组：
+            \begin{align}
+                m_{ij}=(\phi_j,\phi_i),\quad b_i=(f,\phi_i)\\
+            \end{align}
+            \item 求解线性方程组$\mathbf{M}\mathbf{a}=\mathbf{b}$，得到系数$a_m$
+            \item 写出逼近多项式$\phi^*=\sum_{m=0}^n a_m \phi_m$
+        \end{itemize}
+    \end{itemize}
+    \item Legendre多项式作最佳平方逼近的收敛速度：高阶时控制在$1/\sqrt{n}$以下
+    \item 最小二乘逼近求解：计算过程可视作最佳平方逼近的离散形式
+    \begin{itemize}
+        \item 给定基底$\{\phi_m\}_{m=0}^n$和采样点$\{x_k\}_{k=0}^N$
+        \item 估计一个误差系数$\rho(x_i)$
+        \item 用半内积构建法方程组：
+        \begin{align}
+            m_{ij}=\sum_{k=0}^N \rho(x_k) \phi_j(x_k)\phi_i(x_k),\quad b_i=\sum_{k=0}^N \rho(x_k) f(x_k)\phi_i(x_k)\\
+        \end{align}
+        \item 求解线性方程组$\mathbf{M}\mathbf{a}=\mathbf{b}$，得到系数$a_m$
+        \item 写出逼近多项式$\phi^*=\sum_{m=0}^n a_m \phi_m$
+    \end{itemize}
+    \item 一致逼近求解：
+    \begin{itemize}
+        \item 给定原函数$f\in C[a,b]$和基底$\{\phi_m\}_{m=0}^n$
+        \item 写出待定逼近多项式$\phi(x)=\sum_{m=0}^n a_m \phi_m(x)$
+        \item 写出误差函数$E(x)=f(x)-\phi(x)$
+        \item 根据切比雪夫交错点组定理，写出求解条件：
+        \begin{itemize}
+            \item 交错条件：$E(x_i)=-e(x_{x-1})$
+            \item 偏差点条件：除端点作为偏差点的情况，必有$f'(x_i)=p_n'(x_i)$
+        \end{itemize}
+        \item 由偏差点条件可以解出一系列偏差点$x_i(\boldsymbol{a})$，再代入交错条件中，解出系数$a_m$
+    \end{itemize}
+    
+\end{itemize}
 \section {通用理论}
 
 \subsection {问题模型}
-\tofill[函数逼近问题的]{}
+\tofill[问题]{函数逼近问题的数学模型}
+
+最佳逼近问题：找$\phi^*\in \Phi$，使得 
+\begin{align}
+    \|f-\phi^*\| = \min_{\phi\in \Phi} \|f-\phi\|
+\end{align}
 
 
 \subsection {逼近准则}
@@ -1007,11 +1139,293 @@ P(x) &= f[\xi_0] + f[\xi_0,\xi_0](x - \xi_0) + f[\xi_0,\xi_0,\xi_0](x - \xi_0)^2
 \section {具体逼近方法}
 
 \subsection {最优平方逼近}
-\subsubsection {线性最小二乘}
-\subsubsection {加权平方逼近}
+\subsubsection{基础理论}
+
+问题：给定一个线性子空间$\Phi$，找$\phi^*\in \Phi$，使得
+\begin{align}
+    \|f-\phi^*\|_2 = \min_{\phi\in \Phi} \|f-\phi\|_2
+\end{align}
+
+问题等价于
+\begin{align}
+    \|f-\phi^*\|_2^2 = \min_{\phi\in \Phi} \|f-\phi\|_2^2
+\end{align}
+
+于是构造出一个辅助函数：
+\begin{align}
+    I=\|f-\phi\|_2^2=\left( f-\sum_{i=0}^n a_i\phi_i, f-\sum_{i=0}^n a_i\phi_i \right)\\
+    =  \sum_{i=0}^n \sum_{j=0}^n a_i a_j (\phi_i, \phi_j) - 2\sum_{i=0}^n a_i (f,\phi_i) +(f,f)
+\end{align}
+
+式中，$\{\phi_i\}$为$\Phi$的一组基。
+
+\paragraph{法方程}
+
+多元函数取得最小值的条件：对各变量偏导为0、在这一点的二阶偏导数构成的矩阵正定。
+
+各变量偏导为0即导出法方程：
+\begin{align}
+    \sum_{j=0}^{n} a_j ( \phi_j, \phi_i ) = ( f, \phi_i ), \quad i=0,1,\ldots,n
+\end{align}
+或写成矩阵形式，
+\begin{align}
+    \begin{bmatrix}
+        ( \phi_0, \phi_0 ) & ( \phi_1, \phi_0 ) & \cdots & ( \phi_n, \phi_0 ) \\
+        ( \phi_0, \phi_1 ) & ( \phi_1, \phi_1 ) & \cdots & ( \phi_n, \phi_1 ) \\
+        \vdots & \vdots & \ddots & \vdots \\
+        ( \phi_0, \phi_n ) & ( \phi_1, \phi_n ) & \cdots & ( \phi_n, \phi_n )
+    \end{bmatrix}
+    \begin{bmatrix}
+        a_0 \\ a_1 \\ \vdots \\ a_n
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        ( f, \phi_0 ) \\ ( f, \phi_1 ) \\ \vdots \\ ( f, \phi_n )
+    \end{bmatrix}
+\end{align}
+
+
+\begin{theorem}
+    [最小二乘逼近法方程]
+    设$\Phi$为线性子空间，$\{\phi_0, \phi_1, \ldots, \phi_n\}$为$\Phi$的一组基，则函数$f$在$\Phi$中的最优平方逼近$\phi^*$可表示为
+    \begin{align}
+        \phi^* = \sum_{j=0}^{n} a_j^* \phi_j
+    \end{align}
+    其中，系数$c_j^*$满足法方程组
+    \begin{align}
+        \sum_{j=0}^{n} a_j ( \phi_j, \phi_i ) = ( f, \phi_i ), \quad i=0,1,\ldots,n
+    \end{align}
+\end{theorem}
+
+\paragraph{最佳平方逼近的性质}
+\begin{lemma}
+    [最佳平方逼近的正交性质]
+    设$\phi^*$为函数$f$在子空间$\Phi$中的最佳平方逼近，则对任意$\phi\in \Phi$，都有
+    \begin{align}
+        f-\phi^* \perp \Phi
+    \end{align}
+\end{lemma}
+
+\begin{corollary}[最佳平方逼近的勾股定理]
+    设$\phi^*$为函数$f$在子空间$\Phi$中的最佳平方逼近，则有
+    \begin{align}
+        \|f\|_2^2 = \|f-\phi^*\|_2^2 + \|\phi^*\|_2^2
+    \end{align}
+\end{corollary}
+
+
+\subsubsection{幂函数基的逼近}
+考虑连续函数在n-次多项式空间$P_n$中的最佳平方逼近问题。
+
+若选取$\{x^m\}_{m=0}^n$作为基函数，在$[0,1]$区间上求解最佳平方逼近，则法方程组的系数矩阵为Hilbert矩阵：
+\begin{definition}
+    [Hilbert矩阵]
+    阶数为$n+1$的Hilbert矩阵定义为
+    \begin{align}
+        H_{ij} = \frac{1}{i+j-1}, \quad i,j=1,2,\ldots,n+1
+    \end{align}
+    即
+    \begin{align}
+        H_n=\begin{bmatrix}
+        1 & \frac{1}{2} & \frac{1}{3} & \cdots & \frac{1}{n+1} \\
+        \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \cdots & \frac{1}{n+2} \\
+        \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \cdots & \frac{1}{n+3} \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        \frac{1}{n+1} & \frac{1}{n+2} & \frac{1}{n+3} & \cdots & \frac{1}{2n+1}
+        \end{bmatrix}
+    \end{align}
+\end{definition}
+
+这一逼近形式的问题：
+\begin{itemize}
+    \item Hilbert矩阵病态，随着n的增大，条件数迅速增大，导致数值解不稳定
+    \item 幂函数基不正交，导致法方程系数矩阵接近奇异
+\end{itemize}
+
+
 \subsubsection {正交多项式逼近}
 
-\subsection {最优一致逼近}
+\paragraph{广义傅里叶展开}
+在$C[a,b]$中，取一个规范正交函数组$\{\phi_m\}_{m=0}^n$，即确定了一个用于逼近的线性子空间$\Phi_n=\text{span}\{\phi_0, \phi_1, \ldots, \phi_n\}$。
+
+相应地，对于任意给定函数f，存在唯一的最佳平方逼近$\phi^*\in \Phi_n$，且
+\begin{align}
+    \phi^* = \sum_{i=0}^n a_i^* \phi_i, \quad a_i^* = (f, \phi_i)
+\end{align}
+
+\begin{definition}
+    [广义傅里叶展开]
+    设$\{\phi_m\}_{m=0}^\infty$为$C[a,b]$中的规范正交函数组，则对任意$f\in C[a,b]$，都有
+    \begin{align}
+        f \sim f_\infty= \sum_{i=0}^\infty a_i \phi_i, \quad a_i = (f, \phi_i)
+    \end{align}
+    $f_\infty$称为函数f在$\{\phi_m\}$下的广义傅里叶展开。
+\end{definition}
+
+\begin{theorem}
+    [广义傅里叶展开的收敛性]
+    设$\{\phi_m\}_{m=0}^\infty$为$C[a,b]$中的规范正交函数组，则对任意$f\in C[a,b]$，其广义傅里叶展开在$L_2$范数下收敛于f，即
+    \begin{align}
+        \lim_{n\rightarrow \infty} \|f - f_n\|_2 = 0
+    \end{align}
+    其中，$f_n = \sum_{i=0}^n a_i \phi_i$。
+\end{theorem}
+
+
+\paragraph{Legendre多项式作最佳平方逼近}
+设内积为$[-1,1]$上的权1内积，给定$f\in C[-1,1]$，则f在Legendre多项式空间$P_n$中的最佳平方逼近为
+\begin{align}
+    I_nf(x)=\sum_{k=0}^n \frac{(f,\phi_k)}{\|\phi_k\|^2}\phi_k(x)
+\end{align}
+
+性质：
+\begin{itemize}
+    \item 收敛性：$I_nf\rightarrow f,\quad n\rightarrow \infty$，且收敛到$L^2((-1,1))$空间中
+    \item 收敛速度估计：若$f\in C^2[-1,1]$，则$\forall \epsilon>0$，$\exists N>)$，使得
+    \begin{align}
+        \|f - I_nf\|_\infty \leq \frac{\epsilon}{\sqrt{n}},\quad n\geq N
+    \end{align}
+    即对于n次的Legendre多项式逼近，误差会被控制在$O(\frac{1}{\sqrt{n}})$范围内
+\end{itemize}
+
+\subsubsection{Legender多项式的零平方误差最小性质}
+\begin{theorem}
+    [Legendre多项式的零平方误差最小性质]
+    设$f\in C[-1,1]$，则在所有满足$\deg(p_n)\leq n$且$(p_n, x^k)=0,\quad k=0,1,\ldots,n-1$的多项式中，Legendre多项式$P_n(x)$使得平方误差$\|f - P_n\|_2$最小。
+\end{theorem}
+
+
+
+
+\subsection {最小二乘逼近：最优平方逼近的离散化形式}
+\tofill[问题]{最小二乘逼近的问题模型：确定的输入-输出关系叠加系统噪声和随机误差，希望拟合输入-输出关系的具体形式}
+
+\subsubsection{基础理论}
+核心假设：观测数据$f_i$和正确输 $\phi^*(x_i)$之间的误差$a_i\xi_i$是一个独立同分布的零均值随机变量。
+
+假设导出：当拟合结果$\phi$取得正确的关系$\phi=\phi^*$时，（归一化）误差的方差最小。
+
+数学化：$\phi^*$是以下优化问题的极小解：
+\begin{align}
+    \phi^*=\arg\min_{\phi\in \Phi} \sigma^2=\arg\min_{\phi\in \Phi} \frac{1}{m+1}\sum_{i=0}^m [f_i - \phi(x_i)]^2
+\end{align}
+
+
+\subsubsection{数学方法：“半”内积}
+
+\begin{theorem}
+    [Haar条件]
+    若给定一组采样点$\{x_i\}_{i=0}^m$，且$\Phi$中的任意非0元素在这组采样点上的采样结果不全为0，则称这组采样点满足Haar条件。
+\end{theorem}
+
+
+满足Haar条件时，可以利用在采样点上的采样结果，定义一个“半”内积：
+\begin{align}
+    (f,g)_m = \sum_{i=0}^m \frac{f(x_i) g(x_i)}{a_i^2}
+\end{align}
+此时这个“半”内积在$\Phi$上是一个真正的内积。因此上述问题等价于求解法方程AU=b：
+\begin{align}
+    \begin{bmatrix}
+        (\phi_0, \phi_0)_m & (\phi_1, \phi_0)_m & \cdots & (\phi_n, \phi_0)_m \\
+        (\phi_0, \phi_1)_m & (\phi_1, \phi_1)_m & \cdots & (\phi_n, \phi_1)_m \\
+        \vdots & \vdots & \ddots & \vdots \\
+        (\phi_0, \phi_n)_m & (\phi_1, \phi_n)_m & \cdots & (\phi_n, \phi_n)_m
+    \end{bmatrix}
+    \begin{bmatrix}
+        u_0 \\ u_1 \\ \vdots \\ u_n
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        ( f, \phi_0 )_m \\ ( f, \phi_1 )_m \\ \vdots \\ ( f, \phi_n )_m
+    \end{bmatrix}
+\end{align}
+
+Note: 我们注意到，在求内积过程中，分母上表示采样点随机误差幅度的$a_i^2$仍然是不确定的，此时需要基于经验
+或先验知识给出估计。常用的估计有$a_i\propto 1$、$a_i\propto f_i$、$a_i\propto x_i$、$a_i\propto x_i^2$等。
+
+
+\subsection{最佳一直逼近}
+\tofill[问题]{最佳一直逼近的数学描述}
+
+最佳一直逼近中用到一些符号：
+\begin{itemize}
+    \item $\Delta (f,p_n)=\|f-p_n\|_\infty$称为$p_n$关于f的偏差
+    \item $E_n=\inf_{p_n\in P_n} \Delta (f,p_n)$称为f在$P_n$中的最小偏差
+    \item 若$f(x_i)-p_n(x_i)=\sigma \Delta (f, p_n)$, $\sigma=\pm 1$，则称$x_i$为$p_n$关于f的偏差点。
+    \begin{itemize}
+        \item 若$\sigma=1$，则称$x_i$为正偏差点
+        \item 若$\sigma=-1$，则称$x_i$为负偏差点
+    \end{itemize}
+\end{itemize}
+
+
+
+\subsubsection{偏差泛函与最优逼近多项式存在性定理}
+假设给定一个逼近多项式$p_n=a_0+a_1x+a_2x^2+\ldots +a_nx^n$，则可定义偏差泛函：
+\begin{align}
+    \phi(f,\boldsymbol{a})=\|f-p_n\|_\infty=\|f-(a_0+a_1x+\ldots +a_nx^n)\|_\infty
+\end{align}
+
+这个泛函具有以下性质：
+\begin{itemize}
+    % \item 正定性：$\phi(f,\boldsymbol{a})\geq 0$，且当且仅当$f=p_n$时取等号
+    % \item 齐次性：$\forall \lambda \in \mathbb{R}$，都有
+    % \begin{align}
+    %     \phi(f, \lambda \boldsymbol{a}) = |\lambda| \phi(f, \boldsymbol{a})
+    % \end{align}
+    \item 连续性：$\phi$对$\boldsymbol{a}$连续
+    \item 对$\boldsymbol{a}$下凸：$\forall \boldsymbol{a_1}, \boldsymbol{a_2}\in \mathbb{R}^{n+1}$，$\forall t\in [0,1]$，都有
+    \begin{align}
+        \phi(f, t\boldsymbol{a_1} + (1-t)\boldsymbol{a_2}) \leq t\phi(f,\boldsymbol{a_1}) + (1-t)\phi(f,\boldsymbol{a_2})
+    \end{align}
+    \item 正定性：对于任意$\boldsymbol{a}\neq \boldsymbol{0}$，都有$\phi(f,\boldsymbol{a})>0$
+    
+    正定性等价于：$\phi(0;\mathbf{a})$在单位球面$\sum_{i=0}^n a_i^2=1$上有正的最小值$\mu$
+\end{itemize}
+
+利用偏差泛函的性质，可以证明最佳一直逼近多项式的存在性：
+
+\begin{theorem}
+    [最佳一致逼近存在性定理]
+    设$f\in C[a,b]$，则在$n$次多项式空间$P_n$中，存在一个多项式$p_n^*\in P_n$，使得
+    \begin{align}
+        \|f - p_n^*\|_\infty = \min_{p_n\in P_n} \|f - p_n\|_\infty
+    \end{align}
+    即$P_n$中关于$f\in C[a,b]$的最小偏差是可以达到的。
+\end{theorem}
+
+\subsubsection{最佳一致逼近多项式的性质}
+\begin{definition}
+    [Chebyshev交错点组]
+    若$x_1<x_2<\ldots <x_m$是$p_n$关于f的轮流为正负的偏差点，则称其为一个Chebyshev交错点组。
+\end{definition}
+
+\begin{theorem}
+    [最佳一致逼近多项式的Chebyshev交错定理]
+    $p^*_n$是f的最佳一致逼近多项式的充要条件是存在一个元素个数为n+2的Chebyshev交错点组$x_0<x_1<\ldots <x_{n+1}$
+\end{theorem}
+
+\begin{corollary}
+    最佳一致逼近多项式是一个Lagrange插值多项式，其插值节点在$(a,b)$内。
+\end{corollary}
+
+\subsubsection{唯一性定理}
+\begin{theorem}
+    [最佳一致逼近多项式的唯一性定理]
+    设$f\in C[a,b]$，则$f$在$n$次多项式空间$P_n$中的最佳一致逼近多项式$p_n^*$是唯一的。
+\end{theorem}
+
+
+\subsubsection{Chebyshev多项式的零一致误差最小性质}
+\begin{theorem}
+    [Chebyshev多项式的零一致误差最小性质]
+    设$T_n(x)$为n次Chebyshev多项式，则在$[-1,1]$上，任意单位首项系数的n次多项式$p_n(x)$均满足
+    \begin{align}
+        \|p_n\|_\infty \geq \|T_n\|_\infty = \frac{1}{2^{n-1}}
+    \end{align}
+    即Chebyshev多项式在$[-1,1]$上具有最小的无穷范数。
+\end{theorem}
+
 
 
 
