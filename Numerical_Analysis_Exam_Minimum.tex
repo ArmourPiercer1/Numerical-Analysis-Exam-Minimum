@@ -86,6 +86,12 @@
 \newtheorem*{definition}{定义}
 \newtheorem*{example}{例题}
 \newtheorem*{exercise}{练习}
+\newtheorem*{remark}{备注}
+\newtheorem*{proofstep}{说明}
+\newtheorem*{property}{性质}
+
+
+
 
 % 待填写内容标记
 \NewDocumentCommand{\tofill}{O{} m}{
@@ -503,6 +509,77 @@ $C[a,b]$上三个范数的性质：
 
 
 
+\subsection{矩阵分析回顾}
+
+\subsubsection{矩阵代数与初等变换 (Elementary Transformations)}
+\textbf{初等矩阵}：由单位矩阵 $I$ 经过\textbf{一次}初等变换得到的矩阵。
+\begin{enumerate}
+    \item \textbf{交换矩阵 (Permutation Matrix)} $P_{ij}$：
+    交换 $I$ 的第 $i$ 行和第 $j$ 行。
+    \begin{itemize}
+        \item \textbf{作用}：左乘交换矩阵的行，右乘交换矩阵的列。
+        \item \textbf{性质}：$P_{ij}^{-1} = P_{ij}^T = P_{ij}$（对称且正交）。
+        \item \textbf{应用}：Gauss 消去法中的选主元 ($PA=LU$)。
+    \end{itemize}
+    
+    \item \textbf{倍乘矩阵 (Scaling Matrix)} $D_i(k)$：
+    将 $I$ 的第 $i$ 行乘以非零常数 $k$。
+    \begin{itemize}
+        \item \textbf{性质}：$D_i(k)$ 是对角阵。$D_i(k)^{-1} = D_i(1/k)$。
+    \end{itemize}
+    
+    \item \textbf{倍加矩阵 (Elimination/Shear Matrix)} $E_{ij}(k)$ ($i \ne j$)：
+    将 $I$ 的第 $j$ 行的 $k$ 倍加到第 $i$ 行。
+    \[
+        E_{ij}(k) = I + k e_i e_j^T
+    \]
+    \begin{itemize}
+        \item \textbf{作用}：左乘 $A$ 将第 $j$ 行的 $k$ 倍加到第 $i$ 行（消元操作）。
+        \item \textbf{性质}：
+        1. 逆矩阵形式简单：$(E_{ij}(k))^{-1} = E_{ij}(-k)$。
+        2. Gauss 消去法中的消元矩阵 $L_k$ 就是一系列倍加矩阵的乘积。
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{矩阵特征值理论}
+\begin{itemize}
+    \item \textbf{特征分解}：$Ax=\lambda x$。
+    \item \textbf{SVD分解}：$A=U\Sigma V^H$。
+    \item \textbf{Schur分解}：$U^H A U = T$。
+\end{itemize}
+
+\subsubsection{特殊矩阵类}
+\begin{itemize}
+    \item \textbf{Hermite 矩阵 (实对称矩阵)}：$A^H = A$。
+        \begin{itemize}
+            \item 特征值全为实数。
+            \item 存在酉矩阵 $U$ 使得 $U^H AU = \Lambda$ (可酉对角化)。
+            \item \textbf{Rayleigh 商}：$\lambda_{\min} \le \frac{x^H Ax}{x^H x} \le \lambda_{\max}$。
+        \end{itemize}
+        
+    \item \textbf{对称正定矩阵 (Symmetric Positive Definite, SPD)}：
+        \begin{definition}[SPD 定义]
+            实对称矩阵 $A$ 称为正定的，如果对任意非零向量 $x \in \mathbb{R}^n, x \ne 0$，都有：
+            \[ x^T A x > 0 \]
+            这定义了一个\textbf{能量范数}（Energy Norm）：$||x||_A = \sqrt{x^T A x}$。
+        \end{definition}
+
+        性质：
+            \begin{enumerate}
+                \item \textbf{特征值}：所有特征值均严格大于 0 ($\lambda_i > 0$)。
+                \item \textbf{行列式}：$\det(A) = \prod \lambda_i > 0$，故 $A$ 必可逆。
+                \item \textbf{主子式}：所有顺序主子式均大于 0（Sylvester 准则）。
+                \item \textbf{对角元}：$a_{ii} > 0$，且 $\max_{i,j} |a_{ij}| = \max_i a_{ii}$（最大元素必在对角线上）。
+                \item \textbf{逆矩阵}：若 $A$ 是 SPD，则 $A^{-1}$ 也是 SPD。
+                \item \textbf{Cholesky 分解}：$A$ 存在唯一的分解 $A=LL^T$，其中 $L$ 为对角元为正的下三角阵。
+            \end{enumerate}
+
+        
+    \item \textbf{酉矩阵 (正交矩阵)}：$U^H U = I$。保持向量 2-范数不变 ($||Ux||_2 = ||x||_2$)。
+\end{itemize}
+
+
+
 
 \subsection {矩阵空间}
 \tofill[性质]{矩阵空间的基本性质：线性空间、乘法运算、代数性质}
@@ -624,6 +701,9 @@ Note: 矩阵范数是定义在矩阵代数而非矩阵空间上的，必须与�
         \|(A + \delta A)^{-1}\| \leq \frac{\|A^{-1}\|}{1 - \|A^{-1}\| \cdot \|\delta A\|}
     \end{align}
 \end{theorem}
+
+
+
 
 
 \chapter {函数插值与重构}
@@ -1992,43 +2072,754 @@ n=0的开型Newton-Cotes公式称为\textbf{中点公式}：
 
 
 
+
+
+
 \chapter {线性代数方程组数值解法}
-\section {直接解法}
-\subsection {通用理论}
-\subsubsection {问题模型}
-\subsubsection {残差与误差分析}
-\subsubsection {数值稳定性与条件数}
-\subsection {具体方法}
-\subsubsection {Gauss 消元法}
-\paragraph {基本步骤}
-\paragraph {主元素选取}
-\subsubsection {LU 分解}
-\subsubsection {特殊方程组解法}
-\paragraph {Thomas 算法（三对角方程组）}
-\paragraph {Toeplitz 矩阵快速解法}
-\section {定常线性迭代解法}
-\subsection {通用理论}
-\subsubsection {迭代格式构造}
-\subsubsection {收敛性判定}
-\subsubsection {收敛速度}
-\subsection {具体迭代法}
-\subsubsection {Jacobi 迭代}
-\subsubsection {Gauss-Seidel 迭代}
-\subsubsection {SOR 迭代}
-\paragraph {松弛因子选取}
-\paragraph {最优松弛因子}
-\section {非线性迭代解法（基于变分原理）}
-\subsection {通用理论}
-\subsubsection {Ritz 变分原理}
-\subsubsection {迭代核心思想}
-\subsection {具体方法}
-\subsubsection {最速下降法}
-\subsubsection {共轭梯度法（CG）}
-\paragraph {迭代公式}
-\paragraph {收敛性分析}
-\subsubsection {预条件技术}
-\paragraph {预条件矩阵选取}
-\paragraph {预条件 CG 迭代格式}
+
+
+\section{线性代数方程组直接解法 (Direct Methods)}
+
+\subsection{基本概念}
+求解 $Ax=b$，其中 $A \in \mathbb{R}^{n \times n}$ 非奇异。
+
+\subsubsection{Cramer 法则 (Cramer's Rule)}
+
+即直接求逆
+
+\begin{theorem}[Cramer 法则]
+    若 $\det(A) \ne 0$，则 $x_i = \det(A_i)/\det(A)$。
+\end{theorem}
+\begin{remark}
+    理论重要但计算不可行（$O((n+1)!)$），仅用于极小规模或理论证明。
+\end{remark}
+
+\subsection{Gauss 消去法 (Gauss Elimination)}
+\subsubsection{前向消去与回代}
+求解 $Ax=b$ 分为两个阶段：
+\begin{enumerate}
+    \item \textbf{消元过程 (Forward Elimination)}：
+    将增广矩阵 $[A|b]$ 变换为上三角形式 $[U|y]$。
+    对于第 $k$ 步 ($k=1, 2, \dots, n-1$)：
+    \begin{itemize}
+        \item \textbf{计算乘子}：设主元 $a_{kk}^{(k)} \ne 0$，对所有 $i = k+1, \dots, n$：
+        \[
+            m_{ik} = \frac{a_{ik}^{(k)}}{a_{kk}^{(k)}}
+        \]
+        \item \textbf{行变换}：将第 $i$ 行减去第 $k$ 行的 $m_{ik}$ 倍，消去 $a_{ik}^{(k)}$：
+        \[
+            a_{ij}^{(k+1)} = a_{ij}^{(k)} - m_{ik} a_{kj}^{(k)}, \quad j=k+1, \dots, n
+        \]
+        \[
+            b_i^{(k+1)} = b_i^{(k)} - m_{ik} b_k^{(k)}
+        \]
+    \end{itemize}
+    经过 $n-1$步后，得到上三角矩阵 $U = A^{(n)}$ 和变换后的右端项 $y = b^{(n)}$。
+
+    \item \textbf{回代过程 (Backward Substitution)}：
+    求解上三角方程组 $Ux=y$。
+    \[
+        \begin{cases}
+            u_{11}x_1 + u_{12}x_2 + \dots + u_{1n}x_n = y_1 \\
+            \dots \\
+            u_{nn}x_n = y_n
+        \end{cases}
+    \]
+    计算公式为：
+    \[
+        x_n = \frac{y_n}{u_{nn}}
+    \]
+    \[
+        x_i = \frac{1}{u_{ii}} \left( y_i - \sum_{j=i+1}^n u_{ij} x_j \right), \quad i = n-1, \dots, 1
+    \]
+\end{enumerate}
+
+\subsubsection{选主元策略 (Pivoting)}
+若主元 $|a_{kk}^{(k)}|$ 过小，乘子 $m_{ik}$ 会很大，导致舍入误差剧烈放大。
+\begin{itemize}
+    \item \textbf{列主元消去法}：交换行，使 $\max_{i \ge k} |a_{ik}^{(k)}|$ 所在行成为当前主行。
+    \item \textbf{全主元消去法}：交换行和列，选全子阵最大值。
+    \item \textbf{数值稳定性}：选主元是保证 Gauss 消去法数值稳定的必要条件。
+\end{itemize}
+
+\subsection{矩阵三角分解 (Matrix Factorization)}
+\subsubsection{LU 分解}
+\begin{theorem}[存在唯一性]
+    若 $A$ 的所有顺序主子式非零，则 $A$ 可唯一分解为 $A=LU$，其中 $L$ 为单位下三角阵，$U$ 为上三角阵。
+\end{theorem}
+
+
+\begin{proofstep}{消去步的矩阵表示}
+
+
+    在 Gauss 消去的第 $k$ 步，我们通过行变换将第 $k$ 列对角线以下的元素消为 0。这一步等价于左乘一个\textbf{初等下三角矩阵}（Atomic Lower Triangular Matrix）$L_k$：
+    \[
+        L_k = I - \mathbf{m}_k \mathbf{e}_k^T = 
+        \begin{bmatrix}
+        1 & & & & \\
+        & \ddots & & & \\
+        & & 1 & & \\
+        & & -m_{k+1,k} & 1 & \\
+        & & \vdots & & \ddots & \\
+        & & -m_{n,k} & & & 1
+        \end{bmatrix}
+    \]
+    其中 $\mathbf{m}_k = [0, \dots, 0, m_{k+1,k}, \dots, m_{n,k}]^T$ 是由第 $k$ 步的乘子构成的向量，$\mathbf{e}_k$ 是单位向量。
+    
+    整个消去过程可以写成：
+    \[
+        L_{n-1} L_{n-2} \dots L_1 A = U
+    \]
+\end{proofstep}
+
+\begin{proofstep}{逆矩阵的性质}
+
+
+    $L_k$ 的逆矩阵 $L_k^{-1}$ 非常简单，只需将乘子的符号取反：
+    \[
+        L_k^{-1} = (I - \mathbf{m}_k \mathbf{e}_k^T)^{-1} = I + \mathbf{m}_k \mathbf{e}_k^T
+    \]
+    这是因为 $(I - \mathbf{m}_k \mathbf{e}_k^T)(I + \mathbf{m}_k \mathbf{e}_k^T) = I - \mathbf{m}_k (\mathbf{e}_k^T \mathbf{m}_k) \mathbf{e}_k^T = I$（注意 $\mathbf{e}_k^T \mathbf{m}_k = 0$，因为 $\mathbf{m}_k$ 前 $k$ 个元素为 0）。
+\end{proofstep}
+
+\begin{proofstep}{构造 L 矩阵}
+
+
+    由 $L_{n-1} \dots L_1 A = U$，我们有：
+    \[
+        A = (L_{n-1} \dots L_1)^{-1} U = L_1^{-1} L_2^{-1} \dots L_{n-1}^{-1} U
+    \]
+    令 $L = L_1^{-1} L_2^{-1} \dots L_{n-1}^{-1}$。神奇的是，计算这个乘积不需要复杂的矩阵运算。由于 $L_k^{-1}$ 的非零乘子位于第 $k$ 列，$L_{j}^{-1}$ 的位于第 $j$ 列（$j > k$），它们的乘积只是简单地将各列的乘子\textbf{填充}到单位矩阵对应的位置，互不干扰：
+    \[
+        L = \left( I + \sum_{k=1}^{n-1} \mathbf{m}_k \mathbf{e}_k^T \right) = 
+        \begin{bmatrix}
+        1 & & & & \\
+        m_{21} & 1 & & & \\
+        m_{31} & m_{32} & 1 & & \\
+        \vdots & \vdots & \ddots & \ddots & \\
+        m_{n1} & m_{n2} & \dots & m_{n,n-1} & 1
+        \end{bmatrix}
+    \]
+    \textbf{结论}：$L$ 矩阵的下三角部分正是 Gauss 消去过程中计算出的所有乘子 $m_{ik}$。
+\end{proofstep}
+
+\paragraph{LU 分解的应用形式}
+一旦得到 $A=LU$，求解 $Ax=b$ 变为两步：
+\begin{enumerate}
+    \item 解下三角方程组 $Ly=b$ (前代)。
+    \item 解上三角方程组 $Ux=y$ (回代)。
+\end{enumerate}
+
+
+\subsubsection{Cholesky 分解 ($LL^T$)}
+针对\textbf{对称正定矩阵 (SPD)} 的高效分解。
+
+矩阵 $A$ 存在 $LL^T$ 分解（其中 $l_{ii} > 0$）$\iff$ $A$ 是对称正定的。
+
+
+\subsubsection{附：对称正定矩阵 (SPD) 的判定方法}
+\begin{enumerate}
+    \item \textbf{定义法}：
+    $A$ 是对称矩阵 ($A^T=A$)，且对任意非零向量 $x \ne 0$，都有二次型 $x^T A x > 0$。
+    \item \textbf{特征值判别法}：
+    $A$ 是对称矩阵，且 $A$ 的所有特征值 $\lambda_i$ 均严格大于零 ($\lambda_i > 0, \forall i$)。
+    \item \textbf{顺序主子式判别法 (Sylvester 准则)}：
+    $A$ 的所有顺序主子式 $\det(A_k)$ 均严格大于零 ($k=1, \dots, n$)。
+    \item \textbf{Cholesky 分解存在性}：
+    若 Cholesky 分解算法能够顺利执行到底，且所有对角元 $l_{ii}$ 均为实数且非零（即开方过程未遇到负数或零），则 $A$ 必为对称正定矩阵。这也是计算机程序中判断 SPD 的最实用方法。
+\end{enumerate}
+
+\begin{theorem}
+    若 $A$ 对称正定，则存在唯一的对角元 $>0$ 的下三角阵 $L$ 使得 $A=LL^T$。
+    此外，Cholesky 分解是\textbf{数值稳定}的，无需选主元（因为 $|l_{ij}|^2 \le \sum l_{ik}^2 = a_{ii}$，元素不会增长）。
+\end{theorem}
+
+\begin{itemize}
+    \item \textbf{算法推导}：
+    比较 $A = LL^T$ 两边的元素：
+    \[
+        a_{ij} = \sum_{k=1}^n l_{ik} (L^T)_{kj} = \sum_{k=1}^{\min(i,j)} l_{ik} l_{jk}
+    \]
+    \item \textbf{计算公式}（按列计算）：
+    对于 $j=1, \dots, n$：
+    \begin{enumerate}
+        \item \textbf{对角元}：
+        \[
+            l_{jj} = \sqrt{a_{jj} - \sum_{k=1}^{j-1} l_{jk}^2}
+        \]
+        \item \textbf{非对角元} ($i > j$)：
+        \[
+            l_{ij} = \frac{1}{l_{jj}} \left( a_{ij} - \sum_{k=1}^{j-1} l_{ik}l_{jk} \right)
+        \]
+    \end{enumerate}
+    \item \textbf{改进：$LDL^T$ 分解（针对非正定对称阵）}：
+    如果 $A$ 仅仅是对称的（可能是未定或不定的），但其顺序主子式非零，可以进行 $A = L D L^T$ 分解，其中 $L$ 是单位下三角，$D$ 是对角阵（对角元可正可负）。
+    \[
+        d_j = a_{jj} - \sum_{k=1}^{j-1} d_k l_{jk}^2, \quad l_{ij} = \frac{1}{d_j} \left( a_{ij} - \sum_{k=1}^{j-1} d_k l_{ik} l_{jk} \right)
+    \]
+    这种方法避免了开方，适用于更广泛的对称矩阵，但若遇到 $d_j \approx 0$ 仍需选主元（对称选主元 $P A P^T = L D L^T$）。
+\end{itemize}
+
+\subsubsection{追赶法 (Thomas Algorithm)}
+
+针对三对角矩阵的 $LU$ 分解简化版（待补充）。
+
+\subsection{误差分析与条件数}
+\subsubsection{条件数 (Condition Number)}
+衡量方程组解对数据扰动的敏感程度。
+\[ \text{cond}(A) = ||A|| \cdot ||A^{-1}|| \]
+\begin{property}
+    1. $\text{cond}(A) \ge 1$。
+    2. 若 $A$ 酉相似于 $B$，则 $\text{cond}_2(A) = \text{cond}_2(B)$。
+    3. 对于 SPD 矩阵，$\text{cond}_2(A) = \frac{\lambda_{\max}}{\lambda_{\min}}$。
+\end{property}
+
+\subsubsection{扰动误差界定理}
+设 $Ax=b, A$ 非奇异。考虑 $(A+\delta A)(x+\delta x) = b+\delta b$。
+若满足条件 $||\delta A|| \cdot ||A^{-1}|| < 1$（保证 $A+\delta A$ 非奇异），则有如下相对误差界：
+\[
+    \frac{||\delta x||}{||x||} \le \frac{\text{cond}(A)}{1 - \text{cond}(A)\frac{||\delta A||}{||A||}} \left( \frac{||\delta A||}{||A||} + \frac{||\delta b||}{||b||} \right)
+\]
+
+\begin{proof}
+
+    \[
+        (A+\delta A)(x+\delta x) = b + \delta b
+    \]
+    展开得：
+    \[
+        Ax + A\delta x + \delta A x + \delta A \delta x = b + \delta b
+    \]
+    由于 $Ax=b$，消去得：
+    \[
+        (A+\delta A)\delta x = \delta b - \delta A x
+    \]
+    
+
+    两边左乘 $(A+\delta A)^{-1}$：
+    \[
+        \delta x = (A+\delta A)^{-1}(\delta b - \delta A x)
+    \]
+    
+    \textbf{ 利用范数放缩}
+    取范数：
+    \[
+        ||\delta x|| \le ||(A+\delta A)^{-1}|| \cdot (||\delta b|| + ||\delta A|| \cdot ||x||)
+    \]
+    
+
+    根据前面的逆矩阵扰动定理：
+    \[
+        ||(A+\delta A)^{-1}|| \le \frac{||A^{-1}||}{1 - ||A^{-1}||\cdot||\delta A||}
+    \]
+    代入上式：
+    \[
+        ||\delta x|| \le \frac{||A^{-1}||}{1 - ||A^{-1}||\cdot||\delta A||} (||\delta b|| + ||\delta A|| \cdot ||x||)
+    \]
+    
+
+    两边除以 $||x||$：
+    \[
+        \frac{||\delta x||}{||x||} \le \frac{||A^{-1}||}{1 - ||A^{-1}||\cdot||\delta A||} \left( \frac{||\delta b||}{||x||} + ||\delta A|| \right)
+    \]
+    利用 $b=Ax \implies ||b|| \le ||A|| \cdot ||x|| \implies \frac{1}{||x||} \le \frac{||A||}{||b||}$：
+    \[
+        \frac{||\delta x||}{||x||} \le \frac{||A^{-1}||}{1 - ||A^{-1}||\cdot||\delta A||} \left( \frac{||\delta b|| \cdot ||A||}{||b||} + ||\delta A|| \right)
+    \]
+    
+    \textbf{Step 6: 引入条件数}
+    提取 $||A||$，并利用 $\text{cond}(A) = ||A|| \cdot ||A^{-1}||$：
+    \[
+        \frac{||\delta x||}{||x||} \le \frac{||A^{-1}|| \cdot ||A||}{1 - ||A^{-1}|| \cdot ||A|| \cdot \frac{||\delta A||}{||A||}} \left( \frac{||\delta b||}{||b||} + \frac{||\delta A||}{||A||} \right)
+    \]
+    整理得：
+    \[
+        \frac{||\delta x||}{||x||} \le \frac{\text{cond}(A)}{1 - \text{cond}(A)\frac{||\delta A||}{||A||}} \left( \frac{||\delta A||}{||A||} + \frac{||\delta b||}{||b||} \right)
+    \]
+    证毕。
+\end{proof}
+
+\subsubsection{后验误差估计 (Posteriori Error Estimation)}
+\textit{问题：如何利用计算出的近似解 $\tilde{x}$ 来估计真实误差 $x - \tilde{x}$？}
+
+设 $\tilde{x}$ 为近似解，定义残差（Residual）为：
+\[
+    r = b - A\tilde{x}
+\]
+
+
+\begin{theorem}[基于残差的误差界]
+    设 $A$ 非奇异，则相对误差与相对残差之间满足如下不等式：
+    \[
+        \frac{1}{\text{cond}(A)} \frac{||r||}{||b||} \le \frac{||x-\tilde{x}||}{||x||} \le \text{cond}(A) \frac{||r||}{||b||}
+    \]
+\end{theorem}
+
+\begin{proof}
+    \textbf{1. 上界}：
+    由 $r = b - A\tilde{x} = Ax - A\tilde{x} = A(x-\tilde{x})$，可得：
+    \[
+        x - \tilde{x} = A^{-1}r \implies ||x-\tilde{x}|| \le ||A^{-1}|| \cdot ||r||
+    \]
+    又由 $Ax=b \implies ||b|| \le ||A|| \cdot ||x|| \implies \frac{1}{||x||} \le \frac{||A||}{||b||}$。
+    两式相乘：
+    \[
+        \frac{||x-\tilde{x}||}{||x||} \le ||A^{-1}|| \cdot ||r|| \cdot \frac{||A||}{||b||} = \text{cond}(A) \frac{||r||}{||b||}
+    \]
+    
+    \textbf{2. 下界}：
+    由 $r = A(x-\tilde{x}) \implies ||r|| \le ||A|| \cdot ||x-\tilde{x}|| \implies ||x-\tilde{x}|| \ge \frac{||r||}{||A||}$。
+    又由 $x = A^{-1}b \implies ||x|| \le ||A^{-1}|| \cdot ||b|| \implies \frac{1}{||x||} \ge \frac{1}{||A^{-1}|| \cdot ||b||}$。
+    两式相乘：
+    \[
+        \frac{||x-\tilde{x}||}{||x||} \ge \frac{||r||}{||A|| \cdot ||A^{-1}|| \cdot ||b||} = \frac{1}{\text{cond}(A)} \frac{||r||}{||b||}
+    \]
+    证毕。
+\end{proof}
+
+\begin{remark}[物理意义]
+    \begin{enumerate}
+        \item \textbf{残差小 $\ne$ 误差小}：如果 $\text{cond}(A)$ 很大（矩阵病态），即使残差 $||r||$ 很小（计算机解出的方程组几乎“满足”方程），解的误差 $||x-\tilde{x}||$ 也可能非常大。这说明对于病态方程组，仅仅看残差是不够的。
+        \item \textbf{迭代改善 (Iterative Refinement)}：利用残差可以提高解的精度。
+        计算 $r = b - A\tilde{x}$（需用高精度计算），解修正方程 $A e = r$，则新解 $x_{\text{new}} = \tilde{x} + e$ 会更精确。
+    \end{enumerate}
+\end{remark}
+
+\subsubsection{病态矩阵 (Ill-conditioned Matrix)}
+条件数很大的矩阵。
+\begin{example}[Hilbert 矩阵]
+\[ H_{ij} = \frac{1}{i+j-1} \]
+$H_n$ 高度病态。当 $n$ 稍大时，$\text{cond}(H_n)$ 极大，直接法解将完全失真。
+\end{example}
+
+\subsection{广义逆与正则化 (Generalized Inverse \& Regularization)}
+\textit{针对奇异或极度病态方程组 (参考第二章讲义)}
+
+\subsubsection{Moore-Penrose 广义逆}
+对于 $A \in \mathbb{C}^{m \times n}$ (秩 $r$)，存在唯一的 $A^\dagger$ 满足 Penrose 方程。
+\begin{itemize}
+    \item \textbf{最小二乘解}：方程组 $Ax=b$ 的最小二乘解集为 $S = \{x | A^H Ax = A^H b\}$。
+    \item \textbf{广义逆解}：$x = A^\dagger b$ 是 $S$ 中 2-范数最小的解。
+    \item \textbf{SVD 计算}：若 $A=U\Sigma V^H$，则
+    \[ A^\dagger = V \Sigma^\dagger U^H \]
+    其中 $\Sigma^\dagger = \text{diag}(\sigma_1^{-1}, \dots, \sigma_r^{-1}, 0, \dots, 0)$。
+\end{itemize}
+
+\subsubsection{Tikhonov 正则化}
+用于处理严重的病态问题（如第一类 Fredholm 积分方程离散化）。
+\begin{itemize}
+    \item \textbf{变分原理}：最小化带罚项的泛函：
+    \[ J_\alpha(x) = ||Ax-b||_2^2 + \alpha ||x||_2^2 \]
+    其中 $\alpha > 0$ 为正则化参数。
+    \item \textbf{正规方程}：
+    \[ (\alpha I + A^H A) x_\alpha = A^H b \]
+    \item \textbf{效果}：矩阵 $\alpha I + A^H A$ 的条件数比 $A^H A$ 改善很多（特征值整体平移 $\alpha$），解更稳定。
+    \item \textbf{收敛性}：当 $\alpha \to 0$ 时，$x_\alpha \to A^\dagger b$。
+\end{itemize}
+
+\vspace{1cm}
+
+
+\section{单步定常线性迭代解法 (Stationary Linear Iterative Methods)}
+
+\subsection{迭代法基础理论}
+
+\subsubsection{迭代法的基本概念}
+\begin{itemize}
+    \item \textbf{构造思想}：对于大规模稀疏方程组 $Ax=b$，直接法计算代价过高。迭代法通过构造向量序列 $\{x^{(k)}\}$，使其极限为方程的解。
+    \[
+        \lim_{k \to \infty} x^{(k)} = x^*
+    \]
+    \item \textbf{单步定常线性迭代}：
+    迭代格式为：
+    \[
+        x^{(k+1)} = B x^{(k)} + f
+    \]
+    其中 $B$ 称为\textbf{迭代矩阵}，$f$ 为常向量。这种格式只依赖于前一步 $x^{(k)}$（单步），且 $B$ 和 $f$ 不随 $k$ 变化（定常）。
+    
+    \item \textbf{构造方法（矩阵分裂）}：
+    将 $A$ 分裂为 $A = M - N$，其中 $M$ 是非奇异的“近似”矩阵（易于求逆，如对角阵或三角阵）。
+    \[
+        Ax = b \iff (M-N)x = b \iff Mx = Nx + b
+    \]
+    由此导出的迭代格式为：
+    \[
+        Mx^{(k+1)} = Nx^{(k)} + b \implies x^{(k+1)} = M^{-1}N x^{(k)} + M^{-1}b
+    \]
+    此时迭代矩阵 $B = M^{-1}N$，常向量 $f = M^{-1}b$。
+    
+    \item \textbf{Richardson 迭代}：
+    最简单的迭代格式，取 $M = \frac{1}{\omega} I$。
+    \[
+        x^{(k+1)} = x^{(k)} + \omega (b - Ax^{(k)}) = (I - \omega A)x^{(k)} + \omega b
+    \]
+    迭代矩阵 $B = I - \omega A$。收敛条件：$0 < \omega < \frac{2}{\lambda_{\max}(A)}$（假设 A 为 SPD）。
+    
+
+
+
+    \item \textbf{预处理迭代}：
+    若引入预处理矩阵 $M \approx A$，则 Richardson 迭代变为：
+    \[
+        x^{(k+1)} = x^{(k)} + \omega M^{-1}(b - Ax^{(k)})
+    \]
+    这等价于对预处理后的方程 $M^{-1}Ax = M^{-1}b$ 进行 Richardson 迭代。
+\end{itemize}
+
+\subsubsection{向量序列的收敛性}
+\begin{definition}[序列收敛]
+    设 $\{x^{(k)}\}_{k=0}^\infty$ 是赋范空间 $(\mathbb{R}^n, ||\cdot||)$ 中的向量序列。若存在 $x \in \mathbb{R}^n$，使得
+    \[
+        \lim_{k \to \infty} ||x^{(k)} - x|| = 0
+    \]
+    则称序列 $\{x^{(k)}\}$ 收敛于 $x$，记为 $\lim_{k\to\infty} x^{(k)} = x$。
+\end{definition}
+
+\begin{theorem}[收敛性的等价性]
+
+    \begin{enumerate}
+        \item \textbf{范数无关性}：由于有限维空间 $\mathbb{R}^n$ 上的所有范数都是等价的，因此向量序列的收敛性与具体选择的范数无关。如果一个序列在某种范数下收敛，它在任意范数下都收敛。
+        
+        \item \textbf{分量收敛性}：向量序列 $\{x^{(k)}\}$ 收敛于 $x$ 的充要条件是其每一个分量序列都收敛于 $x$ 的对应分量。
+        \[
+            \lim_{k \to \infty} x^{(k)} = x \iff \lim_{k \to \infty} x_i^{(k)} = x_i, \quad \forall i=1,\dots,n
+        \]
+    \end{enumerate}
+\end{theorem}
+
+
+
+\subsubsection{迭代误差与收敛速度}
+设精确解为 $x^*$，第 $k$ 步误差为 $e^{(k)} = x^{(k)} - x^*$。
+\begin{itemize}
+    \item \textbf{误差传播方程}：
+    \[
+        e^{(k+1)} = x^{(k+1)} - x^* = (Bx^{(k)} + f) - (Bx^* + f) = B(x^{(k)} - x^*) = B e^{(k)}
+    \]
+    递推可得：
+    \[
+        e^{(k)} = B^k e^{(0)}
+    \]
+    \item \textbf{Jordan 标准型分析与收敛充要条件}：
+    将 $B$ 转化为 Jordan 标准型 $B = PJP^{-1}$，则 $B^k = P J^k P^{-1}$。
+    对于 Jordan 块 $J_i(\lambda_i)$：
+    \[
+        J_i^k = \begin{bmatrix}
+        \lambda_i^k & \binom{k}{1}\lambda_i^{k-1} & \dots \\
+        & \lambda_i^k & \binom{k}{1}\lambda_i^{k-1} \\
+        & & \ddots
+        \end{bmatrix}
+    \]
+    要使 $B^k \to 0$（即 $e^{(k)} \to 0$ 对任意初值成立），充要条件是所有特征值的模 $|\lambda_i| < 1$。
+    即 \textbf{谱半径条件}：$\rho(B) < 1$。
+    
+    \item \textbf{平均收敛率 (Average Rate of Convergence)}：
+    考查前 $k$ 步误差范数的平均衰减：
+    \[
+        \frac{||e^{(k)}||}{||e^{(0)}||} \le ||B^k|| \approx \rho(B)^k
+    \]
+    定义 $k$ 步平均收敛率为：
+    \[
+        R_k(B) = -\frac{1}{k} \ln ||B^k||
+    \]
+    
+    \item \textbf{渐进收敛率 (Asymptotic Rate of Convergence)}：
+    当 $k \to \infty$ 时，利用 Gelfand 半径公式 $\lim_{k\to\infty} ||B^k||^{1/k} = \rho(B)$，可得：
+    \[
+        R(B) = \lim_{k \to \infty} R_k(B) = -\ln \rho(B)
+    \]
+    \textbf{意义}：$R(B)$ 越大（即 $\rho(B)$ 越小），收敛越快。若要使误差减小 $10^{-m}$ 倍（增加 $m$ 位有效数字），所需迭代次数 $k$ 约为：
+    \[
+        k \approx \frac{m \ln 10}{R(B)}
+    \]
+\end{itemize}
+
+\subsection{经典迭代方法}
+将 $A$ 分解为 $A = D - L - U$：
+\begin{itemize}
+    \item $D$：对角部分。
+    \item $-L$：严格下三角部分。
+    \item $-U$：严格上三角部分。
+\end{itemize}
+
+\subsubsection{Jacobi 迭代 }
+\begin{itemize}
+    \item \textbf{分裂}：$M = D, \quad N = L+U$。
+    \item \textbf{公式}：$D x^{(k+1)} = (L+U) x^{(k)} + b$。
+    \item \textbf{分量形式}：
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j \ne i} a_{ij} x_j^{(k)} \right)
+    \]
+    \item \textbf{迭代矩阵}：$B_J = D^{-1}(L+U)$。
+\end{itemize}
+
+\subsubsection{Gauss-Seidel 迭代 }
+\begin{itemize}
+    \item \textbf{思想}：计算 $x_i^{(k+1)}$ 时，利用已更新的 $x_1^{(k+1)}, \dots, x_{i-1}^{(k+1)}$。
+    \item \textbf{分裂}：$M = D-L, \quad N = U$。
+    \item \textbf{公式}：$(D-L) x^{(k+1)} = U x^{(k)} + b$。
+    \item \textbf{分量形式}：
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j < i} a_{ij} x_j^{(k+1)} - \sum_{j > i} a_{ij} x_j^{(k)} \right)
+    \]
+    \item \textbf{迭代矩阵}：$B_{GS} = (D-L)^{-1}U$。
+    \item \textbf{收敛性}：若 $A$ 为 \textbf{SPD} 矩阵，GS 法必收敛。
+\end{itemize}
+
+\subsubsection{超松弛迭代 (SOR法)}
+\begin{itemize}
+    \item \textbf{思想}：对 GS 迭代进行加权平均（外推），加速收敛。
+    \[
+        x^{(k+1)} = (1-\omega)x^{(k)} + \omega x_{GS}^{(k+1)}
+    \]
+    其中 $\omega$ 为松弛因子。
+    \item \textbf{分裂}：$M = \frac{1}{\omega}(D-\omega L)$。
+    \item \textbf{迭代矩阵}：
+    \[
+        B_{SOR} = (D-\omega L)^{-1} [(1-\omega)D + \omega U]
+    \]
+    \item \textbf{收敛性}：
+    \begin{enumerate}
+        \item \textbf{必要条件}：$0 < \omega < 2$（Kahan定理）。
+        \item 若 $A$ 为 SPD，则 $0 < \omega < 2 \iff$ SOR 收敛。
+    \end{enumerate}
+    \item \textbf{最优松弛因子}：
+    对于具有 Property A 的矩阵（如三对角阵）：
+    \[
+        \omega_{opt} = \frac{2}{1 + \sqrt{1 - \rho(B_J)^2}}
+    \]
+    此时 $\rho(B_{SOR}) = \omega_{opt} - 1$。
+\end{itemize}
+
+\vspace{1cm}
+
+
+
+\section{非定常迭代法 (Krylov Subspace Methods)}
+
+\subsection{变分原理与 Ritz 方法基础}
+
+\subsubsection{算子方程与变分问题的等价性}
+考虑线性方程组 $Ax=b$，其中 $A \in \mathbb{R}^{n \times n}$ 是**对称正定 (SPD)** 矩阵。
+\begin{theorem}[变分原理]
+    求解 $Ax=b$ 等价于寻找二次泛函 $\phi(x)$ 的极小值点：
+    \[
+        \phi(x) = \frac{1}{2}(Ax, x) - (b, x) = \frac{1}{2} x^T A x - b^T x
+    \]
+    即 $x^* = A^{-1}b \iff x^* = \arg\min_{x \in \mathbb{R}^n} \phi(x)$。
+\end{theorem}
+\begin{proof}
+    计算 $\phi(x)$ 的梯度：
+    \[
+        \nabla \phi(x) = \frac{1}{2}(A+A^T)x - b = Ax - b \quad (\text{因 } A=A^T)
+    \]
+    令梯度为零，即 $Ax - b = 0 \implies Ax=b$。
+    由于 $A$ 正定，Hessian 矩阵 $\nabla^2 \phi(x) = A$ 正定，故驻点为严格极小值点。
+\end{proof}
+
+\subsubsection{Ritz 方法与子空间逼近}
+\begin{itemize}
+    \item \textbf{基本思想}：在全空间 $\mathbb{R}^n$ 中求极值可能太慢。Ritz 方法试图在一系列逐渐扩大的低维子空间 $V_k$ 中寻找 $\phi(x)$ 的近似极小点。
+    \item \textbf{Ritz 问题}：设 $V_k = \text{span}\{p_0, p_1, \dots, p_{k-1}\}$。寻找 $x_k \in x_0 + V_k$ 使得
+    \[
+        \phi(x_k) = \min_{x \in x_0 + V_k} \phi(x)
+    \]
+    \item \textbf{几何解释}：$x_k$ 是精确解 $x^*$ 在子空间 $x_0 + V_k$ 上的**A-正交投影**。
+    即误差 $e_k = x_k - x^*$ 满足 $e_k \perp_A V_k$（$e_k^T A v = 0, \forall v \in V_k$）。
+\end{itemize}
+
+\subsubsection{梯度与下降方向}
+\begin{itemize}
+    \item \textbf{残差与梯度}：$r(x) = b - Ax = - \nabla \phi(x)$。残差即负梯度方向。
+    \item \textbf{最速下降方向}：$p_k = r_k$。这是局部下降最快的方向，但在椭球狭长山谷中会导致“锯齿形”振荡，收敛极慢。
+    \item \textbf{A-共轭方向}：为克服锯齿效应，我们希望搜索方向 $p_0, p_1, \dots$ 能够使得每一步的搜索互不干扰。这就引入了 **A-正交（共轭）** 的概念：
+    \[
+        (p_i, p_j)_A = p_i^T A p_j = 0, \quad i \ne j
+    \]
+    在 A-共轭方向系下，二次型 $\phi(x)$ 的等高线被“拉圆”了，从而可以快速收敛。
+\end{itemize}
+
+\subsubsection{一维搜索理论 (One-Dimensional Search)}
+在变分方法中，给定当前点 $x_k$ 和下降方向 $p_k$，我们需要确定一个步长 $\alpha_k$，使得目标函数在沿该方向上达到极小。
+\[
+    x_{k+1} = x_k + \alpha_k p_k
+\]
+\begin{itemize}
+    \item \textbf{一维搜索问题}：
+    寻找 $\alpha_k$ 使得 $f(\alpha) = \phi(x_k + \alpha p_k)$ 最小。
+    
+    \item \textbf{最优步长推导}：
+    将 $f(\alpha)$ 对 $\alpha$ 求导并令其为 0：
+    \[
+        f'(\alpha) = \frac{d}{d\alpha} \phi(x_k + \alpha p_k) = (\nabla \phi(x_k + \alpha p_k), p_k)
+    \]
+    代入 $\nabla \phi(x) = Ax - b = -r(x)$，得：
+    \[
+        -(r(x_k + \alpha p_k), p_k) = 0
+    \]
+    利用残差的线性性质 $r(x_k + \alpha p_k) = b - A(x_k + \alpha p_k) = (b - Ax_k) - \alpha Ap_k = r_k - \alpha Ap_k$：
+    \[
+        (r_k - \alpha Ap_k, p_k) = 0 \implies (r_k, p_k) - \alpha (Ap_k, p_k) = 0
+    \]
+    解得最优步长：
+    \[
+        \alpha_k = \frac{(r_k, p_k)}{(Ap_k, p_k)}
+    \]
+    \item \textbf{结论}：无论是在最速下降法还是共轭梯度法中，每一步的步长 $\alpha_k$ 都是由上述公式确定的，它保证了新残差 $r_{k+1}$ 与当前搜索方向 $p_k$ 正交。
+\end{itemize}
+
+\subsubsection{单调性与收敛性分析}
+\textbf{命题}：在给定下降方向 $p_k$（满足 $p_k^T r_k > 0$）并采用最优步长 $\alpha_k$ 后，目标函数 $\phi(x)$、残差范数（在特定条件下）及误差范数（在特定度量下）均呈现单调下降趋势。
+
+\begin{proof}
+    \textbf{1. 目标函数值下降 ($\phi(x_{k+1}) < \phi(x_k)$)}：
+    将 $x_{k+1} = x_k + \alpha_k p_k$ 代入二次泛函展开：
+    \[
+        \phi(x_{k+1}) = \phi(x_k) + \alpha_k (Ax_k - b, p_k) + \frac{1}{2} \alpha_k^2 (Ap_k, p_k)
+    \]
+    由于 $Ax_k - b = -r_k$，所以 $(Ax_k - b, p_k) = -(r_k, p_k)$。
+    代入最优步长 $\alpha_k = \frac{(r_k, p_k)}{(Ap_k, p_k)}$：
+    \[
+    \begin{aligned}
+        \phi(x_{k+1}) &= \phi(x_k) - \frac{(r_k, p_k)^2}{(Ap_k, p_k)} + \frac{1}{2} \left( \frac{(r_k, p_k)}{(Ap_k, p_k)} \right)^2 (Ap_k, p_k) \\
+                      &= \phi(x_k) - \frac{(r_k, p_k)^2}{2(Ap_k, p_k)}
+    \end{aligned}
+    \]
+    因为 $A$ 正定，$(Ap_k, p_k) > 0$，且 $(r_k, p_k) \ne 0$（否则已收敛），故减项恒正。
+    \[
+        \therefore \phi(x_{k+1}) < \phi(x_k)
+    \]
+    这证明了变分函数值是严格单调下降的。
+
+    \textbf{2. 误差的 $A$-范数下降}：
+    定义误差 $e_k = x^* - x_k$。注意这里 $\phi(x)$ 与误差的 $A$-范数有直接关系：
+    \[
+        \phi(x) = \frac{1}{2}(A(x^*-e), x^*-e) - (b, x^*-e) = \phi(x^*) + \frac{1}{2}(Ae, e) = \phi(x^*) + \frac{1}{2}||e||_A^2
+    \]
+    由于 $\phi(x^*) = \text{const}$ 且 $\phi(x_{k+1}) < \phi(x_k)$，直接推出：
+    \[
+        ||e_{k+1}||_A < ||e_k||_A
+    \]
+    即误差在 $A$-范数意义下是单调递减的。
+
+    \textbf{3. 残差的正交性}：
+    由一维搜索条件 $f'(\alpha_k)=0$ 可知：
+    \[
+        (r_{k+1}, p_k) = 0
+    \]
+    这意味着新残差与当前的搜索方向正交。在几何上，这是在此方向上能达到的“最低点”的特征。
+\end{proof}
+
+\subsection{最速下降法 (Steepest Descent)}
+\subsubsection{算法流程与性质}
+\begin{itemize}
+    \item \textbf{下降方向}：取负梯度方向 $p_k = r_k = b - Ax_k$。
+    \item \textbf{最优步长}：$\alpha_k = \frac{(r_k, r_k)}{(Ar_k, r_k)}$。
+    \item \textbf{迭代公式}：
+    \[ x_{k+1} = x_k + \alpha_k r_k \]
+    \item \textbf{残差递推公式}：
+    \[ r_{k+1} = r_k - \alpha_k A r_k \]
+    这避免了每次迭代计算 $b - Ax_{k+1}$ 的矩阵向量乘法。
+\end{itemize}
+
+\begin{theorem}[相邻残差正交性]
+    在最速下降法中，相邻两步的残差相互正交，即 $(r_{k+1}, r_k) = 0$。
+\end{theorem}
+\begin{proof}
+    由最优步长条件（一维搜索性质）可知 $(r_{k+1}, p_k) = 0$。
+    而在最速下降法中，$p_k = r_k$。
+    故 $(r_{k+1}, r_k) = 0$。
+\end{proof}
+\begin{remark}[锯齿现象]
+    由于 $r_{k+1} \perp r_k$，意味着搜索方向在每一步都必须拐 90 度弯。在等高线为狭长椭球（条件数 $\kappa$ 很大）的情况下，这会导致算法在“山谷”底部反复震荡，前进极慢，形成锯齿形路径。
+\end{remark}
+
+\subsubsection{收敛性定理与证明 (Kantorovich 不等式)}
+\begin{theorem}[最速下降法收敛速度]
+    设 $A$ 是 SPD 矩阵，特征值为 $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_n > 0$。则最速下降法的误差满足：
+    \[
+        ||e_{k+1}||_A \le \frac{\kappa - 1}{\kappa + 1} ||e_k||_A
+    \]
+    其中 $\kappa = \text{cond}_2(A) = \frac{\lambda_1}{\lambda_n} = \frac{\lambda_{\max}}{\lambda_{\min}}$。
+\end{theorem}
+
+\begin{proofstep}{证明思路}
+    \textbf{1. 误差递推关系}：
+    由 $x_{k+1} = x_k + \alpha_k r_k$，两边减 $x^*$ 得 $e_{k+1} = e_k - \alpha_k r_k$。
+    注意 $r_k = b - Ax_k = A(x^* - x_k) = Ae_k$，代入得：
+    \[ e_{k+1} = e_k - \alpha_k Ae_k = (I - \alpha_k A)e_k \]
+    
+    \textbf{2. 能量范数递推}：
+    计算 $||e_{k+1}||_A^2 = (Ae_{k+1}, e_{k+1})$：
+    \[
+        ||e_{k+1}||_A^2 = (A(e_k - \alpha_k r_k), e_k - \alpha_k r_k)
+    \]
+    展开并代入最优步长 $\alpha_k = \frac{(r_k, r_k)}{(Ar_k, r_k)}$（推导略繁琐，直接利用函数值下降公式）：
+    我们已知 $\phi(x_{k+1}) = \phi(x_k) - \frac{(r_k, r_k)^2}{2(Ar_k, r_k)}$。
+    利用 $\phi(x) = \phi(x^*) + \frac{1}{2}||e||_A^2$，得：
+    \[
+        \frac{1}{2}||e_{k+1}||_A^2 = \frac{1}{2}||e_k||_A^2 - \frac{(r_k, r_k)^2}{2(Ar_k, r_k)}
+    \]
+    于是：
+    \[
+        \frac{||e_{k+1}||_A^2}{||e_k||_A^2} = 1 - \frac{(r_k, r_k)^2}{(Ar_k, r_k) \cdot ||e_k||_A^2}
+    \]
+    注意 $||e_k||_A^2 = (Ae_k, e_k) = (r_k, A^{-1}r_k)$，代入上式：
+    \[
+        \frac{||e_{k+1}||_A^2}{||e_k||_A^2} = 1 - \frac{(r_k, r_k)^2}{(Ar_k, r_k)(A^{-1}r_k, r_k)}
+    \]
+    
+    \textbf{3. 利用 Kantorovich 不等式}：
+    对于 SPD 矩阵 $A$，Kantorovich 不等式指出：
+    \[
+        \frac{(x, x)^2}{(Ax, x)(A^{-1}x, x)} \ge \frac{4\lambda_1 \lambda_n}{(\lambda_1 + \lambda_n)^2}
+    \]
+    将 $x$ 替换为 $r_k$，代入递推式：
+    \[
+        \frac{||e_{k+1}||_A^2}{||e_k||_A^2} \le 1 - \frac{4\lambda_1 \lambda_n}{(\lambda_1 + \lambda_n)^2} = \left( \frac{\lambda_1 - \lambda_n}{\lambda_1 + \lambda_n} \right)^2 = \left( \frac{\kappa - 1}{\kappa + 1} \right)^2
+    \]
+    开方即得证。
+\end{proofstep}
+
+\subsection{共轭梯度法 (Conjugate Gradient, CG)}
+\subsubsection{基本思想}
+\begin{itemize}
+    \item \textbf{共轭方向}：寻找一组关于 $A$ 正交（共轭）的方向 $\{p_0, p_1, \dots\}$，即 $p_i^T A p_j = 0 \ (i \ne j)$。
+    \item \textbf{最优性}：第 $k$ 步得到的解 $x_k$ 使得 $\phi(x)$ 在 Krylov 子空间 $\mathcal{K}_k(A, r_0) = \text{span}\{r_0, Ar_0, \dots, A^{k-1}r_0\}$ 上达到极小。
+\end{itemize}
+
+\subsubsection{CG 算法流程}
+初始化 $x_0$，计算 $r_0 = b - Ax_0$，令 $p_0 = r_0$。
+对于 $k=0, 1, \dots$：
+\begin{enumerate}
+    \item $\alpha_k = \frac{r_k^T r_k}{p_k^T A p_k}$ （计算步长）
+    \item $x_{k+1} = x_k + \alpha_k p_k$ （更新解）
+    \item $r_{k+1} = r_k - \alpha_k A p_k$ （更新残差）
+    \item $\beta_k = \frac{r_{k+1}^T r_{k+1}}{r_k^T r_k}$ （计算方向更新系数）
+    \item $p_{k+1} = r_{k+1} + \beta_k p_k$ （更新搜索方向）
+\end{enumerate}
+
+\subsubsection{收敛性分析}
+\begin{itemize}
+    \item \textbf{有限步终止}：理论上至多 $n$ 步收敛到精确解（无舍入误差时）。
+    \item \textbf{误差估计}：
+    \[
+        \frac{||e_k||_A}{||e_0||_A} \le 2 \left( \frac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1} \right)^k
+    \]
+    收敛速度远快于最速下降法，且依赖于 $\sqrt{\text{cond}(A)}$。
+\end{itemize}
+
+\subsection{预处理技术 (Preconditioning)}
+\begin{itemize}
+    \item \textbf{目的}：改善矩阵条件数，加速 CG 收敛。
+    \item \textbf{方法}：求解等价方程 $M^{-1} A x = M^{-1} b$，其中 $M \approx A$ 且 $M$ 易求逆。
+    \item \textbf{预优 CG (PCG)}：在 CG算法中引入 $M^{-1}$，实际上是在 $M$-内积下进行正交化。
+    \item \textbf{常用预条件子}：Jacobi (对角Scaling), Incomplete Cholesky (IC)。
+\end{itemize}
+
+\tofill[]{从PPT和作业来看，预处理CG的细节不是考试重点，大概考不了...艰深而收获小，摆了，建议大家多花点精力复习别的章节（}
+
+
 
 
 
