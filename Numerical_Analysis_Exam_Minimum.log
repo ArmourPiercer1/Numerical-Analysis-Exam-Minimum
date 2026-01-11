@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  10 JAN 2026 16:52
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  11 JAN 2026 23:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1048,58 +1048,68 @@ Missing character: There is no ₂ (U+2082) in font [lmroman12-bold]:mapping=tex
 ]
 Chapter 四.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [35]
-Overfull \vbox (422.14694pt too high) has occurred while \output is active []
-
-
 
 [36]
+
+[37]
+
+[38]
+
+[39]
+
+[40]
+
+[41]
+
+[42]
+
+[43]
+
+[44]
 Chapter 五.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[37
+[45
 
 ]
 Overfull \vbox (77.77596pt too high) has occurred while \output is active []
 
 
 
-[38]
+[46]
 Chapter 六.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[39
+[47
 
 ]
 Overfull \vbox (157.05643pt too high) has occurred while \output is active []
 
 
 
-[40]
+[48]
 Chapter 七.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[41
+[49
 
 ]
 Overfull \vbox (515.8425pt too high) has occurred while \output is active []
 
 
 
-[42] 
+[50] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Numerical_Analysis_Exam_Minimum.aux)
  ***********
@@ -1111,15 +1121,15 @@ L3 programming layer <2022/08/05>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `Numerical_Analysis_Exam_Minimum.out' has not changed.
-(rerunfilecheck)             Checksum: DDBF1B3154689BDFB7363F1C9B1D09A3;6216.
+(rerunfilecheck)             Checksum: 78F6C570A519988BA4B0CE154367B06D;6216.
  ) 
 Here is how much of TeX's memory you used:
- 39199 strings out of 473832
- 966498 string characters out of 5733158
+ 39266 strings out of 473832
+ 970848 string characters out of 5733158
  1451925 words of memory out of 5000000
- 61597 multiletter control sequences out of 15000+600000
+ 61664 multiletter control sequences out of 15000+600000
  576682 words of font info for 141 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,16n,111p,748b,540s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,16n,111p,748b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Numerical_Analysis_Exam_Minimum.pdf (42 pages).
+Output written on Numerical_Analysis_Exam_Minimum.pdf (50 pages).

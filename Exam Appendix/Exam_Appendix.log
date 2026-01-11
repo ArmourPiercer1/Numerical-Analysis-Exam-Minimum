@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  10 JAN 2026 15:40
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  11 JAN 2026 19:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -964,23 +964,41 @@ Chapter 2.
 
 [8]
 
-[9] 
+[9]
+
+[10
+
+]
+Chapter 3.
+
+
+[11] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Exam_Appendix.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
  ***********
-Package rerunfilecheck Info: File `Exam_Appendix.out' has not changed.
-(rerunfilecheck)             Checksum: 4B44E40D7EE2D719FEEE291DBE534F51;2745.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `Exam_Appendix.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Exam_Appendix.out':
+(rerunfilecheck)             Before: 2CE2BE621B793E941BD705CF11DDF67D;2900
+(rerunfilecheck)             After:  A4936835B900739FA8DDD823A308B80B;3855.
  ) 
 Here is how much of TeX's memory you used:
  38432 strings out of 473832
  934896 string characters out of 5733158
- 1432470 words of memory out of 5000000
+ 1432634 words of memory out of 5000000
  60846 multiletter control sequences out of 15000+600000
  574132 words of font info for 123 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  93i,12n,111p,730b,539s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Exam_Appendix.pdf (9 pages).
+Output written on Exam_Appendix.pdf (11 pages).

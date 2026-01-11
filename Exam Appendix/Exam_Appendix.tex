@@ -217,9 +217,46 @@ Note：分片线性插值只要做泰勒展开即可；
 \subsubsection{证明：}
 提示：利用偏差泛函的性质
 
+
+\subsection{Chebyshev交错点组定理}
+\begin{theorem}
+    [Chebyshev交错点组定理]
+    设$f\in C[a,b]$，$p_n^*\in P_n$为$f$在$P_n$中的最佳一致逼近多项式，则存在$a\leq x_0 < x_1 < ... < x_{n+1} \leq b$，使得
+    \begin{align}
+        f(x_i) - p_n^*(x_i) = (-1)^i \|f - p_n^*\|_\infty, \quad i=0,1,...,n+1
+    \end{align}
+    即误差函数在$n+2$个点上达到最大偏差且符号交替。
+\end{theorem}
+
+\subsubsection{证明：}
+提示：分别证明必要性和充分性，且均用到反证法。
+
+\subsection{最佳一致逼近唯一性定理}
+\begin{theorem}
+    [最佳一致逼近唯一性定理]
+    设$f\in C[a,b]$，则$f$在$n$次多项式空间$P_n$中的最佳一致逼近多项式$p_n^*$是唯一的。
+\end{theorem}
+\subsubsection{证明：}
+提示：反证法。
+
+
+
+
 \section{重要例题与习题}
 \subsubsection{求解最佳平方逼近}
 记$\Phi=\mathrm{span}(1,x^2)$，求$x\in[0,1]$上在$\Phi$中的最佳平方逼近。
+
+
+\chapter{数值微积分}
+\section{补充内容}
+
+\section{重要证明}
+\subsection{闭型Newton-Cotes公式的导出与误差分析}
+
+\subsection{开型Newton-Cotes公式的导出与误差分析}
+
+
+\section{重要习题与例题}
 
 
 
