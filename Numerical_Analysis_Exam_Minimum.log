@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  11 JAN 2026 23:23
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  12 JAN 2026 15:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -949,25 +949,25 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ] (./Numerical_Analysis_Exam_Minimum.toc
 
-[3])
+[3]
+
+[4])
 \tf@toc=\write5
 \openout5 = `Numerical_Analysis_Exam_Minimum.toc'.
 
 
 
-[4]
+[5]
+
+[6
+
+]
 Chapter 一.
 
 LaTeX Font Warning: Font shape `TU/SimSun(0)/b/it' undefined
 (Font)              using `TU/SimSun(0)/b/n' instead on input line 165.
 
 
-
-[5
-
-]
-
-[6]
 
 [7]
 
@@ -988,27 +988,22 @@ LaTeX Font Warning: Font shape `TU/SimSun(0)/b/it' undefined
 [15]
 
 [16]
+
+[17]
+
+[18]
 Chapter 二.
 
 
-[17
+[19
 
 ]
-
-[18]
-
-[19]
-Overfull \hbox (26.82787pt too wide) in paragraph at lines 854--867
- [] 
- []
-
-
 
 [20]
 
 [21]
-Overfull \hbox (66.98788pt too wide) detected at line 954
-[]
+Overfull \hbox (26.82787pt too wide) in paragraph at lines 854--867
+ [] 
  []
 
 
@@ -1016,24 +1011,29 @@ Overfull \hbox (66.98788pt too wide) detected at line 954
 [22]
 
 [23]
+Overfull \hbox (66.98788pt too wide) detected at line 954
+[]
+ []
+
+
 
 [24]
 
 [25]
 
 [26]
+
+[27]
+
+[28]
 Chapter 三.
 
 
-[27
+[29
 
 ]
 Missing character: There is no ₂ (U+2082) in font [lmroman12-bold]:mapping=tex-text;!
 
-
-[28]
-
-[29]
 
 [30]
 
@@ -1043,15 +1043,15 @@ Missing character: There is no ₂ (U+2082) in font [lmroman12-bold]:mapping=tex
 
 [33]
 
-[34
+[34]
+
+[35]
+
+[36
 
 ]
 Chapter 四.
 
-
-[35]
-
-[36]
 
 [37]
 
@@ -1068,57 +1068,52 @@ Chapter 四.
 [43]
 
 [44]
+
+[45]
+
+[46]
+
+[47]
+
+[48]
+
+[49]
+
+[50
+
+]
 Chapter 五.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[45
-
-]
+[51]
 Overfull \vbox (77.77596pt too high) has occurred while \output is active []
 
 
 
-[46]
+[52]
 Chapter 六.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[47
+[53
 
 ]
 Overfull \vbox (157.05643pt too high) has occurred while \output is active []
 
 
 
-[48]
+[54]
 Chapter 七.
 
 
-[49
+[55
 
 ]
-
-[50]
-
-[51]
-
-[52]
-
-[53]
-
-[54]
-Overfull \hbox (21.71744pt too wide) in paragraph at lines 2423--2423
-|[]\TU/SimSun(0)/b/n/16.06 单 步 定 常 线 性 迭 代 解 法 \TU/lmr/bx/n/16.06 (Stationary Linear Iterative Meth-
- []
-
-
-
-[55]
 
 [56]
 
@@ -1129,12 +1124,29 @@ Overfull \hbox (21.71744pt too wide) in paragraph at lines 2423--2423
 [59]
 
 [60]
+Overfull \hbox (21.71744pt too wide) in paragraph at lines 2554--2554
+|[]\TU/SimSun(0)/b/n/16.06 单 步 定 常 线 性 迭 代 解 法 \TU/lmr/bx/n/16.06 (Stationary Linear Iterative Meth-
+ []
+
+
 
 [61]
 
 [62]
 
-[63] 
+[63]
+
+[64]
+
+[65]
+
+[66]
+
+[67]
+
+[68]
+
+[69] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Numerical_Analysis_Exam_Minimum.aux)
  ***********
@@ -1145,25 +1157,16 @@ L3 programming layer <2022/08/05>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Numerical_Analysis_Exam_Minimum.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Numerical_Analysis_Exam_Minimum.out':
-(rerunfilecheck)             Before: 78F6C570A519988BA4B0CE154367B06D;6216
-(rerunfilecheck)             After:  A9D56975A50A0C6A9082360C6027D6B0;8276.
+Package rerunfilecheck Info: File `Numerical_Analysis_Exam_Minimum.out' has not changed.
+(rerunfilecheck)             Checksum: A9D56975A50A0C6A9082360C6027D6B0;8276.
  ) 
 Here is how much of TeX's memory you used:
  39354 strings out of 473832
  975857 string characters out of 5733158
- 1451961 words of memory out of 5000000
+ 1454087 words of memory out of 5000000
  61749 multiletter control sequences out of 15000+600000
  576706 words of font info for 144 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  93i,16n,111p,748b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Numerical_Analysis_Exam_Minimum.pdf (63 pages).
+Output written on Numerical_Analysis_Exam_Minimum.pdf (69 pages).
