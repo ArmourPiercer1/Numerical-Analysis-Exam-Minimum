@@ -122,7 +122,7 @@
 
 % 文档信息
 \title{Numerical Analysis \\ Exam Minimum}
-\author{Astral Projection}
+\author{Astral Projection,yiuko}
 \date{\today}
 
 
@@ -2142,30 +2142,393 @@ Note：由于抛物插值有一定对称性，中心点的二阶导精度可以�
 \end{align}
 
 
-\chapter {非线性方程求根}
+\chapter {非线性方程求根 (Nonlinear Equations)}
 
 
-\section {通用理论}
-\subsection {问题模型}
-\subsection {迭代法基础}
-\subsection {收敛性分析}
-\subsubsection {收敛阶定义}
-\subsubsection {整体收敛性（压缩映像原理）}
-\subsubsection {局部收敛性判定}
-\subsection {收敛效率}
-\section {具体方法}
-\subsection {单步法}
-\subsubsection {牛顿法}
-\paragraph {迭代公式}
-\paragraph {收敛性分析}
-\paragraph {重根处理}
-\subsubsection {不动点迭代}
-\subsection {多步法}
-\subsubsection {割线法}
-\subsection {其他方法}
-\subsubsection {Steffensen 方法}
-\subsubsection {Broyden 秩 1 方法}
+求解 $f(x)=0$，其中 $f: [a,b] \to \mathbb{R}$ 为连续函数。
+\begin{itemize}
+    \item \textbf{二分法}：基于介值定理，线性收敛但可靠。
+    \item \textbf{迭代法}：将问题转化为等价不动点问题 $x = \phi(x)$。利用迭代格式$x^{(k+1)} = \phi(x^{(k)})$得到。
+\end{itemize}
 
+
+
+
+
+
+\section{不动点迭代法 (Fixed Point Iteration)}
+\subsection{基本概念}
+\begin{itemize}
+    \item \textbf{不动点}：若 $\xi = \phi(\xi)$，则称 $\xi$ 为 $\phi$ 的不动点。
+    \item \textbf{等价性}：$f(x)=0 \iff x=\phi(x)$。例如取 $\phi(x) = x - c f(x)$。
+\end{itemize}
+
+\subsection{收敛理论}
+
+%局部收敛性的定义
+
+\begin{theorem}[Brouwer 不动点定理]
+    设 $\phi: D \to \mathbb{R}^n$ 是凸紧集 $D$ 上的连续映射，且 $\phi(D) \subseteq D$。则 $\phi$ 在 $D$ 内至少存在一个不动点。
+    （注：在一维情形下，即若 $\phi: [a,b] \to [a,b]$ 连续，则必有不动点。）
+\end{theorem}
+
+\begin{theorem}[压缩映射原理 / Banach Fixed Point Theorem]
+    设 $\phi: D \to D$ 是完备度量空间上的压缩映射，即存在常数 $0 \le L < 1$，使得：
+    \[
+        ||\phi(x) - \phi(y)|| \le L ||x-y||, \quad \forall x, y \in D
+    \]
+    则：
+    \begin{enumerate}
+        \item $\phi$ 在 $D$ 内存在\textbf{唯一}不动点 $x^*$。
+        \item 对任意初值 $x_0 \in D$，迭代序列 $x_{k+1} = \phi(x_k)$ 均收敛于 $x^*$。
+        \item \textbf{误差估计}：
+        \[
+            ||x_k - x^*|| \le \frac{L^k}{1-L} ||x_1 - x_0||
+        \]
+    \end{enumerate}
+\end{theorem}
+\begin{proofstep}{压缩映射证明思路}
+
+    1. 证明 $\{x_k\}$ 是柯西序列：$||x_{k+m} - x_k|| \le \frac{L^k}{1-L}||x_1-x_0||$。
+
+    2. 利用空间完备性，得极限 $x^*$ 存在。
+
+    3. 利用连续性证明 $x^*$ 是不动点。
+
+    4. 利用反证法证明唯一性。
+\end{proofstep}
+
+
+
+
+\subsection{局部收敛性定理}
+\begin{theorem}
+    设 $x^*$ 为 $\phi(x)$ 的不动点，且 $\phi'(x)$ 在 $x^*$ 邻域内连续。若
+    \[
+        |\phi'(x^*)| < 1
+    \]
+    则不动点迭代在 $x^*$ 的某个邻域内局部收敛。
+\end{theorem}
+
+\subsection{收敛阶 (Order of Convergence)}
+\begin{definition}
+    若迭代序列 $\{x_k\}$ 收敛于 $x^*$，且
+    \[
+        \lim_{k \to \infty} \frac{|x_{k+1} - x^*|}{|x_k - x^*|^p} = C \ne 0
+    \]
+    则称该迭代过程是 $p$ 阶收敛的。
+\end{definition}
+\begin{theorem}[收敛阶判定]
+    设 $\phi(x)$ 在 $x^*$ 附近足够光滑。
+    \begin{itemize}
+        \item 若 $0 < |\phi'(x^*)| < 1$，则为\textbf{线性收敛} ($p=1$)。
+        \item 若 $\phi'(x^*) = 0$ 且 $\phi''(x^*) \ne 0$，则为\textbf{平方收敛} ($p=2$)。
+        \item 一般地，若 $\phi^{(k)}(x^*) = 0 (k=1,\dots,p-1)$ 且 $\phi^{(p)}(x^*) \ne 0$，则为 $p$ 阶收敛。
+    \end{itemize}
+\end{theorem}
+
+\section{牛顿法 (Newton's Method)}
+\subsection{构造}
+\begin{itemize}
+    \item \textbf{几何视角}：在当前点 $(x_k, f(x_k))$ 作切线，取切线与 $x$ 轴交点为下一次迭代值 $x_{k+1}$。
+    \item \textbf{泰勒展开视角}：将 $f(x)$ 在 $x_k$ 处展开，忽略高阶项：
+    \[
+        f(x) \approx f(x_k) + f'(x_k)(x - x_k) = 0 \implies x = x_k - \frac{f(x_k)}{f'(x_k)}
+    \]
+\end{itemize}
+\textbf{迭代公式}：
+\[
+    x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
+\]
+
+\subsection{ 收敛性分析}
+特殊的不动点迭代， $\phi(x) = x - \frac{f(x)}{f'(x)}$。
+\begin{theorem}[局部二阶收敛性]
+    设 $x^*$ 是 $f(x)=0$ 的单根（即 $f(x^*)=0, f'(x^*) \ne 0$），且 $f(x)$ 在 $x^*$ 邻域内二阶连续可微。则存在 $x^*$ 的邻域，使得对任意 $x_0$ 在此邻域内，牛顿法生成的序列 $\{x_k\}$ 收敛于 $x^*$，且为\textbf{二阶收敛}。
+\end{theorem}
+\begin{proofstep}{证明}
+
+    1. 考察迭代函数 $\phi(x) = x - \frac{f(x)}{f'(x)}$ 的导数：
+    \[
+        \phi'(x) = 1 - \frac{(f'(x))^2 - f(x)f''(x)}{(f'(x))^2} = \frac{f(x)f''(x)}{(f'(x))^2}
+    \]
+    2. 在单根 $x^*$ 处，$f(x^*)=0$，故 $\phi'(x^*) = 0$。
+
+    3. 根据不动点收敛阶判定定理，由于 $\phi'(x^*) = 0$，只要 $\phi''(x^*) \ne 0$，收敛阶至少为 2。
+    
+    \textbf{误差渐进式}：利用泰勒展开可得
+    \[
+        e_{k+1} \approx \frac{f''(x^*)}{2f'(x^*)} e_k^2 \implies \lim_{k\to\infty} \frac{|e_{k+1}|}{|e_k|^2} = \left| \frac{f''(x^*)}{2f'(x^*)} \right|
+    \]
+\end{proofstep}
+
+\subsection{ 重根情形修正}
+若 $x^*$ 是 $f(x)=0$ 的 $m$ 重根 ($m > 1$)，则 $f(x) = (x-x^*)^m g(x)$，且 $g(x^*) \ne 0$。
+此时，$f(x)$的前$m-1$阶导数为0.
+标准牛顿法退化为线性收敛，收敛因子为 $1 - 1/m$。
+
+
+\textbf{修正牛顿法}：为了恢复二阶收敛，可使用：
+\[
+    x_{k+1} = x_k - m \frac{f(x_k)}{f'(x_k)}
+\]
+m为不动点的重数。
+
+
+另：
+
+
+令$u:= \frac{f}{f'}$，对$u$使用牛顿迭代法。
+
+
+\section{加速方法}
+
+
+
+
+\subsection{割线法 (Secant Method)}
+\textbf{构造思想}：
+为了避免牛顿法中计算导数 $f'(x_k)$ 的代价，用差商来近似导数：
+\[
+    f'(x_k) \approx \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}
+\]
+将此代入牛顿公式，得到\textbf{迭代公式}：
+\[
+    x_{k+1} = x_k - f(x_k) \frac{x_k - x_{k-1}}{f(x_k) - f(x_{k-1})}
+\]
+此方法需要\textbf{两个初值} $x_0, x_1$。
+
+\textbf{收敛性分析}：
+\begin{theorem}[割线法收敛阶]
+    若 $x^*$ 是单根，且 $f$ 二阶连续可微，初值充分接近 $x^*$，则割线法是\textbf{超线性收敛}的，收敛阶为黄金分割比：
+    \[
+        p = \frac{1+\sqrt{5}}{2} \approx 1.618
+    \]
+\end{theorem}
+\begin{proofstep}{误差方程推导}
+    设误差 $e_k = x_k - x^*$。割线法的误差关系满足：
+    \[
+        e_{k+1} \approx C e_k e_{k-1}
+    \]
+    设 $|e_{k+1}| \sim |e_k|^p$，则 $|e_k| \sim |e_{k-1}|^p \implies |e_{k-1}| \sim |e_k|^{1/p}$。
+    代入误差方程：
+    \[
+        |e_k|^p \sim |e_k| \cdot |e_k|^{1/p} = |e_k|^{1 + 1/p}
+    \]
+    比较指数：$p = 1 + \frac{1}{p} \implies p^2 - p - 1 = 0$。
+    解得正根 $p = \frac{1+\sqrt{5}}{2} \approx 1.618$。
+\end{proofstep}
+
+
+\subsection{Aitken $\Delta^2$ 加速}
+\textbf{构造}：
+假设序列 $\{x_k\}$ 线性收敛于 $x^*$，且渐进误差常数为 $C$：
+\[
+    x_k - x^* \approx C(x_{k-1} - x^*)
+\]
+我们有三个连续点 $x_{k}, x_{k+1}, x_{k+2}$。近似认为 $C$ 在这几步是不变的：
+\[
+    \frac{x_{k+2} - x^*}{x_{k+1} - x^*} \approx \frac{x_{k+1} - x^*}{x_k - x^*} \approx C
+\]
+消去 $C$，解出 $x^*$ 的估计值 $\hat{x}_k$：
+\[
+    (x_{k+2} - x^*)(x_k - x^*) \approx (x_{k+1} - x^*)^2
+\]
+解得 \textbf{Aitken 加速公式}：
+\[
+    \hat{x}_k = x_k - \frac{(x_{k+1} - x_k)^2}{x_{k+2} - 2x_{k+1} + x_k} = x_k - \frac{(\Delta x_k)^2}{\Delta^2 x_k}
+\]
+
+即使 $\{x_k\}$ 只是线性收敛，$\{\hat{x}_k\}$ 的收敛速度通常会快得多（高阶收敛）。
+
+\subsection{Steffensen 方法}
+Aitken 加速实质上是原不动点迭代步骤完成后，进一步提高精度的处理。
+
+Steffensen 方法则将二阶差分直接结合到不动点迭代过程中，构成一种无需导数的二阶收敛算法。
+
+\textbf{构造过程}：
+对于不动点迭代 $x = \phi(x)$，每一步迭代如下：
+
+1. 给定 $x_k$，计算两步辅助点：
+   \[ y_k = \phi(x_k), \quad z_k = \phi(y_k) \]
+2. 将 $x_k, y_k, z_k$ 视为 Aitken 加速中的三个点，直接计算加速值作为 $x_{k+1}$：
+   \[
+       x_{k+1} = x_k - \frac{(y_k - x_k)^2}{z_k - 2y_k + x_k}
+   \]
+   其中分母 $z_k - 2y_k + x_k = \phi(\phi(x_k)) - 2\phi(x_k) + x_k$。
+   
+
+\textbf{Steffensen方法对应的迭代函数} 
+
+本质上是将单步不动点迭代函数$\phi$换成了
+$\psi(x)$：
+   \[ \psi(x) = x - \frac{(\phi(x) - x)^2}{\phi(\phi(x)) - 2\phi(x) + x}  = \frac{x\phi(\phi(x)) - [\phi(x)]^2}{\phi(\phi(x)) - 2\phi(x) + x} \]
+   即 $x_{k+1} = \psi(x_k)$。
+
+\textbf{收敛性分析}：
+\begin{theorem}
+    Steffensen 方法实际上等价于对函数 $g(x) = x - \phi(x)$ 使用牛顿法的一个近似形式（用差商代替导数）。
+    若 $\phi(x)$ 三阶连续可微，且 $\phi'(x^*) \ne 1$，则 Steffensen 方法是\textbf{二阶收敛}的。
+    \[
+        \lim_{k \to \infty} \frac{|e_{k+1}|}{|e_k|^2} = C \ne 0
+    \]
+\end{theorem}
+
+不需要计算导数，却能达到牛顿法的二阶收敛速度。
+
+
+
+\section{非线性方程组}
+
+\subsection{基础理论与向量值微积分}
+\subsubsection{非线性方程组}
+求解 $\mathbf{F}(\mathbf{x}) = \mathbf{0}$，其中 $\mathbf{F}: D \subset \mathbb{R}^n \to \mathbb{R}^n$ 为向量值函数，$\mathbf{x} = (x_1, \dots, x_n)^T$。
+\[
+    \mathbf{F}(\mathbf{x}) = \begin{pmatrix} f_1(x_1, \dots, x_n) \\ \vdots \\ f_n(x_1, \dots, x_n) \end{pmatrix}
+\]
+
+\subsubsection{向量值函数的导数 (Jacobian Matrix)}
+\begin{definition}[Jacobian 矩阵]
+    设 $\mathbf{F}$ 在 $\mathbf{x}$ 处可微，其导数（Jacobian 矩阵）定义为：
+    \[
+        \mathbf{J}(\mathbf{x}) = \mathbf{F}'(\mathbf{x}) = \begin{pmatrix}
+            \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+            \vdots & \ddots & \vdots \\
+            \frac{\partial f_n}{\partial x_1} & \cdots & \frac{\partial f_n}{\partial x_n}
+        \end{pmatrix} \in \mathbb{R}^{n \times n}
+    \]
+\end{definition}
+
+\subsubsection{多元 Taylor 展开}
+\begin{theorem}[多元 Taylor 公式]
+    设 $\mathbf{F}$ 二阶连续可微，则在 $\mathbf{x}$ 的邻域内：
+    \[
+        \mathbf{F}(\mathbf{x} + \mathbf{h}) = \mathbf{F}(\mathbf{x}) + \mathbf{J}(\mathbf{x})\mathbf{h} + O(||\mathbf{h}||^2)
+    \]
+    其中线性主部 $\mathbf{J}(\mathbf{x})\mathbf{h}$ 是 $\mathbf{F}$ 在 $\mathbf{x}$ 处的微分。
+\end{theorem}
+
+\subsubsection{多元压缩映射原理}
+\begin{theorem}[Banach Fixed Point Theorem in $\mathbb{R}^n$]
+    设 $D \subset \mathbb{R}^n$ 是闭集，$\mathbf{\Phi}: D \to D$ 是压缩映射，即存在 $0 \le L < 1$ 使得：
+    \[
+        ||\mathbf{\Phi}(\mathbf{x}) - \mathbf{\Phi}(\mathbf{y})|| \le L ||\mathbf{x} - \mathbf{y}||, \quad \forall \mathbf{x}, \mathbf{y} \in D
+    \]
+    则 $\mathbf{\Phi}$ 在 $D$ 内存在唯一不动点 $\mathbf{x}^*$。
+\end{theorem}
+\begin{corollary}[局部收敛判据]
+    设 $\mathbf{x}^*$ 是不动点。若 $\rho(\mathbf{\Phi}'(\mathbf{x}^*)) < 1$（谱半径小于1），则不动点迭代 $\mathbf{x}_{k+1} = \mathbf{\Phi}(\mathbf{x}_k)$ 在 $\mathbf{x}^*$ 邻域内局部收敛。
+\end{corollary}
+
+\subsection{多元牛顿法 (Newton's Method for Systems)}
+\textbf{构造思想}：
+对 $\mathbf{F}(\mathbf{x}) = \mathbf{0}$ 在 $\mathbf{x}_k$ 处进行线性化（Taylor 展开保留一项）：
+\[
+    \mathbf{F}(\mathbf{x}) \approx \mathbf{F}(\mathbf{x}_k) + \mathbf{J}(\mathbf{x}_k)(\mathbf{x} - \mathbf{x}_k) = \mathbf{0}
+\]
+解出 $\mathbf{x}$ 即为下一次迭代值 $\mathbf{x}_{k+1}$。
+
+\textbf{迭代格式}：
+\[
+    \mathbf{x}_{k+1} = \mathbf{x}_k - [\mathbf{J}(\mathbf{x}_k)]^{-1} \mathbf{F}(\mathbf{x}_k)
+\]
+实际计算中，\textbf{不求逆矩阵}，而是求解线性方程组：
+
+1. 计算残差 $\mathbf{r}_k = -\mathbf{F}(\mathbf{x}_k)$。
+
+2. 求解线性方程组 $\mathbf{J}(\mathbf{x}_k) \mathbf{s}_k = \mathbf{r}_k$ （得到修正量 $\mathbf{s}_k$）。
+
+3. 更新 $\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$。
+
+
+\subsubsection{多元牛顿法的收敛性分析}
+
+\begin{theorem}[多元牛顿法局部二阶收敛]
+
+    设 $\mathbf{F}: D \subset \mathbb{R}^n \to \mathbb{R}^n$ 满足以下条件：
+    \begin{enumerate}
+        \item 存在零点 $\mathbf{x}^* \in D$，即 $\mathbf{F}(\mathbf{x}^*) = \mathbf{0}$。
+        \item $\mathbf{F}$ 在 $\mathbf{x}^*$ 的邻域内二阶连续可微（$C^2$）。
+        \item Jacobian 矩阵 $\mathbf{J}(\mathbf{x}^*)$ 非奇异（即 $\det(\mathbf{J}(\mathbf{x}^*)) \ne 0$，$\mathbf{x}^*$ 为单根）。
+    \end{enumerate}
+    则存在 $\mathbf{x}^*$ 的邻域 $S$，使得对任意初始点 $\mathbf{x}_0 \in S$，牛顿迭代产生的序列 $\{\mathbf{x}_k\}$ 收敛于 $\mathbf{x}^*$，且收敛阶至少为 2（Quadratic Convergence）。即存在常数 $C > 0$，使得：
+    \[
+        \|\mathbf{x}_{k+1} - \mathbf{x}^*\| \le C \|\mathbf{x}_k - \mathbf{x}^*\|^2
+    \]
+\end{theorem}
+
+\begin{proofstep}[证明思路]
+
+    \textbf{1. 误差递推关系}
+    设 $\mathbf{e}_k = \mathbf{x}_k - \mathbf{x}^*$ 为第 $k$ 步的误差。
+    由牛顿法迭代公式：
+    \[ \mathbf{x}_{k+1} = \mathbf{x}_k - [\mathbf{J}(\mathbf{x}_k)]^{-1} \mathbf{F}(\mathbf{x}_k) \]
+    两边减去 $\mathbf{x}^*$，得：
+    \[ \mathbf{e}_{k+1} = \mathbf{e}_k - [\mathbf{J}(\mathbf{x}_k)]^{-1} \mathbf{F}(\mathbf{x}_k) \]
+    
+    \textbf{2.  Taylor 展开}
+
+    将 $\mathbf{F}(\mathbf{x}^*)$ 在 $\mathbf{x}_k$ 处展开（注意方向是 $\mathbf{x}^* = \mathbf{x}_k - \mathbf{e}_k$）：
+    \[ \mathbf{0} = \mathbf{F}(\mathbf{x}^*) = \mathbf{F}(\mathbf{x}_k) + \mathbf{J}(\mathbf{x}_k)(\mathbf{x}^* - \mathbf{x}_k) + O(\|\mathbf{x}^* - \mathbf{x}_k\|^2) \]
+    即：
+    \[ \mathbf{F}(\mathbf{x}_k) = \mathbf{J}(\mathbf{x}_k)\mathbf{e}_k + O(\|\mathbf{e}_k\|^2) \]
+    或者更精确地写成积分余项形式：
+    \[ \mathbf{F}(\mathbf{x}_k) = \mathbf{J}(\mathbf{x}_k)\mathbf{e}_k - \int_0^1 (1-t) \mathbf{F}''(\mathbf{x}_k - t\mathbf{e}_k)(\mathbf{e}_k, \mathbf{e}_k) dt \]
+    
+
+    将 $\mathbf{F}(\mathbf{x}_k)$ 的展开式代入误差递推式：
+    \[
+    \begin{aligned}
+        \mathbf{e}_{k+1} &= \mathbf{e}_k - [\mathbf{J}(\mathbf{x}_k)]^{-1} \bigl(\mathbf{J}(\mathbf{x}_k)\mathbf{e}_k + O(\|\mathbf{e}_k\|^2)\bigr) \\
+        &= \mathbf{e}_k - \bigl(\mathbf{e}_k + [\mathbf{J}(\mathbf{x}_k)]^{-1} O(\|\mathbf{e}_k\|^2)\bigr) \\
+        &= - [\mathbf{J}(\mathbf{x}_k)]^{-1} O(\|\mathbf{e}_k\|^2)
+    \end{aligned}
+    \]
+    
+    两边取范数：
+    \[ \|\mathbf{e}_{k+1}\| \le \|[\mathbf{J}(\mathbf{x}_k)]^{-1}\| \cdot \|O(\|\mathbf{e}_k\|^2)\| \]
+    
+
+    由于 $\mathbf{J}(\mathbf{x})$ 在 $\mathbf{x}^*$ 处连续且非奇异，存在 $\mathbf{x}^*$ 的邻域 $S$ 和常数 $M_1$，使得对任意 $\mathbf{x} \in S$，$\mathbf{J}(\mathbf{x})$ 均可逆且 $\|[\mathbf{J}(\mathbf{x})]^{-1}\| \le M_1$（逆算子的一致有界性）。
+    又因为 $\mathbf{F}$ 二阶可微，二阶导数在闭邻域上有界，即存在常数 $M_2$ 使得 Taylor 展开的余项满足 $\|O(\|\mathbf{e}_k\|^2)\| \le M_2 \|\mathbf{e}_k\|^2$。
+    于是：
+    \[ \|\mathbf{e}_{k+1}\| \le M_1 M_2 \|\mathbf{e}_k\|^2 = C \|\mathbf{e}_k\|^2 \]
+    其中 $C = M_1 M_2$。
+    
+    \textbf{结论}：这就证明了误差是按照平方速度衰减的。只要初值 $\mathbf{x}_0$ 足够接近 $\mathbf{x}^*$，使得 $C\|\mathbf{e}_0\| < 1$，迭代就会收敛。
+\end{proofstep}
+
+
+
+
+\subsubsection{往年题：牛顿法计算特征值与归一化特征向量}
+\paragraph{特征值问题的非线性方程组转化}
+对于 $n$ 阶实矩阵 $\mathbf{A} \in \mathbb{R}^{n \times n}$，特征值-特征向量问题 $\mathbf{A}\mathbf{x} = \lambda \mathbf{x} (\mathbf{x} \neq \mathbf{0})$ 结合归一化约束 $\mathbf{x}^T\mathbf{x} = 1$，可转化为求解非线性方程组 $\mathbf{F}(\mathbf{z}) = \mathbf{0}$，其中 $\mathbf{z} = (\mathbf{x}^T, \lambda)^T \in \mathbb{R}^{n+1}$，且：
+\[
+\mathbf{F}(\mathbf{z}) = \mathbf{F}(\mathbf{x}, \lambda) = \begin{pmatrix}
+(\mathbf{A} - \lambda \mathbf{I})\mathbf{x} \\
+\frac{1}{2}(\mathbf{x}^T\mathbf{x} - 1)
+\end{pmatrix}
+\]
+
+\paragraph{Jacobian矩阵构造}
+$\mathbf{F}(\mathbf{z})$ 的 $(n+1) \times (n+1)$ 阶Jacobian矩阵为：
+\[
+\mathbf{J}(\mathbf{z}) = \begin{pmatrix}
+\mathbf{A} - \lambda \mathbf{I} & -\mathbf{x} \\
+\mathbf{x}^T & 0
+\end{pmatrix}
+\]
+
+\paragraph{牛顿迭代格式}
+
+
+\tofill{以下构造过程就是一样的了，抄上面方程组牛顿迭代格式即可}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
