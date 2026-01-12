@@ -52,6 +52,7 @@
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=3cm}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{mathtools}
 
 % 目录和超链接
 \usepackage{hyperref}
@@ -2170,27 +2171,512 @@ Note：由于抛物插值有一定对称性，中心点的二阶导精度可以�
 
 \chapter {常微分方程初值问题数值解法}
 
+\section*{总结}
+\begin{itemize}
+    \item Lipschitz条件
+    \item 零稳定性
+    \item 绝对稳定性
+    \item 局部截断误差 
+    \item 相容性与相容阶
+    \item Taylor展开法求局部截断误差的重要结论
+\end{itemize}
+\subsection*{单步法}
+\begin{itemize}
+    \item 一般形式
+    \item 求解方法
+    \begin{itemize}
+        \item Euler折线法（Euler公式）
+        \item 向后Euler法
+        \item 中点格式及其显式化
+        \item 梯形格式及其显式化
+    \end{itemize}
+    \item 一步误差
+    \item 局部截断误差 
+    \item 相容性与相容阶
+\end{itemize}
+
 \section {通用理论}
 
+
+
+
 \subsection {问题模型}
-\subsection {数值解法核心}
+
+一阶初值问题提法：
+\begin{align}
+    \begin{cases}
+        y' = f(t,y),\quad t\in [a,b],\quad y\in\boldsymbol{R}^d\\
+        y(a) = y_0
+    \end{cases}
+\end{align}
+
+半线性高阶常微分方程初值问题提法：
+\begin{align}
+    y^{(n)}+F(t,y,y',\ldots,y^{(n-1)})=0,\quad t\in [a,b]\\
+    y(a)=y_0,\,y'(a)=y_0^{(1)},\ldots,y^{(n-1)}(a)=y_0^{(n-1)}
+\end{align}
+
+从一阶初值问题到高阶初值问题的转化：
+考虑导数向量
+\begin{align}
+    Y=[y,y',\ldots,y^{(n-1)}]^T
+\end{align}
+
+则该导数向量满足矩阵关系：
+\begin{align}
+    Y'=&\begin{bmatrix}
+        0 & I & 0 & \ldots & 0\\
+        0 & 0 & I & \ldots & 0\\
+        \vdots & \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & 0 & \ldots & I\\
+        0 & 0 & 0 & \ldots & 0
+    \end{bmatrix}
+Y + \begin{bmatrix}
+        0\\
+        0\\
+        \vdots\\
+        0\\
+        -F(t,y,y',\ldots,y^{(n-1)})
+    \end{bmatrix}\\
+\end{align}
+
+
+\subsection {数值解法前提：Lipschitz 条件}
+
+对比：线性方程组求解的压缩映像原理；但这里\textbf{不}要求L<1。
+\begin{definition}
+    [Lipschitz 条件]
+    设函数$f:[a,b]\times \boldsymbol{R}^d \to \boldsymbol{R}^d$，若存在常数$L>0$，使得对任意$t\in[a,b]$及任意$y_1,y_2\in \boldsymbol{R}^d$，都有
+    \begin{align}
+        ||f(t,y_1)-f(t,y_2)|| \leq L ||y_1 - y_2||
+    \end{align}
+    则称$f$满足Lipschitz条件，L为Lipschitz常数。
+
+    当方程满足Lipschitz条件时，初值问题存在唯一解$y=y(t)\in C^1[a,b]$
+\end{definition}
+
+
 \subsection {基本概念}
-\subsubsection {局部截断误差与整体截断误差}
+
+\subsubsection{单步法与多步法的一般形式}
+\begin{itemize}
+    \item 单步法：从n计算出n+1
+    \begin{align}
+    y_{n+1}=y_n + h_{n+1} \phi(t_n,t_{n+1};y_n,y_{n+1};f)
+\end{align}
+    \item 多步法：从$(n,n+k-1)$共k个点计算出n+k
+    \begin{align}
+        \sum_{i=0}^k \alpha_i^{(n+k)}y_{n+i}=h_{n+k}\phi(t_n,t_{n+1},\ldots,t_{n+k};y_n,y_{n+1},\ldots,y_{n+k};f)
+    \end{align}
+    式中，$\alpha_k^{n+k}=1$
+\end{itemize}
+
+对于单步法和多步法，增量函数$\phi$均需要满足以下三条性质：
+\begin{itemize}
+    \item 连续性：$\phi$在所有的（除了函数f外）的变量上连续
+    \item 零值性：当$f=0$时，$\phi(\cdot;f)=0$
+    \item Lipschitz条件：
+    \begin{itemize}
+        \item 对于单步法：
+        \begin{align}
+            \|\phi(t,\tau;u_1,v_1;f)-\phi(t,\tau;u_2,v_2;f)\|\leq L_f(\|u_1-u_2\|+\|v_1-v_2\|)
+        \end{align}
+        \item 对于多步法，需要满足一致Lipschitz条件：
+        \begin{align}
+            &\|\phi(t_n,t_{n+1},\ldots,t_{n+k};u_0,u_1,\ldots,u_k;f)-\phi(t_n,t_{n+1},\ldots,t_{n+k};v_0,v_1,\ldots,v_k;f)\| \\
+            &\leq L_f \sum_{i=0}^k \|u_i - v_i\|
+        \end{align}
+    \end{itemize}
+\end{itemize}
+
+
+\subsubsection{特征多项式}
+对于多步法，定义其特征多项式为
+\begin{align}
+    \rho(\xi)=\sum_{i=0}^k \alpha_i^{(n+k)} \xi^i
+\end{align}
+
+
+\subsubsection{零稳定性}
+
+\paragraph{单步法}
+零稳定性考虑的是方程右端函数$f(t,y)$受到一个小扰动变为$\tilde{f}(t,y)$后，数值解的变化情况。相应地，初始条件也可能被扰动，从$y_0$变为$\tilde{y}_0$.
+
+若当扰动量控制在一个范围内时，数值解的偏差也能被控制在一个与扰动量成正比的范围内，则称该数值方法是零稳定的。
+\begin{definition}
+    [零稳定性]
+    若存在正常数$K^*$和$\eta^*$，使得对任意$\epsilon \leq \eta^*$，当对原方程施加一个扰动
+    \begin{align}
+        &\|y_0-\tilde{y}_0\| \leq \epsilon \\
+        &\|f(t,y)-\tilde{f}(t,y)\| \leq \epsilon,\quad t\in [a,b],\,y\in \boldsymbol{R}^d
+    \end{align}
+    得到新的方程\footnote{老登在这里的符号规范仿佛是精神分裂了一样，$\tilde{y}_0$表示准确值，$y_0$表示扰动值；f则反过来，$\tilde{f}$表示扰动后的函数，$f$表示准确的函数。}
+    \begin{align}
+        \begin{cases}
+            v'=\tilde{f}(t,v),\quad t\in [a,b]\\
+            v(a)=y_0
+        \end{cases}
+    \end{align}
+    若该方程有解存在，且满足
+    \begin{align}
+        \|y(t)-v(t)\|\leq K^* \epsilon, \quad t\in [a,b]
+    \end{align}
+    则称该数值方法是零稳定的。
+\end{definition}
+
+
+\paragraph{多步法}
+若存在正常数$C$和$h_0$，当$0<h<h_0$时，多步法的任意两解$u_n$和$v_n$满足不等式
+\begin{align}
+    \max |u_n-v_n| \leq C \max_{j=0,1,\ldots,k-1} |u_j - v_j|
+\end{align}
+
+等价形式：
+
+考虑k点数值向量
+\begin{align}
+    Y_n=[y_n,\,y_{n+1},\,\ldots,\,y_{n+k-1}]^T
+\end{align}
+则多步法可表示为
+\begin{align}
+    Y_{n+1}=\begin{bmatrix}
+        0 & 1 & 0 & \ldots & 0\\
+        0 & 0 & 1 & \ldots & 0\\
+        \vdots & \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & 0 & \ldots & 1\\
+        -\alpha_0^{(n+k)} & -\alpha_1^{(n+k)} & -\alpha_2^{(n+k)} & \ldots & -\alpha_{k-1}^{(n+k)}
+    \end{bmatrix}
+    Y_n + h_{n+k} \begin{bmatrix}
+        0\\
+        0\\
+        \vdots\\
+        0\\
+        \phi(t_n,t_{n+1},\ldots,t_{n+k};y_n,y_{n+1},\ldots,y_{n+k};f)
+    \end{bmatrix}
+\end{align}
+
+
+\subsubsection {一步误差与局部截断误差}
+单步法：
+
+\begin{itemize}
+    \item 一步误差：
+    考虑已知一点的数值解$(t_n,y_n)$，设$y=y(t;t_n,y_n)$是点$(t_n,y_n)$所在的积分曲线（即该数值解点对应的一条精确解），
+    用单步法得到$y_{n+1}$处的数值解，则一步误差定义为由点$(t_n,y_n)$所确定的$t_{n+1}$处所确定的“一步精确值”与数值结果导出的“一步近似值”之间的差值：
+    \begin{align}
+        \tilde{R}_{n+1}=y(t_{n+1};t_n,y_n)-y_{n+1}=y(t_{n+1};t_n,y_n)-y_n - h_{n+1}\phi(t_n,t_{n+1};y_n,y_{n+1};f)
+    \end{align}
+    \item 局部截断误差：在$t_{n+1}$处，假设前一步的数值解是准确的，即$y_n=y(t_n)$，则在$t_{n+1}$的局部截断误差定义为
+\begin{align}
+    R_{n+1}=y(t_{n+1})-y_{n+1}=y(t_{n+1})-y(t_n)-h_{n+1}\phi(t_n,t_{n+1};y(t_n),y(t_{n+1});f)
+\end{align}
+\end{itemize}
+
+二者满足关系
+\begin{align}
+    (1-h_{n+1}L)|\tilde{R}_{n+1}|\leq  |R_{n+1}| \leq (1+h_{n+1}L)|\tilde{R}_{n+1}|
+\end{align}
+
+多步法：
+
+\begin{align}
+    R_{n+k}=*\sum_{i=0}^k \alpha_i^{(n+k)}y(t_{n+i}) - h_{n+k}\phi(t_n,t_{n+1},\ldots,t_{n+k};y(t_n),y(t_{n+1}),\ldots,y(t_{n+k});f)
+\end{align}
+
+
+
+
+
+
+\subsubsection {相容性}
+单步法：
+对任意积分曲线$y=y(t)$，若 
+\begin{align}
+    R(h)=y(t+h)-y(t)-h\phi(t,t+h;y(t),y(t+h);f)=o(h)
+\end{align}
+则称该方法是相容的。此外，若 
+\begin{align}
+    \|R(h)\|\leq Mh^{p+1}
+\end{align}
+则称该方法至少p阶相容。
+
+若局部截断误差可以展开为
+\begin{align}
+    R(h)=\psi(t;y)h^{p+1}+O(h^{p+2})
+\end{align}
+则称$\psi(t;y)h^{p+1}$为主局部截断误差。
+
+此外，对于隐式方法，局部截断误差和一步误差有相同的主项。
+
+多步法：
+
+若局部截断误差$R^{n+k}=o(h_{n+k})$，则称多步法是相容的。此外，若 
+\begin{align}
+    R^{n+k}=O(h^{p+1}_{n+k})
+\end{align}
+则称其为p阶相容，主项称为主局部截断误差。
+
+
+
 \subsubsection {收敛性与收敛阶}
-\subsubsection {稳定性与相容性}
-\subsection {收敛性与稳定性判定}
+\begin{definition}
+    [单步法的收敛性]
+    若单步法满足
+    \begin{align}
+        \sup_n \|y(t_n)-y_n\|\rightarrow 0, \quad h\rightarrow 0^+, \quad e_0\rightarrow 0
+    \end{align}
+\end{definition}
+
+\begin{definition}
+    [多步法的收敛性]
+    若对任意初值
+    \begin{align}
+        y_r=s_r,\quad r=0,1,\ldots,k-1
+    \end{align}
+    满足
+    \begin{align}
+        s_r(h)\rightarrow \tilde{y}_0,\quad h\rightarrow 0^+
+    \end{align}
+    时总有
+    \begin{align}
+        \sup_n \|y_n-y(t_n)\|\rightarrow 0,\quad h\rightarrow 0^+
+    \end{align}
+    则称多步法是收敛的。
+\end{definition}
+
+\subsubsection{稳定性}
+
+若对于给定的时间演化区间$(0,T]$，存在常数$h_0$和K，使得当 
+\begin{align}
+    0<h\leq h_0
+\end{align}
+时，任意两数值解满足
+\begin{align}
+    \max_{t_n\leq T}|y_n-z_n|\leq K|y_0-z_0|
+\end{align}
+则称单步法是零稳定的。
+
+单步法 
+\begin{align}
+    y_{n+1}=y_n + h_{n+1} \phi(t_n,t_{n+1};y_n,y_{n+1};f)
+\end{align}
 
 
-\section {具体方法}
+
+\section{相关定理}
+
+\subsection{单步法相容的充要条件}
+\begin{align}
+    f(t,y(t))=\phi(t,t;y(t),y(t);f)
+\end{align}
+
+\subsection{整体误差估计}
+
+记第n步的误差为$e_n=y(t_n)-y_n$。若函数$\phi$满足前面条件，则存在$h_0>0$和$C>0$，使得当$0<h<h_0$时，有
+\begin{align}
+    \|e_n\|\leq C\left(  \|e_0\|+\sup_m \frac{\|R_m\|}{h_m}  \right)
+\end{align}
+若方法是p阶相容的，则 
+\begin{align}
+    \|e_n\|=O(\|e_0\|+h^p)
+\end{align}
+
+\subsection{收敛性定理}
+
+\subsubsection{单步法}
+若方法是相容的，且 
+\begin{align}
+    y_0\rightarrow \tilde{y}_0,\quad h\rightarrow 0^+
+\end{align}
+则方法是收敛的。
+
+同时，若$y_0-\tilde{y}_0=O(h^p)$且方法是p阶相容的，则收敛阶为p.
+
+\subsubsection{多步法}
+\begin{theorem}
+    [多步法收敛的充分条件]
+    多步法收敛的充分条件是特征多项式在1处的值为0，即$\rho(1)=0$
+\end{theorem}
+
+\begin{theorem}
+    [多步法收敛性定理]
+
+    多步法若强稳定且相容，则多步法收敛。进一步，若方法p阶相容，并且初值的近似误差也是p阶的，则
+    \begin{align}
+        \sup_n \|y_n-y(t_n)\|=O(h^p)
+    \end{align}
+\end{theorem}
+
+
+\subsection {稳定性定理}
+
+\subsubsection{单步法}
+单步法是零稳定的。
+
+（虽然PPT上就这么一句话，但Gemini说其实这要求增量函数$\phi$和方程右侧函数$f$都满足连续性和Lipschitz条件。）
+
+\subsubsection{多步法}
+\paragraph{多步法的强稳定性条件}
+若存在某个范数，使得多步法系数矩阵的范数不大于1，则称多步法满足强稳定性条件。
+
+\paragraph{多步法的强稳定性与零稳定性}
+强稳定性可以确保多步法是零稳定的。
+
+\paragraph{多步法强稳定性的一个充分条件}
+若对于等步长特征多项式
+\begin{align}
+    \rho(\xi)=\sum_{i=0}^k \alpha_i \xi^i
+\end{align}
+除了1这一个单根外，所有根的模值都小于1，则存在一个常数$\kappa>1$，使得当$h_m/h_n\leq \kappa$时，多步法是强稳定的。
+
+
+\section {具体求解方法}
+
+区间划分规定：
+\begin{align}
+    a=t_0<t_1<\ldots <t_N=b\\
+\end{align}
+
+记号：
+
+区间长度：
+\begin{align}
+        h_i=t_i-t_{i-1},\quad i=1,2,\ldots,N
+\end{align}
+注意，此时的区间长度为这个下标减去前一个下标，与数值微积分一节不同。
+
+此外，记 
+\begin{align}
+    h=\max_i h_i
+\end{align}
+
+准确值与近似值：
+\begin{itemize}
+    \item 准确值记为$y(t_i)$
+    \item 近似值记为$y_i$
+\end{itemize}
 
 \subsection {单步法}
+
+基本方法：通过各种不同数值表达式得到前一时刻和后一时刻的函数值之间的关系，进行时间步进
+
+一般形式：
+\begin{align}
+    y_{n+1}=y_n + h_{n+1} \phi(t_n,t_{n+1};y_n,y_{n+1};f)
+\end{align}
+
+
 \subsubsection {Euler 方法}
-\paragraph {向前欧拉}
-\paragraph {向后欧拉}
-\subsubsection {改进欧拉方法}
+\paragraph{欧拉折线法：显格式}
+由每一点的向前差分近似导数得到。
+\begin{align}
+    y_{n+1}=y_n+h_{n+1}f(t_n,y_n)
+\end{align}
+
+\begin{itemize}
+    \item 一阶相容性
+    \item 主局部截断误差$\frac{1}{2}h^2y''(t)$
+\end{itemize}
+
+\paragraph {向前欧拉：显格式}
+将问题转化为积分形式，用左矩形公式近似积分，得到Euler公式：
+\begin{align}
+    y_{n+1}=y_n+h_{n+1}f(t_n,y_n)
+\end{align}
+
+
+\paragraph {向后欧拉：隐格式}
+若用右矩形求积公式近似积分，则得到向后欧拉方法：
+\begin{align}
+    y_{n+1}=y_n+h_{n+1}f(t_{n+1},y_{n+1})
+\end{align}
+
+\subsubsection{数值积分导出的其他方法}
+
+\paragraph{中点格式：可以显式化的隐格式}
+
+用中点求积公式近似积分，得到中点格式：
+\begin{align}
+    y_{n+1}=y_n+h_{n+1}f(t_{n+1/2},y_{n+1/2})
+\end{align}
+若中点处$y_n$取一阶近似，即
+\begin{align}
+    t_{n+1/2}=&\frac{t_n+t_{n+1}}{2}\\
+    y_{n+1/2}=&y_n+\frac{h_{n+1}}{2}f(t_n,y_n)
+\end{align}
+即为显式中点方法。
+
+\paragraph{梯形公式：隐格式}
+用梯形公式近似积分，得到梯形格式：
+\begin{align}
+    y_{n+1}=y_n+\frac{h_{n+1}}{2}[f(t_n,y_n)+f(t_{n+1},y_{n+1})]
+\end{align}
+
+\begin{itemize}
+    \item 二阶相容性
+    \item 主局部截断误差$-\frac{1}{12}h^3 y^{(3)}(t)$
+\end{itemize}
+
+\paragraph{显式梯形公式}
+同样用一阶近似代入梯形公式，得到显式梯形公式：
+\begin{align}
+    y_{n+1}=&y_n+\frac{h_{n+1}}{2}[f(t_n,y_n)+f(t_{n+1},y_{n+1}^*)]\\
+    y_{n+1}^*=&y_n+h_{n+1}f(t_n,y_n)
+\end{align}
+
+
+% \subsubsection {改进欧拉方法}
 \subsubsection {龙格 - 库塔（RK）方法}
-\paragraph {2 阶 RK 方法}
-\paragraph {4 阶 RK 方法}
+\textcolor{blue}{明确说了必考显式龙格库塔方法的推导}
+
+思想：用s个点的斜率的线性组合来近似平均斜率，而每一个点的确定又都与其他点相关。
+
+一般形式：
+\begin{align}
+    y_{n+1}=y_n+h_{n+1}\sum_{i=1}^s b_i k_i
+\end{align}
+式中，
+\begin{align}
+    k_i=f(t_n+c_ih_{n+1},y_n+h_{n+1} \underbrace{\sum_{j=1}^sa_{ij}k_j}_{\substack{\text{用s个点得到的}\\\text{近似平均斜率}}})
+\end{align}
+且满足
+\begin{align}
+    \sum_{j=1}^s a_{ij}=c_i
+\end{align}
+
+形式下的参数：
+\begin{align}
+    b_k=\sum_{i=1}^s a_{ik} \text{（列和）}\\
+    c_k=\sum_{j=1}^s a_{kj} \text{（行和）}
+\end{align}
+
+这种一般形式的等价形式为
+\begin{align}
+    y_{n+1}=y_n+h_{n+1}\sum_{i=1}^s b_if(t_n+c_ih_{n+1},Y_i)\\
+    Y_i=y_n+h_{n+1}\sum_{j=1}^s a_{ij}f(t_n+c_jh_{n+1},Y_j)
+\end{align}
+可以理解为引入一个$y_n$的代数函数$Y_i$作为中间变量。
+
+\paragraph{显式与隐式RK方法}
+若矩阵 $A=(a_{ij})$ 是严格下三角矩阵，则称该RK方法为显式RK方法，否则为隐式RK方法。
+
+
+\paragraph {显式2 阶 RK 方法}
+参数组合：
+\begin{align}
+    b_1+b_2=1\\
+    b_2c_2=\frac{1}{2}
+\end{align}
+
+\paragraph {3 阶 RK 方法}
+
+\begin{align}
+    b_1+b_2+b_3=1\\
+    b_2c_2+b_3c_3=\frac{1}{2}\\
+    b_2c_2^2+b_3c_3^2=\frac{1}{3}\\
+    b_3a_{32}c_2=\frac{1}{6}
+\end{align}
+
 
 \subsection {多步法}
 \subsubsection {Adams 方法}
