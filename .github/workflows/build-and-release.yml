@@ -14,9 +14,6 @@ on:
 permissions:
   contents: write
 
-env:
-  RELEASE_TAG: latest
-
 jobs:
   build-latex:
     name: Build LaTeX Documents
@@ -32,7 +29,6 @@ jobs:
           ts="$(date -u +'%Y%m%d-%H%M%S')"
           echo "build_ts=$ts" >> "$GITHUB_OUTPUT"
           echo "BUILD_TS=$ts" >> "$GITHUB_ENV"
-
       - name: Restore LaTeX build cache
         uses: actions/cache@v4
         with:
@@ -67,27 +63,14 @@ jobs:
           path: dist/*.pdf
           if-no-files-found: error
 
-      - name: Update single Release (replace assets)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          TAG="${RELEASE_TAG}"
-          TITLE="Latest build ${BUILD_TS}"
-          NOTES=$(printf "Automated build from %s@%s\nTriggered by %s.\n" "${GITHUB_REPOSITORY}" "${GITHUB_SHA}" "${GITHUB_EVENT_NAME}")
-
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release '$TAG' exists; deleting old assets..."
-            gh release view "$TAG" --json assets -q '.assets[].name' | while IFS= read -r name; do
-              [ -n "$name" ] || continue
-              gh release delete-asset "$TAG" "$name" -y
-            done
-            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES"
-          else
-            echo "Creating release '$TAG'..."
-            gh release create "$TAG" --target "${GITHUB_SHA}" --title "$TITLE" --notes "$NOTES"
-          fi
-
-          echo "Uploading new PDFs to release '$TAG'..."
-          gh release upload "$TAG" dist/*.pdf --clobber
+      - name: Create new Release (unique tag)
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Build ${{ github.ref_name }} @ ${{ steps.ts.outputs.build_ts }}
+          body: |
+            Automated build from ${{ github.repository }}@${{ github.sha }}
+            Triggered by ${{ github.event_name }}.
+          artifacts: dist/*.pdf
+          artifactErrorsFailBuild: true
+          allowUpdates: false
