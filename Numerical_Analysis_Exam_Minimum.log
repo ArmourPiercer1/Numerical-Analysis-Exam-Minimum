@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  13 JAN 2026 13:59
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  13 JAN 2026 15:53
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1206,19 +1206,13 @@ L3 programming layer <2022/08/05>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-Package rerunfilecheck Warning: File `Numerical_Analysis_Exam_Minimum.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Numerical_Analysis_Exam_Minimum.out':
-(rerunfilecheck)             Before: E11DBDE1647AEC68E102FABA55333640;10368
-(rerunfilecheck)             After:  C623CE574171F9A049867FD2C22E9812;10571.
+Package rerunfilecheck Info: File `Numerical_Analysis_Exam_Minimum.out' has not changed.
+(rerunfilecheck)             Checksum: C623CE574171F9A049867FD2C22E9812;10571.
  ) 
 Here is how much of TeX's memory you used:
  39459 strings out of 473832
  981764 string characters out of 5733158
- 1456301 words of memory out of 5000000
+ 1456513 words of memory out of 5000000
  61852 multiletter control sequences out of 15000+600000
  579187 words of font info for 155 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

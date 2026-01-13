@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  12 JAN 2026 21:27
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  13 JAN 2026 15:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -979,34 +979,35 @@ Chapter 3.
 ]
 Chapter 4.
 
+Underfull \vbox (badness 5939) has occurred while \output is active []
 
-[13] 
+
+
+[13]
+
+[14]
+
+[15]
+
+[16]
+
+[17] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Exam_Appendix.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Exam_Appendix.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Exam_Appendix.out':
-(rerunfilecheck)             Before: B6F6912217588CEBA3153C06BC64E73D;4311
-(rerunfilecheck)             After:  B37BB96602935796FEDBFF4240980DA8;4796.
+Package rerunfilecheck Info: File `Exam_Appendix.out' has not changed.
+(rerunfilecheck)             Checksum: F52CBD12328BBC170C61C80F849BBF05;4863.
  ) 
 Here is how much of TeX's memory you used:
- 38448 strings out of 473832
- 935732 string characters out of 5733158
- 1434207 words of memory out of 5000000
- 60862 multiletter control sequences out of 15000+600000
- 574132 words of font info for 123 fonts, out of 8000000 for 9000
+ 38481 strings out of 473832
+ 937381 string characters out of 5733158
+ 1439792 words of memory out of 5000000
+ 60893 multiletter control sequences out of 15000+600000
+ 574148 words of font info for 125 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,12n,111p,730b,539s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,13n,111p,730b,539s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Exam_Appendix.pdf (13 pages).
+Output written on Exam_Appendix.pdf (17 pages).

@@ -40,9 +40,14 @@
 \contentsline {chapter}{\numberline {4}常微分方程数值解}{13}{chapter.4}%
 \contentsline {section}{\numberline {4.1}补充内容}{13}{section.4.1}%
 \contentsline {section}{\numberline {4.2}重要证明}{13}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}一步误差与局部截断误差的关系}{13}{subsection.4.2.1}%
-\contentsline {section}{\numberline {4.3}重要习题与例题}{13}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}求相容阶和主局部截断误差：泰勒级数展开法}{13}{subsection.4.3.1}%
-\contentsline {subsubsection}{欧拉法}{13}{section*.12}%
-\contentsline {subsubsection}{梯形方法}{13}{section*.13}%
-\contentsline {subsection}{\numberline {4.3.2}二阶和三阶显式RK的推导}{13}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.2.1}y的各阶导数}{13}{subsection.4.2.1}%
+\contentsline {subsubsection}{求解：}{13}{section*.12}%
+\contentsline {subsection}{\numberline {4.2.2}一步误差与局部截断误差的关系}{14}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}重要习题与例题}{14}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}求相容阶和主局部截断误差：泰勒级数展开法}{14}{subsection.4.3.1}%
+\contentsline {subsubsection}{欧拉法}{14}{section*.13}%
+\contentsline {subsubsection}{梯形方法}{14}{section*.14}%
+\contentsline {subsection}{\numberline {4.3.2}显式RK的推导}{14}{subsection.4.3.2}%
+\contentsline {subsubsection}{基本思路：}{14}{section*.15}%
+\contentsline {subsubsection}{显式二阶推导}{15}{section*.16}%
+\contentsline {subsubsection}{显式三阶推导}{16}{section*.17}%

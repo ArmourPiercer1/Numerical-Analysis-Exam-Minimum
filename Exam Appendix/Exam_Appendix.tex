@@ -263,6 +263,39 @@ Note：分片线性插值只要做泰勒展开即可；
 \section{补充内容}
 
 \section{重要证明}
+\subsection{y的各阶导数}
+
+当$y'=f(t,y)$时，求y的各阶导数。
+
+符号规范：记$\partial f/\partial x_i=f_i$，即$f_i$是f对第i个变量的偏导数。在当前情境中，有 
+\begin{align}
+    f_1=&\frac{\partial f}{\partial t}\\
+    f_2=&\frac{\partial f}{\partial y}
+\end{align}
+
+\subsubsection{求解：}
+题目条件为
+\begin{align}
+    \frac{\mathrm{d}y}{\mathrm{d}t}=f(t,y)
+\end{align}
+
+即将对y的求导转化为了对f的全微分。于是有算符关系
+\begin{align}
+    \frac{\mathrm{d}}{\mathrm{d}t}=\frac{\partial }{\partial t}+\frac{\mathrm{d} y}{\mathrm{d} t}\frac{\partial }{\partial y}=\frac{\partial }{\partial t}+f\frac{\partial }{\partial y}
+\end{align}
+
+因此
+\begin{align}
+    y'=&f\\
+    y''=&\frac{\mathrm{d}f}{\mathrm{d}t}=\frac{\partial f}{\partial t}+f\frac{\partial f}{\partial y}\\
+    =&f_1+ff_2\\
+    y'''=&\frac{\mathrm{d}y''}{\mathrm{d}t}=\frac{\mathrm{d}f_1}{\mathrm{d}t}+f\frac{\mathrm{d}f_2}{\mathrm{d}t}+f_2\frac{\mathrm{d}f}{\mathrm{d}t}\\
+    =&\frac{\partial f_1}{\partial t}+f\frac{\partial f_1}{\partial y}+f\left( \frac{\partial f_2}{\partial t}+f\frac{\partial f_2}{\partial y} \right)+f_2\left(  \frac{\partial f}{\partial t}+f\frac{\partial f}{\partial y} \right)\\
+    =&f_11+ff_{12}+f(f_{21}+ff_{22})+f_2(f_1+ff_2)\\
+    =&f_{11}+2ff_{12}+f^2f_{22}+f_2(f_1+ff_2)
+\end{align}
+
+
 \subsection{一步误差与局部截断误差的关系}
 \begin{align}
     (1-h_{n+1}L)|\tilde{R}_{n+1}|\leq  |R_{n+1}| \leq (1+h_{n+1}L)|\tilde{R}_{n+1}|
@@ -275,8 +308,155 @@ Note：分片线性插值只要做泰勒展开即可；
 
 \subsubsection{梯形方法}
 
-\subsection{二阶和三阶显式RK的推导}
-\subsubsection{二阶RK}
+\subsection{显式RK的推导}
+\subsubsection{基本思路：}
+
+局部截断误差为
+    \begin{align}
+        R=&y(t+h)-y(t)-h\Phi(t,y,f)\\
+            =&\sum_{k=0}^\infty \frac{1}{k!}y^{(k)}(t)h^k\\
+            &-y(t)\\
+            &-h\cdot\sum_{k=1}^\infty \phi_k h^k
+    \end{align}
+
+
+要令RK具有n阶相容性，即要令
+\begin{align}
+    R=p_{n+1}(t)h^{n+1}+O(h^{n+2})
+\end{align}
+需要消去R中低于$h^{n+1}$的各阶项，即可得到一系列关于$a_{ij},b_i,c_i$的方程。
+
+计算方法即为：
+\begin{itemize}
+    \item 在t点对$t(t+h)$作泰勒展开
+    \item 在$(t_n,y_n)$对$\phi(t_n,y_n,f)$作多元泰勒展开
+    \item 令各阶系数相等，即 
+    \begin{align}
+        \phi_k=\frac{1}{(k+1)!}y^{(k+1)}
+    \end{align}
+\end{itemize}
+
+\subsubsection{显式二阶推导}
+显式RK参数矩阵：
+\begin{align}
+    \begin{array}{c|cc}
+        c_1=0 & 0 & 0 \\
+        c_2 & a_{21} & 0 \\
+        \hline
+         & b_1\,\,+ &  b_2=1
+    \end{array}
+\end{align}
+
+RK斜率：
+\begin{align}
+    k_1=&f(t_n,y_n)\\
+    k_2=&f(t_n+c_2h,y_n+a_{21}hk_1)=f(t_n+c_2h,y_n+a_{21}hf(t_n,y_n))
+\end{align}
+
+增量函数：
+\begin{align}
+    \phi=b_1k_1+b_2k_2
+\end{align}
+
+对$k_1$, $k_2$作泰勒展开：
+\begin{align}
+    k_1=&f(t_n,y_n)=f\\
+    k_2=&f+f_1c_2h+f_2\cdot c_2hf+O(h^2)
+\end{align}
+
+则$\phi=b_1k_1+b_2k_2$的展开可表示为
+\begin{align}
+    \text{常数项：}\phi_0=&(b_1+b_2)f\\
+    \text{一次项系数：}\phi_1=&b_2c_2f_1+b_2c_2ff_2
+\end{align}
+
+对y进行泰勒展开：
+\begin{align}
+    y'=&f(t,y)\\
+    y''=&\frac{\partial f}{\partial t}+\frac{\partial f}{\partial y}\frac{\partial y}{\partial t}=f_1+ff_2
+\end{align}
+
+因此需要满足关系
+\begin{align}
+    (b_1+b_2)f=&y'=f\\
+    b_2c_2f_1+b_2c_2ff_2=&\frac{1}{2}y''=\frac{1}{2}(f_1+ff_2)
+\end{align}
+
+即
+\begin{align}
+    b_1+b_2=&1\\
+    b_2c_2=&\frac{1}{2}
+\end{align}
+
+\subsubsection{显式三阶推导}
+RK参数矩阵 
+\begin{align}
+    \begin{array}{c|ccc}
+        c_1=0 & 0 & 0 & 0\\
+        c_2 & a_{21} & 0 & 0\\
+        c_3 & a_{31} & a_{32} & 0\\
+        \hline
+         & b_1\,\,+ & b_2\,\,+ & b_3=1
+    \end{array}
+\end{align}
+
+RK斜率：
+\begin{align}
+    k_1=&f(t_n,y_n)=f\\
+    k_2=&f(t_n+c_2h,y_n+a_{21}hk_1)\\
+        =&f+f_1c_2h+f_2\cdot a_{21}hf\\
+        &+\frac{f_{11}(c_2h)^2+2f_{12}(c_2h)(a_{21}hk_1)+f_{22}(a_{21}hk_1)^2}{2}+O(h^3)\\
+        =&f+c_2f_1h+a_{21}ff_2h \\
+        &+\frac{c_2^2f_{11}+2a_{21}c_2ff_{12}+a_{21}^2f^2f_{22}}{2}h^2+O(h^3)\\
+        =&f+c_2(f_1+ff_2)h+\frac{c_2^2}{2}(f_{11}+2ff_{12}+f^2f_{22})h^2+O(h^3)\\
+    k_3=&f(t_n+c_3h,y_n+h(a_{31}k_1+a_{32}k_2))\\
+       =&f+f_1c_3h+f_2h(a_{31}k_1+a_{32}k_2)\\
+       &+\frac{f_{11}c_3^2h^2+2f_{12}\cdot c_3h\cdot h(a_{31}k_1+a_{32}k_2)+f_{22}(a_{31}k_1+a_{32}k_2)^2h^2}{2}+O(h^3)\\
+\end{align}
+
+此时，向$k_3$中代入$k_1$和$k_2$时，不一定要带入到$h^2$项，只要令所有的$h^2$项系数正确即可。于是有
+\begin{align}
+    k_3=&f+f_1c_3h+f_2h[a_{31}f+a_{32}(f+c_2(f_1+ff_2)h)]\\
+    &+\frac{h^2}{2}[c_3^2f_{11} +2c_3f_{12}(a_{31}f+a_{32}f)+f_{22}(a_{31}f+a_{32}f)^2]+O(h^3)\\
+    =&f+[c_3f_1+(a_{31}+a_{32})ff_2)]h\\
+    &+\frac{1}{2}[2a_{32}c_2f_2(f_1+ff_2)+c_3^2f_{11}+2c_3(a_{31}+a_{32})ff_{12}+f^2f_{22}(a_{31}+a_{32})^2]h^2+O(h^3)
+\end{align}
+代入$a_{31}+a_{32}=c_3$后，有
+\begin{align}
+    k_3=&f+c_3(f_1+ff_2)h\\
+    &+\frac{1}{2}[2a_{32}c_2f_2(f_1+ff_2)+c_3^2f_{11}+2c_3^2ff_{12}+f^2f_{22}c_3^2]h^2+O(h^3)\\
+    =&f+c_3(f_1+ff_2)h+\frac{1}{2}[2a_{32}c_2f_2(f_1+ff_2)+c_3^2(f_{11}+2ff_{12}+f^2f_{22})]h^2+O(h^3)
+\end{align}
+
+先考虑y的各阶导数，有
+\begin{align}
+    y'=&f(t,y)\\
+    y''=&f_1+ff_2\\
+    y'''=&f_{11}+2ff_{12}+f^2f_{22}+f_2(f_1+ff_2)
+\end{align}
+
+
+
+代入增量函数$\phi=b_1k_1+b_2k_2+b_3k_3$，可得
+\begin{align}
+    \text{常数项：}\phi_0=&(b_1+b_2+b_3)f\\
+    \text{一次项系数：}\phi_1=&(b_2c_2+b_3c_3)(f_1+ff_2)\\
+    \text{二次项系数：}\phi_2=&\frac{1}{2}\left[ 2b_3a_{32}c_2f_2(f_1+ff_2)+(b_2c_2^2+b_3c_3^2)(f_{11}+2ff_{12}+f^2f_{22})   \right]
+\end{align}
+
+由 
+\begin{align}
+    \phi_0=&y'=f\\
+    \phi_1=&\frac{1}{2}y''=\frac{1}{2}(f_1+ff_2)\\
+    \phi_2=&\frac{1}{6}y'''=\frac{1}{6}[f_{11}+2ff_{12}+f^2f_{22}+f_2(f_1+ff_2)]
+\end{align}
+可得方程组
+\begin{align}
+    b_1+b_2+b_3=1\\
+    b_2c_2+b_3c_3=\frac{1}{2}\\
+    a_{32}b_3c_2=\frac{1}{6}\\
+    b_2c_2^2+b_3c_3^2=\frac{1}{3}
+\end{align}
 
 
 
