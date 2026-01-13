@@ -6,9 +6,8 @@ concurrency:
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    branches: ["main", "dev"]
+    tags: ["v*"]
   workflow_dispatch:
 
 permissions:
@@ -16,61 +15,58 @@ permissions:
 
 jobs:
   build-latex:
-    name: Build LaTeX Documents
+    name: Build with Tectonic
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set build timestamp (UTC)
-        id: ts
-        run: |
-          ts="$(date -u +'%Y%m%d-%H%M%S')"
-          echo "build_ts=$ts" >> "$GITHUB_OUTPUT"
-          echo "BUILD_TS=$ts" >> "$GITHUB_ENV"
-      - name: Restore LaTeX build cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            build
-            Exam Appendix/build
-          key: latexmk-${{ runner.os }}-${{ hashFiles('**/*.tex', '**/*.bib', '**/*.sty', '**/*.cls', '**/*.png', '**/*.jpg', '**/*.pdf') }}
-          restore-keys: |
-            latexmk-${{ runner.os }}-
+      - name: Set build metadata
+        id: meta
+        run: echo "build_ts=$(date -u +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
-      - name: Compile main document
-        uses: xu-cheng/latex-action@v4
+      - name: Setup Tectonic
+        uses: wtfjoke/setup-tectonic@v1
         with:
-          root_file: |
-            Numerical_Analysis_Exam_Minimum.tex
-            Exam?Appendix/Exam_Appendix.tex
-          work_in_root_file_dir: true
-          latexmk_use_xelatex: true
-          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode -synctex=0 -outdir=build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Collect PDFs (timestamped)
+      - name: Compile Main Document
         run: |
-          set -euo pipefail
+          # 编译第一个文档
+          # --keep-intermediates: 保留中间文件(可选)
+          # --outfmt pdf: 输出 pdf
+          tectonic -X compile "Numerical_Analysis_Exam_Minimum.tex"
+
+      - name: Compile Appendix
+        run: |
+          # 编译子目录文档
+          tectonic -X compile "Exam Appendix/Exam_Appendix.tex"
+
+      - name: Prepare Artifacts
+        run: |
           mkdir -p dist
-          cp -f build/Numerical_Analysis_Exam_Minimum.pdf "dist/Numerical_Analysis_Exam_Minimum_${BUILD_TS}.pdf"
-          cp -f "Exam Appendix/build/Exam_Appendix.pdf" "dist/Exam_Appendix_${BUILD_TS}.pdf"
+          # Tectonic 默认在源文件同级目录生成 PDF
+          mv "Numerical_Analysis_Exam_Minimum.pdf" "dist/Numerical_Analysis_Exam_Minimum.pdf"
+          mv "Exam Appendix/Exam_Appendix.pdf" "dist/Exam_Appendix.pdf"
 
-      - name: Upload PDFs as workflow artifacts
+      - name: Upload Workflow Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pdf-documents-${{ steps.ts.outputs.build_ts }}
+          name: pdf-build-${{ steps.meta.outputs.build_ts }}
           path: dist/*.pdf
-          if-no-files-found: error
+          retention-days: 5
 
-      - name: Create new Release (unique tag)
+      - name: Update Nightly Release
+        if: github.ref == 'refs/heads/main'
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Build ${{ github.ref_name }} @ ${{ steps.ts.outputs.build_ts }}
-          body: |
-            Automated build from ${{ github.repository }}@${{ github.sha }}
-            Triggered by ${{ github.event_name }}.
+          tag: nightly
+          name: Nightly Build
+          body: "Fast build via Tectonic at ${{ steps.meta.outputs.build_ts }}"
           artifacts: dist/*.pdf
-          artifactErrorsFailBuild: true
-          allowUpdates: false
+          allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true
+          prerelease: true
