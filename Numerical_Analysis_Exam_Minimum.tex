@@ -2609,28 +2609,34 @@ $\mathbf{F}(\mathbf{z})$ 的 $(n+1) \times (n+1)$ 阶Jacobian矩阵为：
 \chapter {常微分方程初值问题数值解法}
 
 \section*{总结}
+\subsection*{重要概念}
 \begin{itemize}
-    \item Lipschitz条件
-    \item 零稳定性
-    \item 绝对稳定性
-    \item 局部截断误差 
-    \item 相容性与相容阶
-    \item Taylor展开法求局部截断误差的重要结论
+    \item Lipschitz条件：$\|f(t,y_1)-f(t,y_2)\|\leq L\|y_1-y_2\|$
+    \item 零稳定性：两组数值解的最大差值不超过二者初值差值的常数倍
+    \item 强稳定性：多步法的系数矩阵范数不大于1
+    \item 绝对稳定性：在给定的步长下，对试验方程的解是趋于0的
+    \item 局部截断误差：单步法或多步法推进一步时产生的误差
+    \item 相容性与相容阶：局部截断误差小于等于$Mh^{p+1}$，则具有p阶相容性。注意，由于整个数值解要推进$1/h$步，对局部截断误差的阶数要求要+1
+    \item 收敛性与收敛阶：步长h趋于0时，整体误差按照$h^p$收敛到初值误差，则称具有p阶收敛性。
 \end{itemize}
-\subsection*{单步法}
-\begin{itemize}
-    \item 一般形式
-    \item 求解方法
-    \begin{itemize}
-        \item Euler折线法（Euler公式）
-        \item 向后Euler法
-        \item 中点格式及其显式化
-        \item 梯形格式及其显式化
-    \end{itemize}
-    \item 一步误差
-    \item 局部截断误差 
-    \item 相容性与相容阶
-\end{itemize}
+
+
+
+
+% \subsection*{单步法}
+% \begin{itemize}
+%     \item 一般形式
+%     \item 求解方法
+%     \begin{itemize}
+%         \item Euler折线法（Euler公式）
+%         \item 向后Euler法
+%         \item 中点格式及其显式化
+%         \item 梯形格式及其显式化
+%     \end{itemize}
+%     \item 一步误差
+%     \item 局部截断误差 
+%     \item 相容性与相容阶
+% \end{itemize}
 
 \section {通用理论}
 
@@ -2706,69 +2712,7 @@ Y + \begin{bmatrix}
         \sum_{i=0}^k \alpha_i^{(n+k)}y_{n+i}=h_{n+k}\phi(t_n,t_{n+1},\ldots,t_{n+k};y_n,y_{n+1},\ldots,y_{n+k};f)
     \end{align}
     式中，$\alpha_k^{n+k}=1$
-\end{itemize}
-
-对于单步法和多步法，增量函数$\phi$均需要满足以下三条性质：
-\begin{itemize}
-    \item 连续性：$\phi$在所有的（除了函数f外）的变量上连续
-    \item 零值性：当$f=0$时，$\phi(\cdot;f)=0$
-    \item Lipschitz条件：
-    \begin{itemize}
-        \item 对于单步法：
-        \begin{align}
-            \|\phi(t,\tau;u_1,v_1;f)-\phi(t,\tau;u_2,v_2;f)\|\leq L_f(\|u_1-u_2\|+\|v_1-v_2\|)
-        \end{align}
-        \item 对于多步法，需要满足一致Lipschitz条件：
-        \begin{align}
-            &\|\phi(t_n,t_{n+1},\ldots,t_{n+k};u_0,u_1,\ldots,u_k;f)-\phi(t_n,t_{n+1},\ldots,t_{n+k};v_0,v_1,\ldots,v_k;f)\| \\
-            &\leq L_f \sum_{i=0}^k \|u_i - v_i\|
-        \end{align}
-    \end{itemize}
-\end{itemize}
-
-
-\subsubsection{特征多项式}
-对于多步法，定义其特征多项式为
-\begin{align}
-    \rho(\xi)=\sum_{i=0}^k \alpha_i^{(n+k)} \xi^i
-\end{align}
-
-
-\subsubsection{零稳定性}
-
-\paragraph{单步法}
-零稳定性考虑的是方程右端函数$f(t,y)$受到一个小扰动变为$\tilde{f}(t,y)$后，数值解的变化情况。相应地，初始条件也可能被扰动，从$y_0$变为$\tilde{y}_0$.
-
-若当扰动量控制在一个范围内时，数值解的偏差也能被控制在一个与扰动量成正比的范围内，则称该数值方法是零稳定的。
-\begin{definition}
-    [零稳定性]
-    若存在正常数$K^*$和$\eta^*$，使得对任意$\epsilon \leq \eta^*$，当对原方程施加一个扰动
-    \begin{align}
-        &\|y_0-\tilde{y}_0\| \leq \epsilon \\
-        &\|f(t,y)-\tilde{f}(t,y)\| \leq \epsilon,\quad t\in [a,b],\,y\in \boldsymbol{R}^d
-    \end{align}
-    得到新的方程\footnote{老登在这里的符号规范仿佛是精神分裂了一样，$\tilde{y}_0$表示准确值，$y_0$表示扰动值；f则反过来，$\tilde{f}$表示扰动后的函数，$f$表示准确的函数。}
-    \begin{align}
-        \begin{cases}
-            v'=\tilde{f}(t,v),\quad t\in [a,b]\\
-            v(a)=y_0
-        \end{cases}
-    \end{align}
-    若该方程有解存在，且满足
-    \begin{align}
-        \|y(t)-v(t)\|\leq K^* \epsilon, \quad t\in [a,b]
-    \end{align}
-    则称该数值方法是零稳定的。
-\end{definition}
-
-
-\paragraph{多步法}
-若存在正常数$C$和$h_0$，当$0<h<h_0$时，多步法的任意两解$u_n$和$v_n$满足不等式
-\begin{align}
-    \max |u_n-v_n| \leq C \max_{j=0,1,\ldots,k-1} |u_j - v_j|
-\end{align}
-
-等价形式：
+    \item 多步法的等价形式：
 
 考虑k点数值向量
 \begin{align}
@@ -2791,6 +2735,156 @@ Y + \begin{bmatrix}
         \phi(t_n,t_{n+1},\ldots,t_{n+k};y_n,y_{n+1},\ldots,y_{n+k};f)
     \end{bmatrix}
 \end{align}
+
+\end{itemize}
+
+对于单步法和多步法，增量函数$\phi$均需要满足以下三条性质：
+\begin{itemize}
+    \item 连续性：$\phi$在所有的（除了函数f外）的变量上连续
+    \item 零值性：当$f=0$时，$\phi(\cdot;f)=0$
+    \item Lipschitz条件：
+    \begin{itemize}
+        \item 对于单步法：
+        \begin{align}
+            \|\phi(t,\tau;u_1,v_1;f)-\phi(t,\tau;u_2,v_2;f)\|\leq L_f(\|u_1-u_2\|+\|v_1-v_2\|)
+        \end{align}
+        \item 对于多步法，需要满足一致Lipschitz条件：
+        \begin{align}
+            &\|\phi(t_n,t_{n+1},\ldots,t_{n+k};u_0,u_1,\ldots,u_k;f)-\phi(t_n,t_{n+1},\ldots,t_{n+k};v_0,v_1,\ldots,v_k;f)\| \\
+            &\leq L_f \sum_{i=0}^k \|u_i - v_i\|
+        \end{align}
+    \end{itemize}
+\end{itemize}
+
+
+\subsubsection{多步法的特征多项式和稳定性多项式}
+对于多步法，定义其特征多项式为
+\begin{align}
+    \rho(\xi)=\sum_{i=0}^k \alpha_i^{(n+k)} \xi^i
+\end{align}
+
+
+\begin{definition}
+    [多步法的稳定性多项式]
+    线性多步法用于求解试验方程$y'=\lambda y$得到 
+    \begin{align}
+        \sum_{i=0}^k (\alpha_i-h\lambda\beta_i)y_{n+i}=0
+    \end{align}
+    记 
+    \begin{align}
+        \mu=&h\lambda \\
+        \Pi(\xi,\mu)=&\rho(\xi)-\mu\sigma(\xi)
+    \end{align}
+    为线性多步法的稳定性多项式。
+\end{definition}
+
+\subsubsection{零稳定性}
+零稳定性考虑的是方程右端函数$f(t,y)$受到一个小扰动变为$\tilde{f}(t,y)$后，数值解的变化情况。相应地，初始条件也可能被扰动，从$y_0$变为$\tilde{y}_0$.
+
+若当扰动量控制在一个范围内时，数值解的偏差也能被控制在一个与扰动量成正比的范围内，则称该数值方法是零稳定的。
+\begin{definition}
+    [零稳定性的一般定义形式]
+    若存在正常数$K^*$和$\eta^*$，使得对任意$\epsilon \leq \eta^*$，当对原方程施加一个扰动
+    \begin{align}
+        &\|y_0-\tilde{y}_0\| \leq \epsilon \\
+        &\|f(t,y)-\tilde{f}(t,y)\| \leq \epsilon,\quad t\in [a,b],\,y\in \boldsymbol{R}^d
+    \end{align}
+    得到新的方程\footnote{老登在这里的符号规范仿佛是精神分裂了一样，$\tilde{y}_0$表示准确值，$y_0$表示扰动值；f则反过来，$\tilde{f}$表示扰动后的函数，$f$表示准确的函数。}
+    \begin{align}
+        \begin{cases}
+            v'=\tilde{f}(t,v),\quad t\in [a,b]\\
+            v(a)=y_0
+        \end{cases}
+    \end{align}
+    若该方程有解存在，且满足
+    \begin{align}
+        \|y(t)-v(t)\|\leq K^* \epsilon, \quad t\in [a,b]
+    \end{align}
+    则称该数值方法是零稳定的。
+\end{definition}
+
+
+\paragraph{单步法}
+
+\begin{definition}
+    [单步法的零稳定性]
+    若对于给定的时间演化区间$(0,T]$，存在常数$h_0$和K，使得当 
+\begin{align}
+    0<h\leq h_0
+\end{align}
+时，任意两数值解满足
+\begin{align}
+    \max_{t_n\leq T}|y_n-z_n|\leq K|y_0-z_0|
+\end{align}
+则称单步法是零稳定的。
+\end{definition}
+
+
+
+
+
+
+\paragraph{多步法}
+\begin{definition}
+    [多步法的零稳定性]
+    若存在正常数$C$和$h_0$，当$0<h<h_0$时，多步法的任意两解$u_n$和$v_n$满足不等式
+\begin{align}
+    \max |u_n-v_n| \leq C \max_{j=0,1,\ldots,k-1} |u_j - v_j|
+\end{align}
+则称该多步法是零稳定的。
+\end{definition}
+
+\subsubsection{多步法的强稳定性}
+\begin{definition}
+    [多步法的强稳定性]
+    若存在某个范数，使得多步法系数矩阵的范数不大于1，则称多步法满足强稳定性条件。
+\end{definition}
+
+
+
+\subsubsection{M-条件稳定与绝对稳定}
+\begin{definition}
+    [M-条件稳定]
+    设$M>0$，给定一个确定的ODE初值问题，若$\forall h\in(0,h_0]$，两个数值解$\|y_n\|$和$\|z_n\|$满足 
+    \begin{align}
+        \max_{n\leq \frac{b-a}{h}}\|y_n-z_n\|\leq M^{b-a}\|y_0-z_0\|
+    \end{align}
+    则称这个方法关于步长$h_0$是 M-条件稳定的。
+\end{definition}
+
+\begin{itemize}
+    \item $M^{b-a}$称为稳定常数
+    \item $M(h_0)$：对于一个给定的$h_0$，让M稳定性成立的最小常数M。或者说，$M(h_0)$是一个数值方法关于$h_0$条件稳定的最小 单位区间稳定常数。
+    \item 零稳定与M-条件稳定的关系：零稳定是指存在一个步长$h_0$，使得$h_0$是条件稳定的。
+\end{itemize}
+
+\begin{definition}
+    [绝对稳定]
+    一个数值方法用于求解$\lambda$-试验方程
+    \begin{align}
+        y'=&\lambda y,\quad t\in [a,b]\\
+        y(a)=&\tilde{y}_0
+    \end{align}
+    若对于任意的初值，对于给定的步长h得到的数值解$\{y_n\}$满足
+    \begin{align}
+        \lim_{n\to \infty} y_n=0,\quad \text{当} \operatorname{Re}(\lambda)<0
+    \end{align}
+    则称该数值方法是绝对稳定的。
+\end{definition}
+
+\begin{itemize}
+    \item 对所有的方法，$(h,\lambda)$以乘积的方式出现在稳定性分析中。
+    \item $h-\lambda$的复平面区域中，所有使得数值解趋于0的点$(h,\lambda)$的集合称为该方法的绝对稳定域。
+    \item 绝对稳定区间：绝对稳定域与实轴的交集
+    \item 若当$n\rightarrow \infty$时$y_n$无界，则称该方法数值不稳定。
+\end{itemize}
+
+\begin{itemize}
+    \item A-条件稳定：若绝对稳定区域包含整个复平面的左半边，则称方法是A-条件稳定的。
+    \item L-条件稳定：单步法求解试验方程会得到$y_{n+1}=E(h\lambda)y_n$。若当$h\lambda \rightarrow -\infty$时，$|E(h\lambda)|\rightarrow 0$，则称该方法是L-条件稳定的。
+\end{itemize}
+
+
 
 
 \subsubsection {一步误差与局部截断误差}
@@ -2881,22 +2975,6 @@ Y + \begin{bmatrix}
     则称多步法是收敛的。
 \end{definition}
 
-\subsubsection{稳定性}
-
-若对于给定的时间演化区间$(0,T]$，存在常数$h_0$和K，使得当 
-\begin{align}
-    0<h\leq h_0
-\end{align}
-时，任意两数值解满足
-\begin{align}
-    \max_{t_n\leq T}|y_n-z_n|\leq K|y_0-z_0|
-\end{align}
-则称单步法是零稳定的。
-
-单步法 
-\begin{align}
-    y_{n+1}=y_n + h_{n+1} \phi(t_n,t_{n+1};y_n,y_{n+1};f)
-\end{align}
 
 
 
@@ -2948,16 +3026,29 @@ Y + \begin{bmatrix}
 \subsection {稳定性定理}
 
 \subsubsection{单步法}
+
+\paragraph{零稳定性定理}
 单步法是零稳定的。
 
 （虽然PPT上就这么一句话，但Gemini说其实这要求增量函数$\phi$和方程右侧函数$f$都满足连续性和Lipschitz条件。）
 
-\subsubsection{多步法}
-\paragraph{多步法的强稳定性条件}
-若存在某个范数，使得多步法系数矩阵的范数不大于1，则称多步法满足强稳定性条件。
+\paragraph{绝对稳定性判据}
+\begin{theorem}
+    [单步法的绝对稳定性判据]
+    若单步法用于求解试验方程得到
+    \begin{align}
+        y_{n+1}=E(h\lambda)y_n 
+    \end{align}
+    则当且仅当
+    \begin{align}
+        |E(h\lambda)|<1
+    \end{align}
+    时，单步法是绝对稳定的。
+\end{theorem}
 
-\paragraph{多步法的强稳定性与零稳定性}
-强稳定性可以确保多步法是零稳定的。
+\subsubsection{多步法}
+
+
 
 \paragraph{多步法强稳定性的一个充分条件}
 若对于等步长特征多项式
@@ -2965,6 +3056,23 @@ Y + \begin{bmatrix}
     \rho(\xi)=\sum_{i=0}^k \alpha_i \xi^i
 \end{align}
 除了1这一个单根外，所有根的模值都小于1，则存在一个常数$\kappa>1$，使得当$h_m/h_n\leq \kappa$时，多步法是强稳定的。
+
+\paragraph{多步法的强稳定性与零稳定性}
+强稳定性可以确保多步法是零稳定的。
+
+\paragraph{多步法的绝对稳定性判据}
+\begin{theorem}
+    [多步法的绝对稳定新判据]
+    线性多步法用于求解试验方程得到
+    \begin{align}
+        \sum_{i=0}^k(\alpha_i-h\lambda \beta_i)y_{n+i}=0
+    \end{align}
+    记 $\mu=h\lambda$，定义稳定性多项式如下：
+    \begin{align}
+        \Pi(\xi;\mu)=\rho(\xi)-\mu \sigma(\xi)=\sum_{i=0}^k (\alpha_i - \mu \beta_i)\xi^i
+    \end{align}
+    对于给定的$\mu=h\lambda$，当且仅当稳定性多项式的k个根的模都小于1时，该多步法是绝对稳定的。
+\end{theorem}
 
 
 \section {具体求解方法}
