@@ -2,6 +2,8 @@ name: Build LaTeX and Release PDFs
 
 on:
   push:
+    branches:
+      - dev
     tags:
       - "v*" # 当推送以 v 开头的标签时触发，如 v1.0.0
   workflow_dispatch: # 允许手动触发
