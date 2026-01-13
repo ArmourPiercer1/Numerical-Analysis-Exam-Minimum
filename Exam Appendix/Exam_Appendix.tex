@@ -99,6 +99,7 @@
 \subsection{矩阵的可分性}
 
 
+
 \section{重要证明}
 
 \subsection{Legender多项式的零平方误差最小性质}
@@ -106,14 +107,85 @@
     在所有首项为1的n次多项式中，Legendre多项式$\tilde{P}_n(x)$在$[-1,1]$上与零的平方误差最小。
 \end{theorem}
 \subsubsection{证明：}
-提示：考虑$f=\tilde{P}_n+a_{n-1}\tilde{P}_{n-1}+...+a_1\tilde{P}_1+a_0\tilde{P}_0$和误差函数$\|f-0\|^2$
+
+考虑一个首项为1的n次多项式$f\in \mathbb{P}_n$，必有
+\begin{align}
+    f=\tilde{P}_n(x)+\sum_{k=0}^{n-1} a_k \tilde{P}_k(x)
+\end{align}
+
+考虑误差函数
+\begin{align}
+    \phi(\boldsymbol{a})=&\|f(x)-0\|^2_2\\
+    =&\int_{-1}^1 \tilde{P}_n^2(x) \mathrm{d}x + 2\sum_{k=0}^{n-1} a_k \int_{-1}^1 \tilde{P}_n(x)\tilde{P}_k(x) \mathrm{d}x + \sum_{k=0}^{n-1} a_k^2 \int_{-1}^1 \tilde{P}_k^2(x) \mathrm{d}x
+\end{align}
+由Legendre多项式的正交性，
+\begin{align}
+    \int_{-1}^1 \tilde{P}_i(x)\tilde{P}_j(x)\mathrm{d}x=\frac{2}{2i+1}\delta_{ij}
+\end{align}
+于是
+\begin{align}
+    \phi(\boldsymbol{a})=&\int_{-1}^1 \tilde{P}_n^2(x) \mathrm{d}x + \sum_{k=0}^{n-1} a_k^2 \int_{-1}^1 \tilde{P}_k^2(x) \mathrm{d}x\\
+\end{align}
+当且仅当$a_k=0$时，$\phi(\boldsymbol{a})$取得最小值，即Legendre多项式在所有首项为1的n次多项式中与零的平方误差最小。
 
 
 \subsection{Chebyshev多项式的零一致误差最小性质}
 \begin{theorem}
-    在所有首项为$2^{n-1}$的n次多项式中，Chebyshev多项式$T_n(x)$在$[-1,1]$上与零的一致误差最小。
+    在所有首项为$1$的n次多项式中，Chebyshev多项式$T_n(x)$在$[-1,1]$上与零的一致误差最小。
 \end{theorem}
 \subsubsection{证明：}
+
+
+\paragraph{方法1：将一致误差转化，并考虑在$\mathbb{P}_{n-1}$上的最佳一致逼近多项式}
+\begin{align}
+    f=\tilde{T}_n(x)+\sum_{k=0}^{n-1} a_k \tilde{T}_k(x)
+\end{align}
+
+考虑误差函数 
+\begin{align}
+    \Delta(f,0)=&\|f(x)-0\|_\infty\\
+    =&\|\tilde{T}_n(x)+\sum_{k=0}^{n-1} a_k \tilde{T}_k(x)\|_\infty\\
+    =&\|\tilde{T}_n(x)-\left( -\sum_{k=0}^{n-1} a_k \tilde{T}_k(x)\right)\|_\infty\\
+    =&\Delta (\tilde{T}_n,-\sum_{k=0}^{n-1} a_k \tilde{T}_k(x))
+\end{align}
+
+该误差函数取得最小值时，即为
+\begin{align}
+    \min_{\boldsymbol{a}}\Delta (\tilde{T}_n,-\sum_{k=0}^{n-1} a_k \tilde{T}_k(x))=&\mathrm{dist} (\tilde{T}_n,\mathrm{span}\{\tilde{T}_0,\tilde{T}_1,...,\tilde{T}_{n-1}\})\\
+    =&\mathrm{dist}(\tilde{T}_n,\mathbb{P}_{n-1})
+\end{align}
+
+则只要证$\mathrm{dist}(\tilde{T}_n,\mathbb{P}_{n-1})=\mathrm{dist}(\tilde{T}_n,0)$即可。
+
+考虑到$\tilde{T}_n$在$[-1,1]$上恰有$n+1$个极值点，且这些极值点构成了一个n+1个点的交错点组，故0就是$\tilde{T}_n$在 $\mathbb{P}_{n-1}$中的最佳一致逼近多项式，因此
+\begin{align}
+    \mathrm{dist}(\tilde{T}_n,\mathbb{P}_{n-1})=\mathrm{dist}(\tilde{T}_n,0)
+\end{align}
+
+因此，当$\boldsymbol{a}=\boldsymbol{0}$时，误差函数可以取得最小值，即Chebyshev多项式在所有首项为1的n次多项式中与零的一致误差最小。
+
+
+\paragraph{方法2：利用交错点组证明差多项式为0}
+假设存在另一个首项为1的n次多项式$f_n(x)$，使得$\|f_n(x)-0\|_\infty < \|T_n(x)-0\|_\infty$。
+
+考虑
+\begin{align}
+    Q(x)=f_n(x)-\tilde{T}_n(x)\in \mathbb{P}_{n-1}
+\end{align}
+
+在$\tilde{T}_n$的n+1个极值点$x_k$处，设$\tilde{T}_n$取得极值$\pm M$，则由于$\|f_n(x)-0\|_\infty < \|T_n(x)-0\|_\infty$，
+必有 
+\begin{align}
+    |f_n(x_k)|<M
+\end{align}
+因此
+\begin{align}
+    Q(x_k)=\begin{cases}
+        M-p(x_k)>0,&k\text{为偶数}\\
+        -M-p(x_k)<0,&k\text{为奇数}
+    \end{cases}
+\end{align}
+于是Q在区间内n+1个点上符号交替，故Q至少有n个零点。由于$Q\in \mathbb{P}_{n-1}$，$Q$只能为0. 于是$f_n(x)=\tilde{T}_n(x)$，与假设矛盾。
 
 
 \section{例题与习题}
@@ -261,6 +333,12 @@ Note：分片线性插值只要做泰勒展开即可；
 
 \chapter{常微分方程数值解}
 \section{补充内容}
+\subsection{一致Lipschitz常数的求解}
+若$f(t,y)$关于y连续可微，则Lipschitz常数即为区间内$f$对$y$的偏导数的最大值，即
+\begin{align}
+    L = \max_{(t,y)\in D} \left| \frac{\partial f}{\partial y} \right|
+\end{align}
+
 
 \section{重要证明}
 \subsection{y的各阶导数}
@@ -457,6 +535,610 @@ RK斜率：
     a_{32}b_3c_2=\frac{1}{6}\\
     b_2c_2^2+b_3c_3^2=\frac{1}{3}
 \end{align}
+
+\subsection{课本习题}
+
+\subsubsection{1、显式Euler方法求解初值问题并分析误差}
+用显式Euler方法来求解初值问题,列出数值解与解析解的误差.
+\begin{enumerate}
+\item[(1)] 
+\begin{align*}
+y' = 1 + \frac{y}{x},\ 1 \leq x \leq 2,\ y(1) = 2,\ \text{取} \ h = 0.25\ (\text{相应解析解为} \ y(x) = x\ln x + 2x).
+\end{align*}
+\item[(2)] 
+\begin{align*}
+y' = \cos x + \sin 3x,\ 0 \leq x \leq 1,\ y(0) = 1,\ \text{取} \ h = 0.25\ (\text{相应解析解为} \ y(x) = \frac{1}{2}\sin 2x - \frac{1}{3}\cos 3x + \frac{4}{3}).
+\end{align*}
+\end{enumerate}
+\paragraph{证明：}
+显式Euler方法的格式为：
+\begin{align}
+    y_{n+1}&=y_n+h_{n+1}f(t_n,y_n)
+\end{align}
+
+（1）
+\begin{align}
+    x_0=1,\quad y_0=&y(1)=2\\
+    x_1=1.25,\quad y_1=&y_0+h f(x_0,y_0)=2+0.25\times \left(1+\frac{2}{1}\right)=2+0.25\times 3=2.75\\
+    x_2=1.5,\quad y_2=&y_1+hf(x_1,y_1)=2.75+0.25\times (1+\frac{2.75}{1.25})=2.75+0.25\times 3.2=3.55\\
+    x_3=1.75,\quad y_3=&y_2+hf(x_2,y_2)=3.55+0.25\times (1+\frac{3.55}{1.5})=3.55+0.25\times 3.3667=4.3917\\
+    x_4=2.0,\quad y_4=&y_3+hf(x_3,y_3)=4.3917+0.25\times (1+\frac{4.3917}{1.75})=4.3917+0.25\times 3.5084=5.2698
+\end{align}
+
+（2）
+\begin{align}
+    x_0=0,\quad y_0=&y(0)=1\\
+    x_1=0.25,\quad y_1=&y_0+hf(x_0,y_0)=1+0.25\times (\cos 0 + \sin 0)=1+0.25\times 1=1.25\\
+    x_2=0.5,\quad y_2=&y_1+hf(x_1,y_1)=1.25+0.25\times (\cos 0.25 + \sin 0.75)\\=&1.25+0.25\times (0.9689 + 0.6816)=1.25+0.25\times 1.6505=1.6626\\
+    x_3=0.75,\quad y_3=&y_2+hf(x_2,y_2)=1.6626+0.25\times (\cos 0.5 + \sin 1.5)\\=&1.6626+0.25\times (0.8776 + 0.9975)=1.6626+0.25\times 1.8751=2.1304\\
+    x_4=1.0,\quad y_4=&y_3+hf(x_3,y_3)=2.1304+0.25\times (\cos 0.75 + \sin 2.25)\\=&2.1304+0.25\times (0.7317 + 0.7781)=2.1304+0.25\times 1.5098=2.5079
+\end{align}
+
+
+
+
+
+\subsubsection{2、改进Euler方法求解初值问题并分析误差}
+用改进的Euler方法解第1题中的问题,并列出数值解和相应解析解的误差.
+\paragraph{证明：}
+
+
+
+
+
+\subsubsection{3、梯形方法迭代格式的收敛性证明}
+用梯形方法解初值问题
+\begin{align*}
+\begin{cases}
+y' = e^x\sin(xy),\ x \in [0,1],\\
+y(0) = 1.
+\end{cases}
+\end{align*}
+若迭代初值为\( y^{(0)}_{s+1} = y_s + hf(x_s,y_s) \),试证逐步长\( h \)使迭代格式
+\begin{align*}
+y^{(k+1)}_{s+1} = y_s + \frac{h}{2}\left[ f(x_s,y_s) + f(x_{s+1},y^{(k)}_{s+1}) \right],\ s = 0,1,\cdots
+\end{align*}
+是收敛的.
+\paragraph{证明：}
+
+求解过程为：
+\begin{enumerate}
+    \item 微分方程数值解问题：用显欧拉法给出一套迭代初值$\{y_k^{(0)}\}$
+    \item 非线性方程数值解问题：在每个点上，用给出的迭代格式进行迭代，求解非线性方程的数值解
+\end{enumerate}
+
+因此，要证明第二步非线性方程的迭代格式是收敛的，只要证明它满足压缩映像原理。
+
+\begin{align}
+    |y_{n+1}^{(s+1)} - y_{n+1}^{(s)}| &= \left| \frac{h}{2} \left[ f(x_{n+1},y_{n+1}^{(s)}) - f(x_{n+1},y_{n+1}^{(s-1)}) \right] \right| \\
+    =&\frac{h}{2}|f(x_{n+1},y_{n+1}^{(s)}) - f(x_{n+1},y_{n+1}^{(s-1)})| 
+\end{align}
+
+该微分方程有唯一数值解，即满足Lipschitz条件。对应的Lipschitz常数L可以将$\Delta f$与$\Delta y$联系起来。
+\begin{align}
+    L=\max_{x\in[0,1],y\in\mathbb{R}} \left| \frac{\partial f}{\partial y} \right| = \max_{x\in[0,1],y\in\mathbb{R}} |xe^x\cos(xy)| \leq e
+\end{align}
+
+因此迭代过程有
+\begin{align}
+    |y_{n+1}^{(s+1)} - y_{n+1}^{(s)}| &\leq \frac{h}{2}L |y_{n+1}^{(s)} - y_{n+1}^{(s-1)}| \\
+    &\leq \frac{he}{2} |y_{n+1}^{(s)} - y_{n+1}^{(s-1)}|
+\end{align}
+压缩映像原理要求
+\begin{align}
+    \frac{h}{2}e<1
+\end{align}
+即
+\begin{align}
+    h<\frac{2}{e}
+\end{align}
+
+
+
+
+
+
+\subsubsection{4、梯形方法求解特定初值问题的结论证明}
+用梯形方法解初值问题\( y' = -y,\ y(1) = 1 \),试证明:
+\begin{enumerate}
+\item[(1)] 取\( y_0 = y(1) = 1 \),有\( y_n = \left( \frac{2 - h}{2 + h} \right)^n \).
+\item[(2)] 当\( h \to 0,x = nh \)不变时,\( y_n \)收敛于初值问题的准确解\( e^{ - x_n} \).
+\end{enumerate}
+\paragraph{证明：}
+
+（1）梯形方法迭代格式：
+\begin{align}
+    y_{n+1}=y_n+\frac{h}{2}[f(t_n,y_n)+f(t_{n+1},y_{n+1})]
+\end{align}
+由于该问题是自治的，不需要求解非线性方程，
+\begin{align}
+    &y_{n+1}=y_n+\frac{h}{2}[-y_n-y_{n+1}]\\
+    \Rightarrow &y_{n+1}=\frac{2-h}{2+h}y_n
+\end{align}
+初值为$y_0=1$，因此
+\begin{align}
+    y_n=\left( \frac{2-h}{2+h} \right)^n
+\end{align}
+
+
+（2）代入$n=x/h$，求极限即可。注意，要用到对数求极限。
+
+
+
+
+
+\subsubsection{5、单步法的局部截断误差与绝对稳定性分析}
+试求出单步法
+\begin{align*}
+\begin{cases}
+y_{n+1} = y_n + hf(x_{n+1},y_n+hf(x_n,y_n)),\\
+y_0 = y(x_0)
+\end{cases}
+\end{align*}
+的局部截断误差主项及绝对稳定性区间.
+\paragraph{证明：}
+
+增量函数
+\begin{align}
+    \phi(x_n,x_{n+1};y_n,y_{n+1};f)=f(x_{n+1},y_n+hf(x_n,y_n))
+\end{align}
+
+局部截断误差：
+\begin{align}
+    R_{n+1}=&y(x+h)-y(x)-h\phi(x_n,x_{n+1};y_n,y_{n+1};f)\\
+    =&y(x+h)-y(x)-hf(x_{n+1},y_n+hf(x_n,y_n))\\
+    =&y(x+h)-y(x)-hf(x+h,y+hf)
+\end{align}
+
+求y的各阶导数：
+\begin{align}
+    &y'=f\\
+    &y''=f_1+ff_2
+\end{align}
+
+求$\phi$的各阶导数：
+\begin{align}
+    \phi=f(x+h,y+hf)=f+(f_1+ff_2)h+O(h^2)
+\end{align}
+
+于是有
+\begin{align}
+    R_{n+1}=&y(x)+fh+\frac{1}{2}(f_1+ff_2)h^2+O(h^3)-y(x)\\
+    &-h(f+(f_1+ff_2)h+O(h^2))\\
+    =&-\frac{1}{2}h^2(f_1+ff_2)+O(h^3)\\
+    =&-\frac{h^2}{2}y''+O(h^3)
+\end{align}
+故单步法的局部截断误差主项为$-\frac{h^2}{2}y''$。
+
+绝对稳定性分析：将单步法格式代入试验方程
+\begin{align}
+    y'=f=\lambda y
+\end{align}
+得到
+\begin{align}
+    y_{n+1}=&y_n+h\cdot\lambda(y_n+h\cdot \lambda y_n)\\
+    =&[(h\lambda)^2+(h\lambda)+1]y_n
+\end{align}
+绝对稳定性要求
+\begin{align}
+    |E(h\lambda)| = |(h\lambda)^2+(h\lambda)+1| < 1
+\end{align}
+解得绝对稳定区间为复平面上满足
+\begin{align}
+    |z^2+z+1|<1
+\end{align}
+的区域。
+
+
+
+
+
+\subsubsection{6、中点公式与Heun方法求解初值问题并分析误差}
+应用中点公式及Heun方法
+\begin{align*}
+y_{n+1} = y_n + \frac{1}{4}hf(x_n,y_n) + \frac{3}{4}hf\left( x_n + \frac{2}{3}h,y_n + \frac{2}{3}hf(x_n,y_n) \right)
+\end{align*}
+计算初值问题
+\begin{align*}
+\begin{cases}
+y' = y - x^2 + 1,\ x \in [0,1],\\
+y(0) = 0.5.
+\end{cases}
+\end{align*}
+取\( h = 0.2 \),列出数值解及相应的误差(问题的解析解为\( y(x) = (x+1)^2 - \frac{1}{2}e^{x} \)).
+\paragraph{证明：}
+
+他都不让带计算器了，我认为不会考这玩意
+
+
+
+
+
+
+\subsubsection{7、多种数值方法求解初值问题的结果对比}
+应用显式Euler方法、改进的Euler方法以及四阶经典Runge-Kutta方法计算初值问题
+\begin{align*}
+\begin{cases}
+y' = -2y + 2x^2 + 2x,\ x \in [0,0.5],\\
+y(0) = 1.
+\end{cases}
+\end{align*}
+这三种方法步长\( h \)依次取为\( 0.25,0.05,0.1 \),列出相应计算结果、解析解\( y(x) = e^{-2x} + x^2 \)的结果及相应的误差.
+\paragraph{证明：}
+
+呃呃
+
+
+
+
+\subsubsection{8、中点公式的局部截断误差分析}
+试求出中点公式
+\begin{align*}
+y_{n+1} = y_n + hf\left( x_n + \frac{h}{2},y_n + \frac{1}{2}hf(x_n,y_n) \right)
+\end{align*}
+的局部截断误差主项.
+\paragraph{证明：}
+
+对y逐次求导：
+
+算子：
+\begin{align}
+    \frac{\mathrm{d}}{\mathrm{d}x_1}=\frac{\partial}{\partial x_1}+f\frac{\partial }{\partial x_2}
+\end{align}
+\begin{align}
+    y'=&f\\
+    y''=&\frac{\mathrm{d}f}{\mathrm{d}x}=f_1+ff_2\\
+    y'''=&\frac{\mathrm{d}f}{\mathrm{d}x}=\frac{\partial f_1}{\partial x_1}+f\frac{\partial f_1}{\partial x_2}+f\left(\frac{\partial f_2}{\partial x_1}+f\frac{\partial f_2}{\partial x_2}\right)+\left(\frac{\partial f}{\partial x_1}+f\frac{\partial f}{\partial x_2}\right) f_2\\
+        =&f_{11}+ff_{21}+f(f_{12}+ff_{22})+f_2(f_1+ff_2)\\
+        =&f_{11}+f(2f_{12}+ff_{22})+f_2(f_1+ff_2)
+\end{align}
+
+
+\begin{align}
+    R_{n+1}=&y(x+h)-y(x)-h\phi(x_n,x_{n+1};y_n,y_{n+1};f)\\
+    =&y(x+h)-y(x)-hf\left( x+\frac{h}{2},y+\frac{1}{2}hf \right)\\
+    =& y(x)+fh+\frac{1}{2}(f_1+ff_2)h^2 + \frac{1}{6}[f_{11}+f(2f_{12}+ff_{22})+f_2(f_1+ff_2)]h^3+O(h^4)\\&-y(x)\\
+    &-h(f+f_1\frac{h}{2}+f_2\frac{h}{2}f +\frac{f_{11}\left(\dfrac{h}{2}\right)^2+2f_{12}\left(\dfrac{hf}{2}\right)\left(\dfrac{h}{2}\right)+f_{22}\left(\dfrac{hf}{2}\right)^2}{2}   +O(h^3))\\
+    =&\frac{1}{6}[f_{11}+f(2f_{12}+ff_{22})+f_2(f_1+ff_2)]h^3-\frac{1}{8}(f_{11}+2ff_{12}+f^2f_{22})h^3+O(h^4)\\
+    =&\frac{1}{24}[f_{11}+f(2f_{12}+ff_{22})+4f_2(f_1+ff_2)]h^3+O(h^4)
+\end{align}
+
+故局部截断误差主项为 
+\begin{align}
+    \frac{1}{24}[f_{11}+f(2f_{12}+ff_{22})+4f_2(f_1+ff_2)]h^3
+\end{align}
+
+
+
+\subsubsection{9、特定初值问题下数值方法的近似值一致性证明}
+对于初值问题
+\begin{align*}
+\begin{cases}
+y' = -y + x + 1,\ x \in [0,1],\\
+y(0) = 1,
+\end{cases}
+\end{align*}
+试证明用中点方法、改进的Euler方法以及Heun方法(见第6题)求解,对任意的步长\( h \)均有相同的近似值.
+\paragraph{证明：}
+
+只要证明其一阶泰勒展开式相等。
+\begin{itemize}
+    \item 中点方法：
+    \begin{align}
+        y_{n+1}=&y_n+hf(x_n+\frac{1}{2}h,y_n+\frac{1}{2}hf)\\
+        \approx & y_n+h(f+\frac{1}{2}hf_1+\frac{1}{2}hff_2) \\
+        =&y_n+hf+\frac{1}{2}(f_1+ff_2)h^2
+    \end{align}
+    \item Heun方法：
+    \begin{align}
+        y_{n+1} =& y_n + \frac{1}{4}hf(x_n,y_n) + \frac{3}{4}hf\left( x_n + \frac{2}{3}h,y_n + \frac{2}{3}hf(x_n,y_n) \right)\\
+        \approx & y_n+\frac{1}{4}hf+\frac{3}{4}h(f+\frac{2}{3}hf_1+\frac{2}{3}hff_2)\\
+        =&y_n+hf+\frac{1}{2}(f_1+ff_2)h^2
+    \end{align}
+    \item 改进Euler方法：
+    \begin{align}
+        y_{n+1}=&y_n+\frac{h}{2}[f+f(t+h,y+hf)]\\
+        \approx &y_n+\frac{h}{2}[f+f+hf_1+hff_2]\\
+        =&y_n+hf+\frac{1}{2}(f_1+ff_2)h^2
+    \end{align}
+\end{itemize}
+
+故三者具有相同的近似值。
+
+
+
+\subsubsection{10、隐式中点方法的绝对稳定性区间分析}
+试求出隐式中点方法
+\begin{align*}
+y_{n+1} = y_n + hf\left( x_n + \frac{1}{2}h,\frac{1}{2}(y_n + y_{n+1}) \right)
+\end{align*}
+的绝对稳定性区间(推广§3.5的方法).
+\paragraph{证明：}
+
+试验方程：
+\begin{align}
+    y'=f(y)=\lambda y
+\end{align}
+
+代入隐式中点方法有
+\begin{align}
+    &y_{n+1}=y_n+h\cdot \frac{\lambda}{2}(y_n+y_{n+1})\\
+    \Rightarrow & y_{n+1}=\frac{2+(h\lambda)}{2-(h\lambda)}y_n 
+\end{align}
+
+则绝对稳定性区间为
+\begin{align}
+    &|E(h\lambda)| = \left| \frac{2+(h\lambda)}{2-(h\lambda)} \right| < 1\\
+    \Rightarrow& \Re(h\lambda)<0
+\end{align}
+即绝对稳定性区间为负半实轴。
+
+
+
+
+\subsubsection{11、二步显式Adams方法的局部截断误差推导}
+试推导二步显式Adams方法与二步隐式Adams方法的局部截断误差.
+
+\paragraph{证明：}
+二步显式Adams方法：
+\begin{align}
+    &y_{n+1}=y_n+h\left(\frac{3}{2}f(t_n,y_n)-\frac{1}{2}f(t_{n-1},y_{n-1})\right)\\
+    \Leftrightarrow& y_{n+1}-y_n=h\left(\frac{3}{2}f(t_n,y_n)-\frac{1}{2}f(t_{n-1},y_{n-1})\right)
+\end{align}
+
+局部截断误差：
+\begin{align}
+    R_{n+1}=&y(t_{n+1})-y(t_n)-h\left(\frac{3}{2}f(t_n,y_n)-\frac{1}{2}f(t_{n-1},y_{n-1})\right)\\
+    =&y(t+h)-y(t)-h\left(  \frac{3}{2}f-\frac{1}{2}y'(t-h)  \right)\\
+    =&y(t)+y'h+\frac{1}{2}y''h^2+\frac{1}{6}y'''h^3+O(h^4)\\
+    &-y(t)\\
+    &-h[\frac{3}{2}y'-\frac{1}{2}(y'-y''h+\frac{1}{2}y'''h^2)+O(h^3)]\\
+    =&\frac{1}{6}y'''h^3+\frac{1}{4}y'''h^3+O(h^4)\\
+    =&-\frac{5}{12}y'''h^3+O(h^4)
+\end{align}
+
+二步隐式Adams方法：
+\begin{align}
+    &y_{n+1}=y_{n}+\frac{1}{12}h(5f(t_{n+1},y_{n+1})+8f(t_{n},y_{n}) - f(t_{n-1},y_{n-1}))\\
+    \Leftrightarrow& y_n-y_{n-1}=\frac{1}{12}h(5f(t_{n+1},y_{n+1})+8f(t_{n},y_{n}) - f(t_{n-1},y_{n-1}))
+\end{align}
+
+局部截断误差：
+\begin{align}
+    R_{n+1}=& y(t_{n+1})-y(t_{n})-\frac{1}{12}h(5f(t_{n+1},y_{n+1})+8f(t_{n},y_{n}) - f(t_{n-1},y_{n-1}))\\
+    =&y(t+h)-y(t)-\frac{1}{12}h(5y'(t+h)+8y'(t) - y'(t-h))\\
+    =&y(t)+y'h+\frac{1}{2}y''h^2+\frac{1}{6}y'''h^3+\frac{1}{24}y''''h^4+O(h^5)\\
+    -&y(t)\\
+    &-\frac{1}{12}h[5(y'+y''h+\frac{1}{2}y'''h^2+\frac{1}{6}y''''h^3+O(h^4))+8y'-(y'-y''h+\frac{1}{2}y'''h^2-\frac{1}{6}y''''h^3+Oh^(4))]\\
+    =&-\frac{1}{24}y''''h^4+O(h^5)
+\end{align}
+
+
+\subsubsection{12、Hamming公式的局部截断误差分析}
+试推导Hamming公式
+\begin{align*}
+y_{n+3} = \frac{1}{8}(9y_{n+2} - y_{n}) + \frac{3}{8}h\left[ f(x_{n+3},y_{n+3}) + 2f(x_{n+2},y_{n+2}) - f(x_{n+1},y_{n+1}) \right]
+\end{align*}
+的局部截断误差主项.
+\paragraph{证明：}
+
+活不了了
+
+
+
+\subsubsection{13、数值积分法推导二步数值方法}
+试用数值积分方法直接推导二步方法
+\begin{align*}
+y_{n+2} - y_{n+1} = \frac{h}{12}\left[ 5f(x_{n+2},y_{n+2}) + 8f(x_{n+1},y_{n+1}) - f(x_n,y_n) \right].
+\end{align*}
+\paragraph{证明：}
+
+记$x_n=-h,\,x_{n+1}=0,\,x_{n+2}=h$，则可以
+构造Lagrange插值多项式：
+\begin{align}
+    L_0=\frac{x^2-hx}{2h^2}\\
+    L_1=\frac{h^2-x^2}{h^2}\\
+    L_2=\frac{x^2+hx}{2h^2}
+\end{align}
+
+三者在$[0,h]$上的积分是
+\begin{align}
+    \int_{0}^hL_0\mathrm{d}x=-\frac{1}{12}h\\
+    \int_0^h L_1\mathrm{d}x=\frac{2}{3}h=\frac{8}{12}h\\
+    \int_0^h L_2\mathrm{d}x=\frac{5}{12}h
+\end{align}
+
+于是有 
+\begin{align}
+    y_{n+1}-y_n=&\int_{x_{n}}^{x_{n+1}}f(x,y(x))\mathrm{d}x=\sum_{i=0}^2 f(x_{n+i},y_{n+i})\int_0^h L_i\mathrm{d}x\\
+    =&-\frac{h}{12}f_{n}+\frac{8}{12}f_{n+1}+\frac{5}{12}f_{n+2}\\
+    =&\frac{h}{12}[5f(x_{n+2},y_{n+2}) + 8f(x_{n+1},y_{n+1}) - f(x_n,y_n)]
+\end{align}
+
+
+
+
+\subsubsection{14、Adams方法求解初值问题并与解析解对比}
+用四阶的显式Adams方法和隐式Adams方法解初值问题
+\begin{align*}
+\begin{cases}
+y' = -y + x + 1,\ x \in [0,1],\\
+y(0) = 2,
+\end{cases}
+\end{align*}
+取\( h = 0.2 \),将结果与解析解作比较(解析解\( y(x) = (x+1) + \frac{1}{2}e^{-x} \)).
+\paragraph{证明：}
+呜咕
+
+
+
+\subsubsection{15、线性二步法的阶数证明}
+证明线性二步法
+\begin{align*}
+y_{n+2} + (b - 1)y_{n+1} - by_{n} = \frac{1}{4}h\left[ (b + 3)f(x_{n+2},y_{n+2}) + (3b + 1)f(x_{n},y_{n}) \right]
+\end{align*}
+当\( b \neq -1 \)时是二阶的,当\( b = -1 \)时是三阶的.
+\paragraph{证明：}
+
+
+
+
+
+\subsubsection{16、线性多步法的阶数参数确定}
+试确定\( \alpha \)使线性多步法
+\begin{align*}
+y_{n+3} + \alpha(y_{n+2} - y_{n+1}) - y_{n} = \frac{1}{2}(3 + \alpha)h\left[ f(x_{n+2},y_{n+2}) + f(x_{n+1},y_{n+1}) \right]
+\end{align*}
+是四阶的.
+\paragraph{证明：}
+以$t_{n+1}$为展开点，
+\begin{align}
+    R_{n+1}=& y(t+h)+(b-1)y(t)-by(t-h)-\frac{1}{4}h[(b+3)y'(t+h)+(3b+1)y'(t-h)]\\
+    =&y+y'h+\frac{1}{2}y''h^2+\frac{1}{6}y'''h^3+\frac{1}{24}y''''h^4+O(h^5)\\
+    &+(b-1)y\\
+    &-b(y-y'h+\frac{1}{2}y''h^2-\frac{1}{6}y'''h^3+\frac{1}{24}y''''h^4+O(h^5))\\
+    &-\frac{h}{4}[(b+3)(y'+y''h+\frac{1}{2}y'''h^2+\frac{1}{6}y''''h^3+O(h^4))\\
+    &\quad\quad\quad+(3b+1)(y'-y''h+\frac{1}{2}y'''h^2-\frac{1}{6}y''''h^3+O(h^4))]\\
+    =&(1+b-1-b)y+y'h(1+b-\frac{b+3}{4}-\frac{3b+1}{4})+y''h^2(\frac{1}{2}-\frac{1}{2}b-\frac{b+3}{4}+\frac{3b+1}{4})\\
+    &+y'''h^3(\frac{1}{6}+\frac{b}{6}-\frac{b+3}{8}-\frac{3b+1}{8})+y''''h^4(\frac{1}{24}-\frac{b}{24}-\frac{b+3}{24}-\frac{3b+1}{24})+O(h^5)
+\end{align}
+
+可见$h^0,h^1,h^2$项恒为0，要求$h^3$项为0，有
+\begin{align}
+    \frac{1}{6}+\frac{b}{6}-\frac{b+3}{8}-\frac{3b+1}{8}=0
+\end{align}
+解得$b=-1$，此时$h^4$项也为0，因此该线性多步法在$b=-1$时是四阶的。
+
+
+
+
+
+
+\subsubsection{17、线性多步法的收敛性分析}
+讨论线性多步法
+\begin{align*}
+y_{n+3} + \frac{1}{4}y_{n+2} - \frac{1}{2}y_{n+1} - \frac{3}{4}y_n = \frac{1}{8}h\left[ 19f(x_{n+2},y_{n+2}) + 5f(x_n,y_n) \right]
+\end{align*}
+的收敛性.
+\paragraph{证明：}
+
+要让多步法收敛，只要求其满足相容性。
+
+收敛性要求多步法满足强稳定性和相容性。
+
+强稳定性：只要证特征方程的根全部在单位圆内，且模为1的根是单根。
+
+特征方程：
+\begin{align}
+    \rho(x)=&x^3+\frac{1}{4}x^2-\frac{1}{2}x-\frac{3}{4}\\
+    \sigma(x)=&\frac{19}{8}x^2+\frac{5}{8}
+\end{align}
+
+解得特征方程的根为
+\begin{align}
+    &x_1=1\\
+    &x_2=\frac{-5-i\sqrt{23}}{8}\\
+    &x_3=\frac{-5+i\sqrt{23}}{8}
+\end{align}
+
+三个根的模分别为
+\begin{align}
+    &|x-1|=1\\
+    &|x_2|=|x_3|=\frac{48}{64}<1
+\end{align}
+故多步法是具有强稳定性的。
+
+相容性：
+\begin{align}
+    \rho'(x)=3x^2+\frac{1}{2}x-\frac{1}{2}\neq \sigma(x)
+\end{align}
+故多步法不具有相容性，多步法不收敛。
+
+
+
+
+
+\subsubsection{18、线性多步法的收敛性分析}
+讨论线性多步法
+\begin{align*}
+y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},y_{n+1}) + 3f(x_n,y_n) \right]
+\end{align*}
+的收敛性
+\paragraph{证明：}
+
+\begin{align}
+    \rho(x)=x^2+x-2\\
+    \sigma(x)=\frac{1}{4}x^2+2x+\frac{3}{4}
+\end{align}
+
+强稳定性：特征多项式的根为
+\begin{align}
+    &x_1=1\\
+    &x_2=-2
+\end{align}
+故不具有强稳定性。多步法不收敛。
+
+
+
+
+
+
+\subsubsection{19、线性多步法的相容性分析}
+讨论线性多步法
+\begin{align}
+    y_{n+2}-y_{n+1}=\frac{h}{2}[3f(x_{n+1},y_{n+1})-f(x_n,y_n)]
+\end{align}
+的相容性。
+\paragraph{证明：}
+在$x_{n+1}$处展开：
+\begin{align}
+    R_{n+1}=&y(x+h)-y-\frac{h}{2}[3y'-y'(x-h)]\\
+    =&y+y'h+\frac{1}{2}y''h^2+\frac{1}{6}y'''h^3\\
+    &-y\\
+    &-\frac{h}{2}[3y'-(y'-y''h+\frac{1}{2}y'''h^2)]\\
+    =&\frac{5}{12}h^3y'''+O(h^4)
+\end{align}
+故具有二阶相容性。
+
+
+
+
+
+
+\subsubsection{20、A-稳定性}
+试证明隐式Euler方法是A-稳定的.
+\paragraph{证明：}
+
+隐式Euler方法：
+\begin{align}
+    y_{n+1}=y_n+h f(x_{n+1},y_{n+1})
+\end{align}
+代入试验方程
+\begin{align}
+    y'=f=\lambda y 
+\end{align}
+得到 
+\begin{align}
+    y_{n+1}=&y_n+h\lambda y_{n+1}\\
+    \Rightarrow & y_{n+1}=\frac{1}{1-h\lambda}y_n
+\end{align}
+故绝对稳定性要求
+\begin{align}
+    \bigg|\frac{1}{1-\mu}\bigg|<1
+\end{align}
+令$\mu=x+iy$，则有
+\begin{align}
+    (x-1)^2+y^2>1
+\end{align}
+只要实部$x<0$，则上式恒成立，因此隐式Euler方法是A-稳定的。
+
+
+
+
+
+
+
+
 
 
 
