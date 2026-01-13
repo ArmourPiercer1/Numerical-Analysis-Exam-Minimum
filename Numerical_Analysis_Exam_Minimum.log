@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  13 JAN 2026 17:14
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  13 JAN 2026 17:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1130,13 +1130,13 @@ Chapter 六.
 [59
 
 ]
-
-[60]
-Overfull \hbox (55.36761pt too wide) detected at line 2733
+Overfull \hbox (55.36761pt too wide) detected at line 2737
 []
  []
 
 
+
+[60]
 
 [61]
 
@@ -1155,19 +1155,16 @@ Overfull \hbox (55.36761pt too wide) detected at line 2733
 [68]
 
 [69]
-Underfull \vbox (badness 1701) has occurred while \output is active []
-
-
 
 [70]
-
-[71]
-
-[72
-
-]
 Chapter 七.
 
+
+[71
+
+]
+
+[72]
 
 [73]
 
@@ -1176,15 +1173,15 @@ Chapter 七.
 [75]
 
 [76]
-
-[77]
-
-[78]
-Overfull \hbox (21.71744pt too wide) in paragraph at lines 3581--3581
+Overfull \hbox (21.71744pt too wide) in paragraph at lines 3585--3585
 |[]\TU/SimSun(0)/b/n/16.06 单 步 定 常 线 性 迭 代 解 法 \TU/lmr/bx/n/16.06 (Stationary Linear Iterative Meth-
  []
 
 
+
+[77]
+
+[78]
 
 [79]
 
@@ -1198,11 +1195,7 @@ Overfull \hbox (21.71744pt too wide) in paragraph at lines 3581--3581
 
 [84]
 
-[85]
-
-[86]
-
-[87] 
+[85] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Numerical_Analysis_Exam_Minimum.aux)
  ***********
@@ -1212,6 +1205,9 @@ L3 programming layer <2022/08/05>
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `Numerical_Analysis_Exam_Minimum.out' has not changed.
 (rerunfilecheck)             Checksum: C623CE574171F9A049867FD2C22E9812;10571.
@@ -1225,4 +1221,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  93i,16n,111p,748b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Numerical_Analysis_Exam_Minimum.pdf (87 pages).
+Output written on Numerical_Analysis_Exam_Minimum.pdf (85 pages).
