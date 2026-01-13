@@ -122,7 +122,7 @@
 
 % 文档信息
 \title{Numerical Analysis \\ Exam Minimum}
-\author{Astral Projection,yiuko}
+\author{Astral Projection, Yiuko}
 \date{\today}
 
 
@@ -2210,6 +2210,22 @@ Note：由于抛物插值有一定对称性，中心点的二阶导精度可以�
     则不动点迭代在 $x^*$ 的某个邻域内局部收敛。
 \end{theorem}
 
+\begin{proofstep}{}
+    由微分中值定理：
+    \[
+        x_{k+1} - x^* = \phi(x_k) - \phi(x^*) = \phi'(\xi_k)(x_k - x^*)
+    \]
+    其中 $\xi_k$ 介于 $x_k$ 和 $x^*$ 之间。
+    取绝对值：
+    \[
+        |x_{k+1} - x^*| = |\phi'(\xi_k)| |x_k - x^*|
+    \]
+    若 $|\phi'(x^*)| < 1$，由于 $\phi'$ 连续，存在邻域使得 $|\phi'(x)| \le L < 1$。
+    于是 $|x_{k+1} - x^*| \le L |x_k - x^*|$，即收敛。
+\end{proofstep}
+
+
+
 \subsection{收敛阶 (Order of Convergence)}
 \begin{definition}
     若迭代序列 $\{x_k\}$ 收敛于 $x^*$，且
@@ -2226,6 +2242,51 @@ Note：由于抛物插值有一定对称性，中心点的二阶导精度可以�
         \item 一般地，若 $\phi^{(k)}(x^*) = 0 (k=1,\dots,p-1)$ 且 $\phi^{(p)}(x^*) \ne 0$，则为 $p$ 阶收敛。
     \end{itemize}
 \end{theorem}
+
+
+
+\begin{proofstep}{推导过程 (利用泰勒展开)}
+    将 $\phi(x_k)$ 在 $x^*$ 处展开：
+    \[
+        x_{k+1} = \phi(x_k) = \phi(x^*) + \phi'(x^*)(x_k - x^*) + \frac{\phi''(x^*)}{2!}(x_k - x^*)^2 + \dots
+    \]
+    注意到 $\phi(x^*) = x^*$，代入误差 $e_k = x_k - x^*$：
+    \[
+        e_{k+1} = \phi'(x^*) e_k + \frac{\phi''(x^*)}{2!} e_k^2 + \dots + \frac{\phi^{(p)}(x^*)}{p!} e_k^p + O(e_k^{p+1})
+    \]
+    \begin{itemize}
+        \item 若 $\phi'(x^*) \ne 0$，则 $e_{k+1} \approx \phi'(x^*) e_k$，即线性收敛。
+        \item 若 $\phi'(x^*) = 0$ 但 $\phi''(x^*) \ne 0$，则 $e_{k+1} \approx \frac{\phi''(x^*)}{2} e_k^2$，即平方收敛。
+    \end{itemize}
+\end{proofstep}
+
+
+
+\subsection{收敛域 (Convergence Domain)}
+\begin{definition}[收敛域]
+    对于给定的不动点 $x^*$，使得迭代序列 $x_{k+1} = \phi(x_k)$ 收敛于 $x^*$ 的所有初始点 $x_0$ 的集合，称为该不动点的收敛域。
+\end{definition}
+
+\subsubsection{求解收敛域}
+理论上求精确的收敛域很难，但通常我们需要找到一个\textbf{保证收敛的区间}。
+\begin{enumerate}
+    \item \textbf{解不等式}：
+    首先解不等式 $|\phi'(x)| < 1$。
+    这将给出一个或多个开区间 $I$。在这些区间内，$\phi$ 是压缩的。
+    
+    \item \textbf{验证封闭性}：
+    选取上述区间中包含不动点 $x^*$ 的最大区间 $(a, b)$。
+    检查该区间是否满足：
+    \[
+        \forall x \in [a, b], \quad \phi(x) \in [a, b]
+    \]
+    如果是，则 $[a, b]$ 是一个收敛区间。
+
+\end{enumerate}
+
+
+
+
 
 \section{牛顿法 (Newton's Method)}
 \subsection{构造}
@@ -2498,6 +2559,19 @@ $\psi(x)$：
     \textbf{结论}：这就证明了误差是按照平方速度衰减的。只要初值 $\mathbf{x}_0$ 足够接近 $\mathbf{x}^*$，使得 $C\|\mathbf{e}_0\| < 1$，迭代就会收敛。
 \end{proofstep}
 
+
+\subsubsection{拟牛顿法}
+为了避免计算昂贵的 Jacobian 矩阵及其逆，拟牛顿法使用近似矩阵 $B_k \approx \mathbf{J}(\mathbf{x}_k)$ 并满足\textbf{拟牛顿方程}：
+\[
+    B_{k+1}(\mathbf{x}_{k+1} - \mathbf{x}_k) = \mathbf{F}(\mathbf{x}_{k+1}) - \mathbf{F}(\mathbf{x}_k)
+\]
+
+\textbf{Broyden 秩1 方法}：
+最常用的秩1更新公式：
+\[
+    B_{k+1} = B_k + \frac{(\mathbf{y}_k - B_k \mathbf{s}_k)\mathbf{s}_k^T}{\mathbf{s}_k^T \mathbf{s}_k}
+\]
+其中 $\mathbf{s}_k = \mathbf{x}_{k+1} - \mathbf{x}_k,\ \mathbf{y}_k = \mathbf{F}(\mathbf{x}_{k+1}) - \mathbf{F}(\mathbf{x}_k)$。
 
 
 
@@ -3307,7 +3381,7 @@ Y + \begin{bmatrix}
         \frac{||\delta x||}{||x||} \le \frac{||A^{-1}||}{1 - ||A^{-1}||\cdot||\delta A||} \left( \frac{||\delta b|| \cdot ||A||}{||b||} + ||\delta A|| \right)
     \]
     
-    \textbf{Step 6: 引入条件数}
+    \textbf{引入条件数}
     提取 $||A||$，并利用 $\text{cond}(A) = ||A|| \cdot ||A^{-1}||$：
     \[
         \frac{||\delta x||}{||x||} \le \frac{||A^{-1}|| \cdot ||A||}{1 - ||A^{-1}|| \cdot ||A|| \cdot \frac{||\delta A||}{||A||}} \left( \frac{||\delta b||}{||b||} + \frac{||\delta A||}{||A||} \right)
