@@ -16,16 +16,16 @@ permissions:
 jobs:
   build-latex:
     name: Build with Tectonic
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install libfuse2 (Required for AppImage)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libfuse2
+      #   - name: Install libfuse2 (Required for AppImage)
+      #     run: |
+      #       sudo apt-get update
+      #       sudo apt-get install -y libfuse2
 
       - name: Set build metadata
         id: meta
