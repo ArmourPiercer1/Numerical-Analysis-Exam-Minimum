@@ -1,15 +1,21 @@
 name: Build LaTeX and Release PDFs
 
+concurrency:
+  group: release-${{ github.repository }}-${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
       - dev
-    tags:
-      - "v*" # 当推送以 v 开头的标签时触发，如 v1.0.0
-  workflow_dispatch: # 允许手动触发
+      - main
+  workflow_dispatch:
 
 permissions:
-  contents: write # 需要写权限来创建 Release
+  contents: write
+
+env:
+  RELEASE_TAG: latest
 
 jobs:
   build-latex:
@@ -19,6 +25,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set build timestamp (UTC)
+        id: ts
+        run: |
+          ts="$(date -u +'%Y%m%d-%H%M%S')"
+          echo "build_ts=$ts" >> "$GITHUB_OUTPUT"
+          echo "BUILD_TS=$ts" >> "$GITHUB_ENV"
 
       - name: Compile main document
         uses: xu-cheng/latex-action@v4
@@ -35,29 +48,41 @@ jobs:
           latexmk_use_xelatex: true
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
-      - name: Rename PDFs
+      - name: Collect PDFs (timestamped)
         run: |
-          mv Numerical_Analysis_Exam_Minimum.pdf Numerical_Analysis_Exam_Minimum.pdf || true
-          mv "Exam Appendix/Exam_Appendix.pdf" Exam_Appendix.pdf || true
+          set -euo pipefail
+          mkdir -p dist
+          mv Numerical_Analysis_Exam_Minimum.pdf "dist/Numerical_Analysis_Exam_Minimum_${BUILD_TS}.pdf"
+          mv "Exam Appendix/Exam_Appendix.pdf" "dist/Exam_Appendix_${BUILD_TS}.pdf"
 
-      - name: Upload PDFs as artifacts
+      - name: Upload PDFs as workflow artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pdf-documents
-          path: |
-            Numerical_Analysis_Exam_Minimum.pdf
-            Exam_Appendix.pdf
+          name: pdf-documents-${{ steps.ts.outputs.build_ts }}
+          path: dist/*.pdf
           if-no-files-found: error
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            Numerical_Analysis_Exam_Minimum.pdf
-            Exam_Appendix.pdf
-          generate_release_notes: true
-          draft: false
-          prerelease: false
+      - name: Update single Release (replace assets)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          TAG="${RELEASE_TAG}"
+          TITLE="Latest build ${BUILD_TS}"
+          NOTES=$(printf "Automated build from %s@%s\nTriggered by %s.\n" "${GITHUB_REPOSITORY}" "${GITHUB_SHA}" "${GITHUB_EVENT_NAME}")
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release '$TAG' exists; deleting old assets..."
+            gh release view "$TAG" --json assets -q '.assets[].name' | while IFS= read -r name; do
+              [ -n "$name" ] || continue
+              gh release delete-asset "$TAG" "$name" -y
+            done
+            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES"
+          else
+            echo "Creating release '$TAG'..."
+            gh release create "$TAG" --target "${GITHUB_SHA}" --title "$TITLE" --notes "$NOTES"
+          fi
+
+          echo "Uploading new PDFs to release '$TAG'..."
+          gh release upload "$TAG" dist/*.pdf --clobber
