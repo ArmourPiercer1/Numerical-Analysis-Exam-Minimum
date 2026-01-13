@@ -1092,19 +1092,19 @@ Chapter 五.
 [53]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2323.
+(hyperref)                removing `math shift' on input line 2384.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\Delta' on input line 2323.
+(hyperref)                removing `\Delta' on input line 2384.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 2323.
+(hyperref)                removing `superscript' on input line 2384.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2323.
+(hyperref)                removing `math shift' on input line 2384.
 
 
 
@@ -1134,7 +1134,7 @@ Chapter 六.
 [60]
 
 [61]
-Overfull \hbox (30.36761pt too wide) detected at line 2719
+Overfull \hbox (30.36761pt too wide) detected at line 2793
 []
  []
 
@@ -1173,7 +1173,7 @@ Chapter 七.
 [75]
 
 [76]
-Overfull \hbox (21.71744pt too wide) in paragraph at lines 3403--3403
+Overfull \hbox (21.71744pt too wide) in paragraph at lines 3477--3477
 |[]\TU/SimSun(0)/b/n/16.06 单 步 定 常 线 性 迭 代 解 法 \TU/lmr/bx/n/16.06 (Stationary Linear Iterative Meth-
  []
 
@@ -1206,13 +1206,19 @@ L3 programming layer <2022/08/05>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package rerunfilecheck Info: File `Numerical_Analysis_Exam_Minimum.out' has not changed.
-(rerunfilecheck)             Checksum: E11DBDE1647AEC68E102FABA55333640;10368.
+
+Package rerunfilecheck Warning: File `Numerical_Analysis_Exam_Minimum.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Numerical_Analysis_Exam_Minimum.out':
+(rerunfilecheck)             Before: E11DBDE1647AEC68E102FABA55333640;10368
+(rerunfilecheck)             After:  C623CE574171F9A049867FD2C22E9812;10571.
  ) 
 Here is how much of TeX's memory you used:
  39459 strings out of 473832
  981764 string characters out of 5733158
- 1456300 words of memory out of 5000000
+ 1456301 words of memory out of 5000000
  61852 multiletter control sequences out of 15000+600000
  579187 words of font info for 155 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
