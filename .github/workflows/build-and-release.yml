@@ -57,8 +57,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
-          mv build/Numerical_Analysis_Exam_Minimum.pdf "dist/Numerical_Analysis_Exam_Minimum_${BUILD_TS}.pdf"
-          mv "Exam Appendix/build/Exam_Appendix.pdf" "dist/Exam_Appendix_${BUILD_TS}.pdf"
+          cp -f build/Numerical_Analysis_Exam_Minimum.pdf "dist/Numerical_Analysis_Exam_Minimum_${BUILD_TS}.pdf"
+          cp -f "Exam Appendix/build/Exam_Appendix.pdf" "dist/Exam_Appendix_${BUILD_TS}.pdf"
 
       - name: Upload PDFs as workflow artifacts
         uses: actions/upload-artifact@v4
