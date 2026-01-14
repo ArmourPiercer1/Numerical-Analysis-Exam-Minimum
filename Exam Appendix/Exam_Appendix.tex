@@ -1847,24 +1847,24 @@ x^T & 0
 绝对稳定区间只需要考虑$h\lambda$为实数的情况，因此有
 \begin{align}
     &E(h\lambda)=\left|\frac{1+\theta h\lambda}{1-(1-\theta)h\lambda}\right|<1\\
-    \Rightarrow& h\lambda \left(h\lambda -\frac{2}{1-2\theta}\right)>0
+    \Rightarrow& (1-2\theta)h\lambda \left(h\lambda -\frac{2}{1-2\theta}\right)>0
 \end{align}
 
-当$\theta\in[0,1/2)$时，有
+当$\theta\in[0,1/2)$时，抛物线开口向上，因此有
 \begin{align}
     h\lambda \in \left(-\infty,0\right) \cup \left(\frac{2}{1-2\theta},+\infty\right)
 \end{align}
 
-当$\theta \in (1/2,1]$时，有
+当$\theta \in (1/2,1]$时，抛物线开口向下，
 \begin{align}
-    h\lambda \in \left(-\infty,\frac{2}{1-2\theta}\right) \cup (0,+\infty)
+    h\lambda \in \left(-\frac{2}{1-2\theta},0\right)
 \end{align}
 
 当$\theta =\frac{1}{2}$时，迭代格式为 
 \begin{align}
     y_{n+1}=&\frac{1+\frac{1}{2}h\lambda}{1-\frac{1}{2}h\lambda}y_n
 \end{align}
-绝对稳定区间为负半实轴。
+绝对稳定区间为负半实轴$(-\infty,0)$。
 
 
 
