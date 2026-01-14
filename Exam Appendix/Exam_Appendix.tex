@@ -1187,6 +1187,38 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
         \item \(\{X_k\}\) 至少局部二阶收敛到 \(A^{-1}\)。
     \end{enumerate}
     \textbf{证明：}
+    
+    （1）令$E_k = I - AX_k$，则$X_k = A^{-1}(I - E_k)$。
+    
+    由迭代格式：
+    \begin{align}
+        E_{k+1} &= I - AX_{k+1} \\
+        &= I - A(X_k + X_k(I - AX_k)) \\
+        &= I - AX_k - AX_k + AX_kAX_k \\
+        &= I - 2AX_k + AX_kAX_k \\
+        &= (I - AX_k)^2 \\
+        &= E_k^2
+    \end{align}
+    
+    （2）由于$E_{k+1} = E_k^2$，可得递推关系：
+    \begin{align}
+        E_k = E_0^{2^k}
+    \end{align}
+    
+    因此，
+    \begin{align}
+        X_k &= A^{-1}(I - E_k) = A^{-1}(I - E_0^{2^k})
+    \end{align}
+    
+    当$k \to \infty$时，若$\|E_0\| < 1$，则$E_0^{2^k} \to 0$，从而$X_k \to A^{-1}$。
+    
+    误差分析：
+    \begin{align}
+        \|X_{k+1} - A^{-1}\| &= \|A^{-1}E_{k+1}\| = \|A^{-1}E_k^2\| \\
+        &\leq \|A^{-1}\| \|E_k\|^2 = \|A^{-1}\| \|A(X_k - A^{-1})\|^2
+    \end{align}
+    
+    这表明误差的范数以平方速度收敛，故$\{X_k\}$至少局部二阶收敛到$A^{-1}$。
 
 
 
@@ -1355,18 +1387,18 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
     只要 
     \begin{align}
         \begin{cases}
-            \left|1-\dfrac{\lambda_1}{\mu}\right|<1 \Rightarrow \mu\in (0,\dfrac{\lambda_1}{2})\\
-            \left|1-\dfrac{\lambda_n}{\mu}\right|<1 \Rightarrow \mu\in (0,\dfrac{\lambda_n}{2})
+            \left|1-\dfrac{\lambda_1}{\mu}\right|<1 \Rightarrow \mu\in (\dfrac{\lambda_1}{2},\infty)\\
+            \left|1-\dfrac{\lambda_n}{\mu}\right|<1 \Rightarrow \mu\in (\dfrac{\lambda_n}{2},\infty)
         \end{cases}
     \end{align}
     取交集解得
     \begin{align}
-        \mu\in (0,\dfrac{\lambda_n}{2})
+        \mu\in (\dfrac{\lambda_n}{2},\infty)
     \end{align}
 
     即 
     \begin{align}
-        0<\mu<\frac{\lambda_{\min}(A)}{2}
+       \mu>\frac{\lambda_{\min}(A)}{2}
     \end{align}
 
 
@@ -1598,6 +1630,7 @@ x^T & 0
 \newpage
 
 \section*{圣遗物2}
+\textit{\textbf{\textcolor{red}{比较有难度的题目是2和4，此外需要注意3题收敛域的求法}}}
 
 \begin{enumerate}
     \item 证明：
@@ -1610,7 +1643,19 @@ x^T & 0
             \frac{1}{\mathrm{cond}(A)}\frac{\|r\|}{\|b\|}\leq \frac{\|x-\bar{x}\|}{\|x\|}\leq \mathrm{cond}(A)\frac{\|r\|}{\|b\|}
         \end{align}
         \textbf{证明：}
+        
+        一个比较自然的思路是直接从较复杂的形式化简得到简单形式。
 
+        左边：
+        \begin{align}
+            \frac{1}{\|A\|\|A^{-1}\|}\frac{\|r\|}{\|b\|}=&\frac{1}{\|A\|\|A^{-1}\|}\frac{\|Ax-A\bar{x}\|}{\|Ax\|}\\
+            \leq& \frac{1}{\|A\|\|A^{-1}\|}\frac{\|A\| \|x-\bar{x}\|}{\|Ax\|}\\
+            =&\frac{\|x-\bar{x}\|}{\|A^{-1}\|\|Ax\|}\\
+            \leq & \frac{\|x-\bar{x}\|}{\|A^{-1}Ax\|}\\
+            =&\frac{\|x-\bar{x}\|}{\|x\|}
+        \end{align}
+
+        右边有类似的过程。
 
 
     \item 矩阵A不可分且弱对角占优，证明：
@@ -1809,6 +1854,118 @@ x^T & 0
         \item 证明当特征值是单特征值时,上述计算方法是局部二阶收敛的
     \end{enumerate}
     \textbf{证明：}
+
+    
+\noindent 设 $A \in \mathbb{R}^{n \times n}$ 是一个实对称矩阵。我们需要寻找特征对 $(\lambda, x)$，使得 $Ax = \lambda x$ 且满足归一化条件 $\|x\|_2 = 1$。
+
+\vspace{1em}
+\noindent \textit{（1）使用 Newton 法计算特征值及其归一化特征向量的计算格式}
+
+\vspace{0.5em}
+\noindent 为了使用 Newton 法，定义非线性映射 $F: \mathbb{R}^{n+1} \to \mathbb{R}^{n+1}$ 如下：
+\begin{equation*}
+F(z) = F(x, \lambda) = 
+\begin{pmatrix} 
+Ax - \lambda x \\ 
+\frac{1}{2}(x^T x - 1) 
+\end{pmatrix} = 0
+\end{equation*}
+其中 $z = [x^T, \lambda]^T$。其相应的 Jacobian 矩阵 $J(x, \lambda)$ 为：
+\begin{equation*}
+J(x, \lambda) = 
+\begin{pmatrix} 
+A - \lambda I & -x \\ 
+x^T & 0 
+\end{pmatrix}
+\end{equation*}
+
+\noindent 给定初始近似值 $x_0$ 和 $\lambda_0$，第 $k$ 步迭代格式为：
+\begin{enumerate}
+    \item 解线性方程组得到增量 $\Delta z_k = [\Delta x_k^T, \Delta \lambda_k]^T$：
+    \begin{equation*}
+    \begin{pmatrix} 
+    A - \lambda_k I & -x_k \\ 
+    x_k^T & 0 
+    \end{pmatrix} 
+    \begin{pmatrix} 
+    \Delta x_k \\ 
+    \Delta \lambda_k 
+    \end{pmatrix} = 
+    - \begin{pmatrix} 
+    Ax_k - \lambda_k x_k \\ 
+    \frac{1}{2}(x_k^T x_k - 1) 
+    \end{pmatrix}
+    \end{equation*}
+    \item 更新解：$x_{k+1} = x_k + \Delta x_k$，$\lambda_{k+1} = \lambda_k + \Delta \lambda_k$。
+\end{enumerate}
+
+\textbf{更新：这里似乎可以写出显形式迭代}
+
+当迭代未实现收敛时，总有$\det (A-\lambda I)\neq 0$，因此可以解出$J^{-1}$，从而得到显式迭代格式：
+\begin{align}
+    \begin{bmatrix}
+        x_{k+1}\\
+        \lambda_{k+1}
+    \end{bmatrix}
+    =&\begin{bmatrix}
+        x_k\\
+        \lambda_k
+    \end{bmatrix}
+    +J^{-1}(x_k)F(x_k)\\
+    =&\begin{bmatrix}
+        x_k\\
+        \lambda_k
+    \end{bmatrix}+
+    \begin{bmatrix}
+        (A-\lambda_k I)^{-1}-\frac{(A-\lambda_kI)^{-1}x_kx_k^T(A-\lambda_k I)^{-1}}{x_k^T(A-\lambda_k I)^{-1}x_k} & 
+        \frac{(A-\lambda_k I)^{-1}x_k}{x_k^T(A-\lambda_k I)^{-1}x_k}\\
+        -\frac{x_k^T(A-\lambda_k I)^{-1}}{x_k^T(A-\lambda_k I)^{-1}x_k} & 
+        \frac{1}{x_k^T(A-\lambda_k I)^{-1}x_k}
+    \end{bmatrix}
+    \begin{bmatrix}
+        Ax_k-\lambda_k x_k\\
+        \frac{1}{2}(x_k^Tx_k-1)
+    \end{bmatrix}\\
+    =&\begin{bmatrix}
+        x_k\\
+        \lambda_k
+    \end{bmatrix}+
+    \begin{bmatrix}
+        x_k-\frac{x_k^Tx_k}{x_k^T(A-\lambda_k I)^{-1}x_k}(A-\lambda_k I)^{-1}x_k+\frac{1}{2}(x_k^Tx_k-1)\frac{(A-\lambda_kI)^{-1}x_k}{x_k^T(A-\lambda_k I)^{-1}x_k}\\
+        -\frac{x_k^Tx_k}{x_k^T(A-\lambda_k I)^{-1}x_k}+\frac{1}{2}\frac{x_k^Tx_k-1}{x_k^Tx_k(A-\lambda_k I)^{-1}x_k}
+    \end{bmatrix}\\
+    =&\begin{bmatrix}
+        2x_k-\frac{1}{2}\frac{x_k^Tx_k+1}{x_k^T(A-\lambda_k I)^{-1}x_k}(A-\lambda_k I)^{-1}x_k\\
+        \lambda_k-\frac{1}{2}\frac{x_k^Tx_k+1}{x_k^T(A-\lambda_k I)^{-1}x_k}
+    \end{bmatrix}
+\end{align}
+
+
+
+
+\vspace{1em}
+\noindent \textit{（2）证明当特征值是单特征值时，上述计算方法是局部二阶收敛的}
+
+\vspace{0.5em}
+\begin{proof}
+根据 Newton 法的性质，若 $J(z^*)$ 在解点处非奇异，则具有局部二阶收敛性。考虑齐次方程 $J(z^*) [u^T, v]^T = 0$：
+\begin{align}
+(A - \lambda^* I)u - v x^* &= 0 \label{eq1} \\
+(x^*)^T u &= 0 \label{eq2}
+\end{align}
+
+将式 \eqref{eq1} 左乘 $(x^*)^T$，利用 $A$ 的对称性及 $(A - \lambda^* I)x^* = 0$，得：
+\begin{equation*}
+(x^*)^T (A - \lambda^* I)u - v (x^*)^T x^* = 0 \implies 0 - v \cdot 1 = 0 \implies v = 0
+\end{equation*}
+
+将 $v=0$ 代入式 \eqref{eq1} 得 $(A - \lambda^* I)u = 0$。由于 $\lambda^*$ 是单特征值，其特征空间维数为 1，故 $u = \alpha x^*$。代入式 \eqref{eq2} 有：
+\begin{equation*}
+(x^*)^T (\alpha x^*) = \alpha \|x^*\|_2^2 = \alpha = 0 \implies u = 0
+\end{equation*}
+
+由于齐次方程只有零解，Jacobian 矩阵 $J(z^*)$ 非奇异。因此，该方法在单特征值附近是局部二阶收敛的。
+\end{proof}
 
 
 
