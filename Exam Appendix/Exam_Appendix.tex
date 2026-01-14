@@ -1139,6 +1139,214 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
 
 
 
+\chapter{圣遗物，考前必看}
+
+% 第一份试题：2022-2023学年数值分析期末考试题
+
+\section*{圣遗物1}
+
+\begin{enumerate}
+    \item (共10分) 对于线性代数方程组 \(Ax = b\)，残量定义为 \(r = b - Ax\)。回答下述问题：
+    \begin{enumerate}
+        \item 写出Richardson迭代格式，分析格式的收敛性。
+        \item 设 \(M\) 为可逆矩阵，写出以 \(M\) 为预处理矩阵的Richardson迭代格式。
+        \item 设 \(A\) 为对称正定矩阵，选择预处理矩阵为数乘矩阵，即 \(M = \mu I\) (\(I\) 为单位矩阵，\(\mu\) 为标量)。则当(且仅当) \(\mu\) 满足何种条件时，此预处理方法是收敛的？
+    \end{enumerate}
+    \textbf{证明：}
+
+    \item (共10分) 给定系数矩阵为对称正定矩阵的线性代数方程组 \(Ax = b\)。请回答下述问题：
+    \begin{enumerate}
+        \item 定义函数
+        \[
+        \varphi(x) = \frac{1}{2}(Ax, x) - (b, x),
+        \]
+        其中内积 \((x, y)\) 为标准的欧式内积。证明在全空间中存在唯一的临界点；该临界点为全局最小值点，且恰好是 \(Ax = b\) 的根。
+        \item 设当前近似向量为 \(x\)。写出从 \(x\) 出发，平行于方向p做一维极小搜索得到的新近似向量的表达式。
+        \item 证明新近似向量的残量与搜索方向p是正交的(关于欧式内积)。
+    \end{enumerate}
+    \textbf{证明：}
+
+    \item (共10分) 设 \(A\) 是一个实对称矩阵，则其特征值和特征向量都是实的。若特征向量满足 \(\|x\|_2 = 1\)，则称 \(x\) 为归一化特征向量。请回答下述问题：
+    \begin{enumerate}
+        \item 写出Newton法计算特征值及其对应的归一化特征向量的计算格式。
+        \item 证明当特征值是单特征值时，上述计算方法是局部二阶收敛的。
+    \end{enumerate}
+
+    \textbf{解：}
+
+
+\noindent 设 $A \in \mathbb{R}^{n \times n}$ 是一个实对称矩阵。我们需要寻找特征对 $(\lambda, x)$，使得 $Ax = \lambda x$ 且满足归一化条件 $\|x\|_2 = 1$。
+
+\vspace{1em}
+\noindent \textit{（1）使用 Newton 法计算特征值及其归一化特征向量的计算格式}
+
+\vspace{0.5em}
+\noindent 为了使用 Newton 法，定义非线性映射 $F: \mathbb{R}^{n+1} \to \mathbb{R}^{n+1}$ 如下：
+\begin{equation*}
+F(z) = F(x, \lambda) = 
+\begin{pmatrix} 
+Ax - \lambda x \\ 
+\frac{1}{2}(x^T x - 1) 
+\end{pmatrix} = 0
+\end{equation*}
+其中 $z = [x^T, \lambda]^T$。其相应的 Jacobian 矩阵 $J(x, \lambda)$ 为：
+\begin{equation*}
+J(x, \lambda) = 
+\begin{pmatrix} 
+A - \lambda I & -x \\ 
+x^T & 0 
+\end{pmatrix}
+\end{equation*}
+
+\noindent 给定初始近似值 $x_0$ 和 $\lambda_0$，第 $k$ 步迭代格式为：
+\begin{enumerate}
+    \item 解线性方程组得到增量 $\Delta z_k = [\Delta x_k^T, \Delta \lambda_k]^T$：
+    \begin{equation*}
+    \begin{pmatrix} 
+    A - \lambda_k I & -x_k \\ 
+    x_k^T & 0 
+    \end{pmatrix} 
+    \begin{pmatrix} 
+    \Delta x_k \\ 
+    \Delta \lambda_k 
+    \end{pmatrix} = 
+    - \begin{pmatrix} 
+    Ax_k - \lambda_k x_k \\ 
+    \frac{1}{2}(x_k^T x_k - 1) 
+    \end{pmatrix}
+    \end{equation*}
+    \item 更新解：$x_{k+1} = x_k + \Delta x_k$，$\lambda_{k+1} = \lambda_k + \Delta \lambda_k$。
+\end{enumerate}
+
+\vspace{1em}
+\noindent \textit{（2）证明当特征值是单特征值时，上述计算方法是局部二阶收敛的}
+
+\vspace{0.5em}
+\begin{proof}
+根据 Newton 法的性质，若 $J(z^*)$ 在解点处非奇异，则具有局部二阶收敛性。考虑齐次方程 $J(z^*) [u^T, v]^T = 0$：
+\begin{align}
+(A - \lambda^* I)u - v x^* &= 0 \label{eq1} \\
+(x^*)^T u &= 0 \label{eq2}
+\end{align}
+
+将式 \eqref{eq1} 左乘 $(x^*)^T$，利用 $A$ 的对称性及 $(A - \lambda^* I)x^* = 0$，得：
+\begin{equation*}
+(x^*)^T (A - \lambda^* I)u - v (x^*)^T x^* = 0 \implies 0 - v \cdot 1 = 0 \implies v = 0
+\end{equation*}
+
+将 $v=0$ 代入式 \eqref{eq1} 得 $(A - \lambda^* I)u = 0$。由于 $\lambda^*$ 是单特征值，其特征空间维数为 1，故 $u = \alpha x^*$。代入式 \eqref{eq2} 有：
+\begin{equation*}
+(x^*)^T (\alpha x^*) = \alpha \|x^*\|_2^2 = \alpha = 0 \implies u = 0
+\end{equation*}
+
+由于齐次方程只有零解，Jacobian 矩阵 $J(z^*)$ 非奇异。因此，该方法在单特征值附近是局部二阶收敛的。
+\end{proof}
+    
+
+    \item (共10分) 设实矩阵序列 \(\{X_k\}\) 满足
+    \[
+    X_{k+1} = X_k + X_k(I - AX_k), \quad k = 0, 1, \cdots.
+    \]
+    证明如下结论：
+    \begin{enumerate}
+        \item 令 \(E_k = I - AX_k\)，则 \(E_{k+1} = E_k^2\)。
+        \item \(\{X_k\}\) 至少局部二阶收敛到 \(A^{-1}\)。
+    \end{enumerate}
+    \textbf{证明：}
+
+
+
+    \item (共10分) 考虑常微分方程组 \(y' = f(t, y)\) 的初值问题。请回答下述问题：
+    \begin{enumerate}
+        \item 写出一般步长情况下的显式Euler方法、隐式Euler方法以及梯形方法的计算格式。
+        \item 分析梯形方法的相容性，写出该方法的主局部截断误差。
+    \end{enumerate}
+    \textbf{证明：}
+
+
+
+    \item (共10分) 考虑常微分方程组 \(y' = f(t, y)\) 的初值问题。用如下的等步长Runge-Kutta方法
+    \[
+    y_{n+1} = y_n + hK,
+    \]
+    其中 \(K\) 满足
+    \[
+    K = f(t_n + h/2, y_n + hK/2).
+    \]
+    请回答下述问题：
+    \begin{enumerate}
+        \item 证明该方法恰好是二阶收敛的(需要说明其不是三阶方法)。
+        \item 确定该方法的绝对稳定区域。
+    \end{enumerate}
+\end{enumerate}
+\textbf{证明：}
+
+
+
+\newpage
+
+\section*{圣遗物2}
+
+\begin{enumerate}
+    \item 证明：
+        设得到$Ax=b$的一个近似解$\bar{x}$，其残量为 
+        \begin{align}
+            r=b-A\bar{x}
+        \end{align}
+        设$x$和$\bar{x}$分别是准确解和近似解，证明：
+        \begin{align}
+            \frac{1}{\mathrm{cond}(A)}\frac{\|r\|}{\|b\|}\leq \frac{\|x-\bar{x}\|}{\|x\|}\leq \mathrm{cond}(A)\frac{\|r\|}{\|b\|}
+        \end{align}
+        \textbf{证明：}
+
+
+
+    \item 矩阵A不可分且弱对角占优，证明：
+    \begin{enumerate}
+        \item A对角元素不等于0
+        \item 矩阵A非奇异
+        \item Ax=b的Jacobi迭代收敛
+    \end{enumerate}
+    \textbf{证明：}
+
+
+
+
+    \item 有以下迭代格式：
+    \[
+    x_{k + 1} = \frac{x_{k}(3 + x_{k}^{2})}{3x_{k}^{2} + 1}
+    \]
+    \begin{enumerate}
+        \item 求该迭代的不动点
+        \item 分析各不动点的局部收敛性和收敛阶
+        \item 求各不动点的收敛域
+    \end{enumerate}
+    \textbf{证明：}
+
+
+
+
+    \item 经典再放送\\
+    (共10分)设A是一个实对称矩阵,则其特征值和特征向量都是实的.若特征向量x满足 \(\| x\|_{2} = 1\) ,则称x为归一化特征向量.请回答下述问题:
+    \begin{enumerate}
+        \item 写出Newton法计算特征值及其对应的归一化特征向量的计算格式
+        \item 证明当特征值是单特征值时,上述计算方法是局部二阶收敛的
+    \end{enumerate}
+    \textbf{证明：}
+
+
+
+
+    \item 微分方程： \(y^{\prime} = f(t,y)\) ，迭代式：
+    \[
+    y_{n + 1} = y_{n} + h\big(\theta f(t_{n} + y_{n}) + (1 - \theta)f(t_{n + 1},y_{n + 1})\big), \quad \theta \in [0,1]
+    \]
+    \begin{enumerate}
+        \item 该迭代的相容阶
+        \item 绝对稳定区间
+    \end{enumerate}
+\end{enumerate}
+\textbf{证明：}
 
 
 
