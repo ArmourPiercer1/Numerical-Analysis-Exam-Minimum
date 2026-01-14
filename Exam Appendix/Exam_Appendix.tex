@@ -1152,7 +1152,9 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
         \item 设 \(M\) 为可逆矩阵，写出以 \(M\) 为预处理矩阵的Richardson迭代格式。
         \item 设 \(A\) 为对称正定矩阵，选择预处理矩阵为数乘矩阵，即 \(M = \mu I\) (\(I\) 为单位矩阵，\(\mu\) 为标量)。则当(且仅当) \(\mu\) 满足何种条件时，此预处理方法是收敛的？
     \end{enumerate}
-    \textbf{证明：}
+    
+
+
 
     \item (共10分) 给定系数矩阵为对称正定矩阵的线性代数方程组 \(Ax = b\)。请回答下述问题：
     \begin{enumerate}
@@ -1295,7 +1297,80 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
         \item 设 \(M\) 为可逆矩阵，写出以 \(M\) 为预处理矩阵的Richardson迭代格式。
         \item 设 \(A\) 为对称正定矩阵，选择预处理矩阵为数乘矩阵，即 \(M = \mu I\) (\(I\) 为单位矩阵，\(\mu\) 为标量)。则当(且仅当) \(\mu\) 满足何种条件时，此预处理方法是收敛的？
     \end{enumerate}
+
     \textbf{证明：}
+
+    （1）    
+    Richardson迭代格式的修正量即为当前的残差，
+        \begin{align}
+            \boldsymbol{x}_{k+1}=\boldsymbol{x}_k+\boldsymbol{r}_k=\boldsymbol{x}_k+(\boldsymbol{b}-A\boldsymbol{x}_k)=(I-A)\boldsymbol{x}_k+\boldsymbol{b}
+        \end{align}
+
+    迭代矩阵
+    \begin{align}
+        B=I-A 
+    \end{align}
+    当迭代矩阵的谱半径小于1时，迭代收敛。
+
+    （2）
+    以 \(M\) 为预处理矩阵的Richardson迭代格式为
+    \begin{align}
+        \boldsymbol{x}_{k+1}=\boldsymbol{x}_k+M^{-1}\boldsymbol{r}_k=\boldsymbol{x}_k+M^{-1}(\boldsymbol{b}-A\boldsymbol{x}_k)=(I-M^{-1}A)\boldsymbol{x}_k+M^{-1}\boldsymbol{b}
+    \end{align}
+
+    （3）A为SPD矩阵，$M=\mu I$可得$M^{-1}=\frac{1}{\mu}I$，则迭代矩阵为
+    \begin{align}
+        B=I-M^{-1}A=I-\frac{1}{\mu}A
+    \end{align}
+
+    则特征值方程
+    \begin{align}
+        0=\det (\lambda'I-B)=&\det (\lambda'I-(I-\frac{1}{\mu}A))\\
+        =&\det [(\lambda'-1)I+\frac{1}{\mu}A)]\\
+        =&\left(-\frac{1}{\mu}\right)^n \det [-\frac{1}{\mu}(\lambda'-1)I-A]
+    \end{align}
+    前面的系数$(-1/\mu)^n$不会改变特征值方程的解，因此有 
+    \begin{align}
+        \det [-\frac{1}{\mu}(\lambda'-1)I-A]=0
+    \end{align}
+    这一方程与A的特征值问题
+    \begin{align}
+        \det (\lambda I-A)=0
+    \end{align}
+    有类似的形式，因此新的特征值$\lambda'$与A的特征值$\lambda$之间有如下关系：
+    \begin{align}
+        \lambda'=1-\frac{\lambda}{\mu}
+    \end{align}
+
+    要让预处理方法收敛，只要让B的谱半径小于1，即$\max_n |\lambda'_n|<1$，则有
+    \begin{align}
+        \max_k |\lambda_k'|=\max_k\bigg|1-\frac{\lambda_k}{\mu}\bigg|
+    \end{align}
+    设$\lambda_1=\max_k \lambda_k$，$\lambda_n=\min_k \lambda_k$，则有
+    \begin{align}
+        \max_k |\lambda_k'|=&\max_k\bigg|1-\frac{\lambda_k}{\mu}\bigg|\\
+        =&\max \left\{  \left|1-\frac{\lambda_1}{\mu}\right|,\left|1-\frac{\lambda_n}{\mu} \right| \right\}
+    \end{align}
+
+    只要 
+    \begin{align}
+        \begin{cases}
+            \left|1-\dfrac{\lambda_1}{\mu}\right|<1 \Rightarrow \mu\in (0,\dfrac{\lambda_1}{2})\\
+            \left|1-\dfrac{\lambda_n}{\mu}\right|<1 \Rightarrow \mu\in (0,\dfrac{\lambda_n}{2})
+        \end{cases}
+    \end{align}
+    取交集解得
+    \begin{align}
+        \mu\in (0,\dfrac{\lambda_n}{2})
+    \end{align}
+
+    即 
+    \begin{align}
+        0<\mu<\frac{\lambda_{\min}(A)}{2}
+    \end{align}
+
+
+
 
     \item (共10分) 给定系数矩阵为对称正定矩阵的线性代数方程组 \(Ax = b\)。请回答下述问题：
     \begin{enumerate}
@@ -1309,14 +1384,64 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
     \end{enumerate}
     \textbf{证明：}
 
+     \textbf{解：}
+
+    （1）$\phi(x)$对向量$x$的梯度为
+    \begin{align}
+        \nabla \phi(x)=Ax-b 
+    \end{align}
+    同时，由于A是对称正定的，$\phi$对x的Hessian矩阵
+    \begin{align}
+        |\nabla^2\phi|=|A|>0
+    \end{align}
+    故这一点是一个极小值点而不是鞍点。
+
+    此外，由于A是对称正定的，必非奇异，$Ax=b$有且只有一个根，即只有一个$x=x^*$使得$Ax^*=b$，即这个极小值点是全局唯一的极小值点，即为全局最小值点。
+
+    综上，全空间中存在唯一的临界点，该临界点为全局最小值点，且恰好是 $Ax = b$ 的根。
+
+    （2）残差：
+    \begin{align}
+        r=b-Ax 
+    \end{align}
+
+    最优步长：
+    \begin{align}
+        \alpha_k=\frac{(r,p)}{(Ap,p)}=\frac{p^T(b-Ax)}{p^T Ap}
+    \end{align}
+
+    新向量：
+    \begin{align}
+        x_{new}=x+\alpha_kp=x+\frac{(r,p)}{(Ap,p)}p=x+\frac{p^T(b-Ax)}{p^T Ap}p
+    \end{align}
+
+    （3）新残量：
+    \begin{align}
+        r_{new}=&b-Ax_{new}=b-A\left(  x+\frac{p^Tr}{p^TAP}p  \right)\\
+        =&b-Ax-\frac{p^Tr}{p^TAP}Ap
+    \end{align}
+
+    与搜索方向作内积得到
+    \begin{align}
+        p^Tr_{new}=&p^T\left( b-Ax-\frac{p^Tr}{p^TAP}Ap \right)\\
+        =&p^Tr-\frac{p^Tr}{p^TAP}p^TAP\\
+        =0
+    \end{align}
+    因此新近似向量的残量与搜索方向p是正交的。
+
+
+
+
+
+
+
     \item (共10分) 设 \(A\) 是一个实对称矩阵，则其特征值和特征向量都是实的。若特征向量满足 \(\|x\|_2 = 1\)，则称 \(x\) 为归一化特征向量。请回答下述问题：
     \begin{enumerate}
         \item 写出Newton法计算特征值及其对应的归一化特征向量的计算格式。
         \item 证明当特征值是单特征值时，上述计算方法是局部二阶收敛的。
     \end{enumerate}
 
-    \textbf{解：}
-
+   
 
 \noindent 设 $A \in \mathbb{R}^{n \times n}$ 是一个实对称矩阵。我们需要寻找特征对 $(\lambda, x)$，使得 $Ax = \lambda x$ 且满足归一化条件 $\|x\|_2 = 1$。
 
@@ -1360,6 +1485,50 @@ x^T & 0
     \end{equation*}
     \item 更新解：$x_{k+1} = x_k + \Delta x_k$，$\lambda_{k+1} = \lambda_k + \Delta \lambda_k$。
 \end{enumerate}
+
+\textbf{更新：这里似乎可以写出显形式迭代}
+
+当迭代未实现收敛时，总有$\det (A-\lambda I)\neq 0$，因此可以解出$J^{-1}$，从而得到显式迭代格式：
+\begin{align}
+    \begin{bmatrix}
+        x_{k+1}\\
+        \lambda_{k+1}
+    \end{bmatrix}
+    =&\begin{bmatrix}
+        x_k\\
+        \lambda_k
+    \end{bmatrix}
+    +J^{-1}(x_k)F(x_k)\\
+    =&\begin{bmatrix}
+        x_k\\
+        \lambda_k
+    \end{bmatrix}+
+    \begin{bmatrix}
+        (A-\lambda_k I)^{-1}-\frac{(A-\lambda_kI)^{-1}x_kx_k^T(A-\lambda_k I)^{-1}}{x_k^T(A-\lambda_k I)^{-1}x_k} & 
+        \frac{(A-\lambda_k I)^{-1}x_k}{x_k^T(A-\lambda_k I)^{-1}x_k}\\
+        -\frac{x_k^T(A-\lambda_k I)^{-1}}{x_k^T(A-\lambda_k I)^{-1}x_k} & 
+        \frac{1}{x_k^T(A-\lambda_k I)^{-1}x_k}
+    \end{bmatrix}
+    \begin{bmatrix}
+        Ax_k-\lambda_k x_k\\
+        \frac{1}{2}(x_k^Tx_k-1)
+    \end{bmatrix}\\
+    =&\begin{bmatrix}
+        x_k\\
+        \lambda_k
+    \end{bmatrix}+
+    \begin{bmatrix}
+        x_k-\frac{x_k^Tx_k}{x_k^T(A-\lambda_k I)^{-1}x_k}(A-\lambda_k I)^{-1}x_k+\frac{1}{2}(x_k^Tx_k-1)\frac{(A-\lambda_kI)^{-1}x_k}{x_k^T(A-\lambda_k I)^{-1}x_k}\\
+        -\frac{x_k^Tx_k}{x_k^T(A-\lambda_k I)^{-1}x_k}+\frac{1}{2}\frac{x_k^Tx_k-1}{x_k^Tx_k(A-\lambda_k I)^{-1}x_k}
+    \end{bmatrix}\\
+    =&\begin{bmatrix}
+        2x_k-\frac{1}{2}\frac{x_k^Tx_k+1}{x_k^T(A-\lambda_k I)^{-1}x_k}(A-\lambda_k I)^{-1}x_k\\
+        \lambda_k-\frac{1}{2}\frac{x_k^Tx_k+1}{x_k^T(A-\lambda_k I)^{-1}x_k}
+    \end{bmatrix}
+\end{align}
+
+
+
 
 \vspace{1em}
 \noindent \textit{（2）证明当特征值是单特征值时，上述计算方法是局部二阶收敛的}
@@ -1452,6 +1621,83 @@ x^T & 0
     \end{enumerate}
     \textbf{证明：}
 
+    （1）反证法：设A的对角元为0，即存在某个$i$使得$a_{ii}=0$。由于A是弱对角占优矩阵，故有
+    \begin{align}
+        0=|a_{ii}|\geq \sum_{j\neq i}|a_{ij}| \geq 0
+    \end{align}
+    于是有 
+    \begin{align}
+        a_{ij}=0, \quad j\neq i
+    \end{align}
+
+    只要将第i行变换到最后一行，则矩阵A具有如下形式：
+    \begin{align}
+        \begin{bmatrix}
+            A_{n-1} & \mathbf{a}\\
+            \mathbf{0} & 0
+        \end{bmatrix}
+    \end{align}
+    显然为一个左下角为0的分块矩阵，故矩阵A可分，与题设矛盾。
+
+
+
+    （2）\begin{proof}
+（反证法）假设 $A$ 是奇异矩阵，则齐次线性方程组 $Ax = 0$ 存在非零解 $x = (x_1, x_2, \dots, x_n)^T$。
+
+令 $M = \max_{1 \le j \le n} |x_j|$。由于 $x \neq 0$，显然 $M > 0$。\\
+定义下标集合 $S = \{ i : |x_i| = M \}$。由于 $M$ 是最大模，故 $S$ 是 $\{1, 2, \dots, n\}$ 的非空子集。
+
+对于任意 $i \in S$，考虑 $Ax = 0$ 的第 $i$ 个分量方程：
+\[ a_{ii} x_i = - \sum_{j \neq i} a_{ij} x_j \]
+两边取绝对值，并利用三角不等式：
+\begin{equation}
+|a_{ii}| |x_i| = \left| \sum_{j \neq i} a_{ij} x_j \right| \le \sum_{j \neq i} |a_{ij}| |x_j|
+\end{equation}
+由于 $i \in S$，有 $|x_i| = M$，且对于所有 $j$，恒有 $|x_j| \le M$。将这些条件代入上式 (1)：
+\[ |a_{ii}| M \le \sum_{j \neq i} |a_{ij}| |x_j| \le \left( \sum_{j \neq i} |a_{ij}| \right) M \]
+消去 $M > 0$，得到：
+\[ |a_{ii}| \le \sum_{j \neq i} |a_{ij}| \]
+然而，根据 $A$ 是弱对角占优矩阵的定义，对所有 $i$ 均满足 $|a_{ii}| \ge \sum_{j \neq i} |a_{ij}|$。因此，上述不等式链中的等号必须成立，即：
+\begin{equation}
+|a_{ii}| = \sum_{j \neq i} |a_{ij}| \quad \text{且} \quad \sum_{j \neq i} |a_{ij}| |x_j| = \sum_{j \neq i} |a_{ij}| M
+\end{equation}
+由式 (2) 可知，若某个 $a_{ij} \neq 0$，则必须有 $|x_j| = M$，即 $j \in S$。
+
+这意味着：在矩阵 $A$ 对应的有向图中，从 $S$ 中的任一顶点 $i$ 出发，所有通过一条有向边直接相连的顶点 $j$ 都必然属于 $S$。\\
+由于矩阵 $A$ 是\textbf{不可约}的，其对应的有向图是强连通的。这意味着从 $S$ 中的任意一点出发，存在路径可以到达 $\{1, 2, \dots, n\}$ 中的每一个点。通过归纳可知：
+\[ S = \{1, 2, \dots, n\} \]
+即所有的分量都满足 $|x_j| = M$，且对所有的 $i = 1, \dots, n$，都有：
+\[ |a_{ii}| = \sum_{j \neq i} |a_{ij}| \]
+但这与 $A$ 是\textbf{弱对角占优}的已知条件矛盾——弱对角占优要求至少存在一个下标 $k$ 使得 $|a_{kk}| > \sum_{j \neq k} |a_{kj}|$（即至少有一行是严格对角占优的）。
+
+矛盾产生，故原假设不成立。因此，$A$ 必为非奇异矩阵。
+\end{proof}
+
+
+（3）Jacobi迭代格式为M=D,
+
+
+\begin{align}
+    B_J=D^{-1}(L+U)
+\end{align}
+迭代矩阵的行列式
+\begin{align}
+    \det(\lambda' I-B_J)=&\det[\lambda' I-D^{-1}(L+U)]\\
+    =&\det (D^{-1})\det(\lambda' D -L-U)
+\end{align}
+
+该行列式即为A的所有对角元都乘以特征值$\lambda'$后的矩阵的行列式。
+
+
+若B的谱半径大于等于1，则必有一个$\lambda$使得$|\lambda|>1$。于是对于$\lambda D -L-U$的任意一行，总有
+\begin{align}
+    |a_{ii}'|=|\lambda||a_{ii}|\geq |\lambda|\sum_{i\neq j}|a_{ij}|\geq \sum_{i\neq j}|a_{ij}|=\sum_{i\neq j}|a'_{ij}|
+\end{align}
+即$\lambda D -L-U$仍然是一个弱对角占优的。此外，这一$\lambda$不为0，任何原先非0的矩阵元现在仍旧非0，故$\lambda D -L-U$仍然是不可分的。
+
+根据（2）可知，$\lambda D -L-U$非奇异，因此行列式不为0，与$\lambda$为B的特征值矛盾。
+
+因此，B的谱半径必小于1，Jacobi迭代收敛。
 
 
 
@@ -1466,6 +1712,93 @@ x^T & 0
     \end{enumerate}
     \textbf{证明：}
 
+    （1）不动点：
+    \begin{align}
+        x=\frac{x(3+x^2)}{3x^{2} + 1}
+    \end{align}
+    解得
+    \begin{align}
+        x=0, \pm 1
+    \end{align}
+
+    （2）局部收敛性和收敛阶：
+
+    \begin{align}
+        \phi(x)=&\frac{x(3+x^2)}{3x^2+1}\\
+        \phi'(x)=&\frac{3(x^2-1)^2}{(3x^2+1)^2}\\
+        \phi''(x)=&\frac{48x(x-1)(x+1)}{(3x^2+1)^3}\\
+        \phi'''(x)=&48\frac{-9x^4+18x^2-1}{(3x^2+1)^4}
+    \end{align}
+
+    \begin{itemize}
+        \item $x=\pm 1$:
+        \begin{align}
+            \phi(x)=& 0\\
+            \phi'(x)=& 0\\
+            \phi''(x)=&0\\
+            \phi'''(x)=&\frac{3}{2}\neq 0
+        \end{align}
+        \item $x=0$:
+        \begin{align}
+            \phi(x)=& 0\\
+            \phi'(x)=&3
+        \end{align}
+    \end{itemize}
+    故该迭代法在$x=\pm 1$处三阶收敛，在$x=0$处不收敛。
+
+    （3）收敛域：
+
+    对于$x=0$，由于$\phi(0)'>1$，没有收敛域。
+    
+    % 对于$x=\pm 1$，只要解以下方程：
+    % \begin{align}
+    %     |\phi'(x)|=\phi'(x)=&\frac{3(x^2-1)^2}{(3x^2+1)^2}<1
+    % \end{align}
+    % 解得 
+    % \begin{align}
+    %     x\in (-\infty,-\sqrt{\frac{\sqrt{3}-1}{\sqrt{3}+3}})\,\, \cup \,\,(\sqrt{\frac{\sqrt{3}-1}{\sqrt{3}+3}},\infty)
+    % \end{align}
+
+    对于$x= 1$，有
+    \begin{align}
+        \phi(x)=\frac{x(3+x^2)}{3x^2+1}
+    \end{align}
+    迭代时
+    \begin{align}
+        x_{k+1}-1=&\phi(x)-1\\
+        =&\frac{x_k(3+x_k^2)}{3x_k^2+1}-1\\
+        =&\frac{x_k^3+3x_k-3x_k^2-1}{3x_k^2+1}\\
+        =&\frac{(x_k-1)^3}{3x_k^2+1}
+    \end{align}
+
+    \begin{align}
+        x_{k+1}+1=&\phi(x)+1\\
+        =&\frac{x_k(3+x_k^2)}{3x_k^2+1}+1\\
+        =&\frac{x_k^3+3x_k+3x_k^2+1}{3x_k^2+1}\\
+        =&\frac{(x_k+1)^3}{3x_k^2+1}
+    \end{align}
+    于是有 
+    \begin{align}
+        \frac{x_{k+1}-1}{x_{k+1}+1}=&\frac{(x_k-1)^3}{(x_k+1)^3}
+    \end{align}
+    令$u_n=\frac{x_{n}-1}{x_{n}+1}$，则有
+    \begin{align}
+        u_{k+1}=&u_k^3
+    \end{align}
+    通项公式为
+    \begin{align}
+        u_n=u_0^{3^n}
+    \end{align}
+
+    收敛性要求当$n \rightarrow \infty$时，$x_n \rightarrow 1$，即$u_n \rightarrow 0$。因此，收敛域为
+    \begin{align}
+        u_0\in (0,1)
+    \end{align}
+    即$x_0\in (0,\infty)$。
+
+    对于$x=-1$，同理可得收敛域为$(-\infty,0)$。
+
+    
 
 
 
@@ -1491,8 +1824,47 @@ x^T & 0
 \end{enumerate}
 \textbf{证明：}
 
+（1）局部截断误差：
+\begin{align}
+    R_{n+1}=&y(t+h)-y(t)-h[\theta y'(t)+(1-\theta)y'(t+h)]\\
+    =&y+y'h+\frac{1}{2}y''h^2+\frac{1}{6}y'''h^3 \quad-y\\
+    &-h[\theta y'+(1-\theta)(y'+y''h+\frac{1}{2}y'''h^3)]+O(h^4)\\
+    =&\left(\theta-\frac{1}{2}\right)y''h-\frac{3\theta-2}{6}y'''h^3+O(h^4)
+\end{align}
 
+因此，当$\theta=\frac{1}{2}$时，格式具有二阶相容性，否则为一阶相容性。
 
+（2）绝对稳定区间：将迭代格式代入试验方程
+\begin{align}
+    y'=f=\lambda y 
+\end{align}
+得到 
+\begin{align}
+    &y_{n+1}=y_n+h(\theta \lambda y_n+(1-\theta)\lambda y_{n+1})\\
+    \Rightarrow &y_{n+1}=\frac{1+\theta h\lambda}{1-(1-\theta)h\lambda}y_n
+\end{align}
+
+绝对稳定区间只需要考虑$h\lambda$为实数的情况，因此有
+\begin{align}
+    &E(h\lambda)=\left|\frac{1+\theta h\lambda}{1-(1-\theta)h\lambda}\right|<1\\
+    \Rightarrow& h\lambda \left(h\lambda -\frac{2}{1-2\theta}\right)>0
+\end{align}
+
+当$\theta\in[0,1/2)$时，有
+\begin{align}
+    h\lambda \in \left(-\infty,0\right) \cup \left(\frac{2}{1-2\theta},+\infty\right)
+\end{align}
+
+当$\theta \in (1/2,1]$时，有
+\begin{align}
+    h\lambda \in \left(-\infty,\frac{2}{1-2\theta}\right) \cup (0,+\infty)
+\end{align}
+
+当$\theta =\frac{1}{2}$时，迭代格式为 
+\begin{align}
+    y_{n+1}=&\frac{1+\frac{1}{2}h\lambda}{1-\frac{1}{2}h\lambda}y_n
+\end{align}
+绝对稳定区间为负半实轴。
 
 
 

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  14 JAN 2026 01:10
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  14 JAN 2026 17:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1171,19 +1171,49 @@ Chapter 七.
 [74]
 
 [75]
+Underfull \hbox (badness 10000) in paragraph at lines 3457--3458
 
-[76]
+ []
 
-[77]
 
-[78]
-Overfull \hbox (21.71744pt too wide) in paragraph at lines 3608--3608
-|[]\TU/SimSun(0)/b/n/16.06 单 步 定 常 线 性 迭 代 解 法 \TU/lmr/bx/n/16.06 (Stationary Linear Iterative Meth-
+Underfull \hbox (badness 10000) in paragraph at lines 3459--3460
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3461--3462
+
  []
 
 
 
+[76]
+Underfull \hbox (badness 10000) in paragraph at lines 3463--3464
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3465--3466
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3470--3472
+
+ []
+
+
+
+[77]
+
+[78]
+
 [79]
+Overfull \hbox (21.71744pt too wide) in paragraph at lines 3622--3622
+|[]\TU/SimSun(0)/b/n/16.06 单 步 定 常 线 性 迭 代 解 法 \TU/lmr/bx/n/16.06 (Stationary Linear Iterative Meth-
+ []
+
+
 
 [80]
 
@@ -1199,7 +1229,9 @@ Overfull \hbox (21.71744pt too wide) in paragraph at lines 3608--3608
 
 [86]
 
-[87] 
+[87]
+
+[88] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Numerical_Analysis_Exam_Minimum.aux)
  ***********
@@ -1210,25 +1242,16 @@ L3 programming layer <2022/08/05>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Numerical_Analysis_Exam_Minimum.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Numerical_Analysis_Exam_Minimum.out':
-(rerunfilecheck)             Before: C623CE574171F9A049867FD2C22E9812;10571
-(rerunfilecheck)             After:  EC8CE8FEF755280CEB435E4A19545C0B;10515.
+Package rerunfilecheck Info: File `Numerical_Analysis_Exam_Minimum.out' has not changed.
+(rerunfilecheck)             Checksum: EC8CE8FEF755280CEB435E4A19545C0B;10515.
  ) 
 Here is how much of TeX's memory you used:
- 39474 strings out of 473832
- 982533 string characters out of 5733158
- 1456512 words of memory out of 5000000
- 61865 multiletter control sequences out of 15000+600000
+ 39495 strings out of 473832
+ 983971 string characters out of 5733158
+ 1456457 words of memory out of 5000000
+ 61886 multiletter control sequences out of 15000+600000
  579203 words of font info for 157 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,16n,111p,748b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,16n,111p,748b,562s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Numerical_Analysis_Exam_Minimum.pdf (87 pages).
+Output written on Numerical_Analysis_Exam_Minimum.pdf (88 pages).

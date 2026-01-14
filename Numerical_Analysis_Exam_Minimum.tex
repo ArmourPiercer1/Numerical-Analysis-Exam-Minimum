@@ -3454,10 +3454,24 @@ Y + \begin{bmatrix}
 衡量方程组解对数据扰动的敏感程度。
 \[ \text{cond}(A) = ||A|| \cdot ||A^{-1}|| \]
 \begin{property}
-    1. $\text{cond}(A) \ge 1$。
-    2. 若 $A$ 酉相似于 $B$，则 $\text{cond}_2(A) = \text{cond}_2(B)$。
-    3. 对于 SPD 矩阵，$\text{cond}_2(A) = \frac{\lambda_{\max}}{\lambda_{\min}}$。
+    1. $\text{cond}(A) \ge 1$。\\
+
+    2. 若 $A$ 酉相似于 $B$，则 $\text{cond}_2(A) = \text{cond}_2(B)$。\\
+
+    3. 只与矩阵“形态”有关，数乘不改变条件数：$\mathrm{cond}(\alpha A)=\mathrm{cond}(A)$，$\alpha \ne 0$。\\
+
+    4. 正交阵的2-条件数为1：若A为正交阵，则$\mathrm{cond}_2(A)=1$。\\
+
+    5. 正交阵不改变矩阵条件数：若U为正交阵，则$\mathrm{cond}_2(UA)=\mathrm{cond}_2(AU)=\mathrm{cond}_2(A)$。\\
+
+    6. 条件数与特征值的关系：
+        \begin{align}
+            \mathrm{cond}(A)\geq \frac{\max_i |\lambda_i|}{\min_i |\lambda_i|}
+        \end{align}\\
+    对于对称矩阵（不要求正定！），$\text{cond}_2(A) = \frac{|\lambda|_{\max}}{|\lambda|_{\min}}$。\\
 \end{property}
+
+
 
 \subsubsection{扰动误差界定理}
 设 $Ax=b, A$ 非奇异。考虑 $(A+\delta A)(x+\delta x) = b+\delta b$。
@@ -3775,6 +3789,12 @@ $H_n$ 高度病态。当 $n$ 稍大时，$\text{cond}(H_n)$ 极大，直接法�
     \]
     此时 $\rho(B_{SOR}) = \omega_{opt} - 1$。
 \end{itemize}
+
+\subsubsection*{经典迭代方法计算收敛性的小寄巧}
+\begin{align}
+    \det(\lambda I-B)=\det (\lambda I-M^{-1}N)=\det(M^{-1})\cdot \det(\lambda M-N)
+\end{align}
+令$\det (\lambda I-B)=0$即等价于求$\det(\lambda M-N)=0$，从而避免计算$M^{-1}$。
 
 \vspace{1cm}
 
