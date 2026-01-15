@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  15 JAN 2026 16:52
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.10)  15 JAN 2026 17:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1068,7 +1068,7 @@ Chapter 6.
 [44]
 
 LaTeX Font Warning: Font shape `TU/SimSun(0)/b/it' undefined
-(Font)              using `TU/SimSun(0)/b/n' instead on input line 1667.
+(Font)              using `TU/SimSun(0)/b/n' instead on input line 1673.
 
 
 
@@ -1110,6 +1110,6 @@ Here is how much of TeX's memory you used:
  61058 multiletter control sequences out of 15000+600000
  574180 words of font info for 129 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,16n,111p,730b,605s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,16n,111p,730b,603s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on Exam_Appendix.pdf (52 pages).
