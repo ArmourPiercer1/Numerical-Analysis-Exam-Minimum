@@ -96,4 +96,4 @@
 \contentsline {subsubsection}{20、A-稳定性}{31}{section*.58}%
 \contentsline {paragraph}{证明：}{31}{section*.59}%
 \contentsline {chapter}{\numberline {5}圣遗物，考前必看}{33}{chapter.5}%
-\contentsline {chapter}{\numberline {6}圣遗物答案}{37}{chapter.6}%
+\contentsline {chapter}{\numberline {6}圣遗物答案}{39}{chapter.6}%

@@ -208,11 +208,11 @@
 \contentsline {paragraph}{\numberline {c.}3 阶 RK 方法}{70}{paragraph.6.3.1.3.3}%
 \contentsline {paragraph}{\numberline {d.}经典RK方法}{70}{paragraph.6.3.1.3.4}%
 \contentsline {subsection}{\numberline {2.}多步法}{71}{subsection.6.3.2}%
-\contentsline {subsubsection}{\numberline {(1)}Adams 方法}{71}{subsubsection.6.3.2.1}%
+\contentsline {subsubsection}{\numberline {(1)}Adams 方法：上一步函数值和q步导数值}{71}{subsubsection.6.3.2.1}%
 \contentsline {paragraph}{\numberline {a.}显式 Adams 公式}{71}{paragraph.6.3.2.1.1}%
 \contentsline {paragraph}{\numberline {b.}隐式 Adams 公式}{71}{paragraph.6.3.2.1.2}%
-\contentsline {subsubsection}{\numberline {(2)}Nyström 方法}{71}{subsubsection.6.3.2.2}%
-\contentsline {subsubsection}{\numberline {(3)}Milne-Simpson 方法}{71}{subsubsection.6.3.2.3}%
+\contentsline {subsubsection}{\numberline {(2)}Nyström 方法：隔一步函数值和q步导数值，显式}{71}{subsubsection.6.3.2.2}%
+\contentsline {subsubsection}{\numberline {(3)}Milne-Simpson 方法：隔一步函数值和q步导数值，隐式}{71}{subsubsection.6.3.2.3}%
 \contentsline {chapter}{\numberline {七}线性代数方程组数值解法}{73}{chapter.7}%
 \contentsline {section}{\numberline {（一）}线性代数方程组直接解法 (Direct Methods)}{73}{section.7.1}%
 \contentsline {subsection}{\numberline {1.}基本概念}{73}{subsection.7.1.1}%

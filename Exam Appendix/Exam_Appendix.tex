@@ -369,7 +369,7 @@ Note：分片线性插值只要做泰勒展开即可；
     =&f_1+ff_2\\
     y'''=&\frac{\mathrm{d}y''}{\mathrm{d}t}=\frac{\mathrm{d}f_1}{\mathrm{d}t}+f\frac{\mathrm{d}f_2}{\mathrm{d}t}+f_2\frac{\mathrm{d}f}{\mathrm{d}t}\\
     =&\frac{\partial f_1}{\partial t}+f\frac{\partial f_1}{\partial y}+f\left( \frac{\partial f_2}{\partial t}+f\frac{\partial f_2}{\partial y} \right)+f_2\left(  \frac{\partial f}{\partial t}+f\frac{\partial f}{\partial y} \right)\\
-    =&f_11+ff_{12}+f(f_{21}+ff_{22})+f_2(f_1+ff_2)\\
+    =&f_{11}+ff_{12}+f(f_{21}+ff_{22})+f_2(f_1+ff_2)\\
     =&f_{11}+2ff_{12}+f^2f_{22}+f_2(f_1+ff_2)
 \end{align}
 
@@ -1313,6 +1313,40 @@ y_{n+2} + y_{n+1} - 2y_{n} = \frac{1}{4}h\left[ f(x_{n+2},y_{n+2}) + 8f(x_{n+1},
     \end{enumerate}
 \end{enumerate}
 \textbf{证明：}
+
+\section*{圣遗物3}
+
+\begin{enumerate}
+    \item 证明不等式：
+    \begin{enumerate}
+        \item $\|x\|_\infty \leq \|x\|_1 \leq n\|x\|_\infty$
+        \item $\|x\|_\infty \leq \|x\|_2 \leq \sqrt{n}\|x\|_\infty$
+        \item $\|A\|_2 \leq \|A\|_F \leq \sqrt{n}\|A\|_2$
+    \end{enumerate}
+    \item 用均差表求满足以下插值条件的三次插值函数$p_3(x)$:
+    \begin{align}
+        p(0)=p'(0)=0,\quad p(1)=0,\quad p(2)=4
+    \end{align}
+    \item 求Gauss求积公式：
+    \begin{align}
+        \int_0^1 f(x)\mathrm{d}(\sqrt{x})=A_0 f(x_0)+A_1 f(x_1)
+    \end{align}
+    注意：权函数是$\rho(x)=\frac{1}{2\sqrt{x}}$.
+    \item 旧题
+    \item 旧题
+    \item 旧题
+    \item 旧题
+    \item 旧题
+    \item 旧题
+    \item 考虑BDF2格式：
+    \begin{align}
+        3y_{n+2}-4y_{n+1}+y_n=2hf(t_{n+2},y_{n+2})
+    \end{align}
+    \begin{enumerate}
+        \item 若初值足够相容，证明该方法至少是二阶收敛的。
+        \item 求绝对稳定区域。
+    \end{enumerate}
+\end{enumerate}
 
 
 

@@ -2478,7 +2478,7 @@ $\psi(x)$：
     则 $\mathbf{\Phi}$ 在 $D$ 内存在唯一不动点 $\mathbf{x}^*$。
 \end{theorem}
 \begin{corollary}[局部收敛判据]
-    设 $\mathbf{x}^*$ 是不动点。若 $\rho(\mathbf{\Phi}'(\mathbf{x}^*)) < 1$（谱半径小于1），则不动点迭代 $\mathbf{x}_{k+1} = \mathbf{\Phi}(\mathbf{x}_k)$ 在 $\mathbf{x}^*$ 邻域内局部收敛。
+    设 $\mathbf{x}^*$ 是不动点。若 $\rho(\boldsymbol{\Phi}'(\mathbf{x}^*)) < 1$（谱半径小于1），则不动点迭代 $\mathbf{x}_{k+1} = \mathbf{\Phi}(\mathbf{x}_k)$ 在 $\mathbf{x}^*$ 邻域内局部收敛。
 \end{corollary}
 
 \subsection{多元牛顿法 (Newton's Method for Systems)}
@@ -3247,11 +3247,20 @@ Y + \begin{bmatrix}
 
 
 \subsection {多步法}
-\subsubsection {Adams 方法}
+设计方法：数值积分
+
+先对所有节点进行插值，得到$f(t,y)$的插值多项式，再对所需要的区域进行积分即可得到多步法形式。
+
+\subsubsection {Adams 方法：上一步函数值和q步导数值}
 \paragraph {显式 Adams 公式}
+\begin{align}
+    y_{n+1}=y_n+h(\beta_{q0}f_n+\beta_{q1}f_{n-1}+\ldots +\beta_{qq}f_{n-q})
+\end{align}
+
 \paragraph {隐式 Adams 公式}
-\subsubsection {Nyström 方法}
-\subsubsection {Milne-Simpson 方法}
+\subsubsection {Nyström 方法：隔一步函数值和q步导数值，显式}
+
+\subsubsection {Milne-Simpson 方法：隔一步函数值和q步导数值，隐式}
 
 
 
